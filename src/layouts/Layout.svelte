@@ -42,7 +42,7 @@
     href="https://fonts.googleapis.com/css?family=Inter:400|Noto+Sans:400|Roboto+Mono:400&subset=latin"
   />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico" />
   <base href={settings.origin} />
   <title>{settings.sitename} - Consulting | Competitive Intelligence | Quality Solutions</title>
 </svelte:head>
