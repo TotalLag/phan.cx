@@ -3,7 +3,6 @@
   import SideBar from '../components/SideBar.svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
-  import Spotify from '../components/Spotify.svelte';
 </script>
 
 <style global lang="postcss">
