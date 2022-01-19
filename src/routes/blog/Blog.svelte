@@ -128,7 +128,7 @@
   <link href="{settings.origin}{request.permalink}" rel="canonical" />
 </svelte:head>
 
-<a href="/">&LeftArrow; Home</a>
+<a href="/" class="print:hidden">&LeftArrow; Home</a>
 
 {#if html}
   <article class="w-full mx-auto mt-6 md:w-4/5 markdown">

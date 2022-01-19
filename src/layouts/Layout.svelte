@@ -53,8 +53,8 @@
     <!-- <Spotify /> -->
     <div class="flex flex-col sm:max-w-[calc(100%-16.25rem)] grow z-1">
       <Header {data} />
-      <div class="h-full px-2 py-4 overflow-y-auto bg-white grow">
-        <div class="container z-0">
+      <div class="h-full px-2 py-4 overflow-y-auto bg-white grow print:-m-10">
+        <div class="container z-0 print:block">
           {@html templateHtml}
         </div>
       </div>

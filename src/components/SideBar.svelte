@@ -6,7 +6,7 @@
   import Navigation from './Navigation.svelte';
 </script>
 
-<aside class="flex flex-col p-4 bg-white border border-b-0 border-gray-200 w-fixed">
+<aside class="flex flex-col p-4 bg-white border border-b-0 border-gray-200 w-fixed print:hidden">
   <div class="flex hidden font-light h-14 sm:inline animate-pulse">
     <span class="font-extrabold underline">></span> ⱧɆⱠⱠØ ₩ØⱤⱠĐ!
   </div>

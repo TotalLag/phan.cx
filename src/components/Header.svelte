@@ -3,7 +3,7 @@
   import Notifications from '../components/Notifications.svelte';
 </script>
 
-<div class="flex items-center justify-between h-20 p-4 bg-white border border-l-0 border-gray-200">
+<div class="flex items-center justify-between h-20 p-4 bg-white border border-l-0 border-gray-200 print:hidden">
   <div
     class="flex items-center w-full p-3 border border-gray-200 rounded-full shadow-sm sm:w-3/4 bg-gray-50 hover:border-gray-400"
   >

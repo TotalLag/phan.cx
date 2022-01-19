@@ -1,0 +1,179 @@
+{
+  "resume": {
+    "info": {
+      "name": "Christopher Phan",
+      "address": "Austin, TX 78754",
+      "phone": "(651) 252-1490",
+      "email": "chris@phan.cx"
+    },
+    "summary": [
+      {
+        "item": "IT Professional"
+      },
+      {
+        "item": "Development"
+      },
+      {
+        "item": "Systems Administration"
+      },
+      {
+        "item": "Management"
+      },
+      {
+        "item": "Customer Success"
+      }
+    ],
+    "qualifications": [
+      {
+        "item": "Extensive real-world customer experiences in enterprise architecture and global infrastructures."
+      },
+      {
+        "item": "Proven track record of success in identifying key improvement opportunities to optimize processes."
+      },
+      {
+        "item": "Excellent interpersonal skills with the ability to develop easy rapport with others while building trust."
+      },
+      {
+        "item": "Success driven, passionate, and committed to excellence, high standards, and customer satisfaction."
+      }
+    ],
+    "experience": [
+      {
+        "title": "Technical Account Manager",
+        "company": "Tanium",
+        "location": "Emeryville, CA",
+        "dateFrom": "February 2018",
+        "dateTo": "Present",
+        "work": [
+          {
+            "item": "Presented and articulated Tanium product features and benefits to prospects, while identifying other opportunities within Tanium."
+          },
+          {
+            "item": "Recreate, track, and verify software defects in the field or under lab conditions reported by customers."
+          },
+          {
+            "item": "Held multiple SME roles to understand what can be improved across products."
+          },
+          {
+            "item": "Created interim solutions utilizing a combination of technologies until made available in the product."
+          },
+          {
+            "item": "100% Renewal rate with accounts."
+          }
+        ]
+      },
+      {
+        "title": "Solutions Consultant",
+        "company": "Code 42 Software, Inc.",
+        "location": "Minneapolis, MN",
+        "dateFrom": "March 2015",
+        "dateTo": "February 2018",
+        "work": [
+          {
+            "item": "Provided pre-sales technical/functional support for Security Tools to Enterprise Accounts and successfully assisted multi-million dollar deals to continuously increase CrashPlan revenue."
+          },
+          {
+            "item": "Provided solution architecture and recommendations to prospects, and created demos and complex proof of concepts as needed to help drive Code42 product selection."
+          },
+          {
+            "item": "Liaised between Code42 Product Management, Information Experience, Sales, Development, and strategic partners to continuously influence product design and messaging."
+          },
+          {
+            "item": "Designed and developed scripts to facilitate the automation of Legal Hold matters."
+          }
+        ]
+      },
+      {
+        "title": "Tier 2 Customer Champion",
+        "company": "Code 42 Software, Inc.",
+        "location": "Minneapolis, MN",
+        "dateFrom": "July 2013",
+        "dateTo": "March 2015",
+        "work": [
+          {
+            "item": "Collected relevant technical issue identification information and filter non-technical and technical issues."
+          },
+          {
+            "item": "Reviewed manuals, release notes, and patch documentation for possible issue resolution."
+          },
+          {
+            "item": "Successfully de-escalate frustrated clients effectively increasing comfort, trust and program visibility."
+          },
+          {
+            "item": "Cultivated relationships and liaised across all department levels, earning recognition as the “go-to” SME."
+          }
+        ]
+      },
+      {
+        "title": "Technical Lead",
+        "company": "IBM",
+        "location": "Minneapolis, MN",
+        "dateFrom": "May 2012",
+        "dateTo": "July 2013",
+        "work": [
+          {
+            "item": "Successfully grew premium service from 10 pilot users to 3K+ franchised financial advisors."
+          },
+          {
+            "item": "Coordinated 10-man team’s technical activities to ensure adherence to standards of best practice and data integrity."
+          },
+          {
+            "item": "Designed and implemented campus-wide Windows 7 migration tool streamlining performance and reducing cost."
+          }
+        ]
+      },
+      {
+        "title": "Deskside Representative",
+        "company": "IBM",
+        "location": "Minneapolis, MN",
+        "dateFrom": "September 2010",
+        "dateTo": "May 2012",
+        "work": [
+          {
+            "item": "Provided on-site and remote hardware and software support and implemented leading edge end-user systems."
+          },
+          {
+            "item": "Analyzed end user system architecture, developed and executed methods to test and integrate end user systems with standard infrastructure technologies."
+          },
+          {
+            "item": "Provided basic planning and design of key enterprise systems, monitored performance and performed maintenance."
+          }
+        ]
+      },
+      {
+        "title": "Web Developer / Tech Support",
+        "company": "University of Minnesota",
+        "location": "Minneapolis, MN",
+        "dateFrom": "May 2008",
+        "dateTo": "September 2010",
+        "work": [
+          {
+            "item": "Conferenced with main IT developers to discuss requirements on new business portals."
+          },
+          {
+            "item": "Selected for identifying key points and handling procedures to decommission failing assets system."
+          },
+          {
+            "item": "Performed code reviews, software upgrades and implementations, and database admin tasks."
+          }
+        ]
+      }
+    ],
+    "education": [
+      {
+        "degree": "110 Credits, Bachelor of Arts, Computer Science",
+        "name": "Metropolitan State University",
+        "location": "MN",
+        "dateFrom": "",
+        "dateTo": "In Progress"
+      },
+      {
+        "degree": "100 Credits, Business Management Information Systems",
+        "name": "Carlson School of Management",
+        "location": "MN",
+        "dateFrom": "2007",
+        "dateTo": "2010"
+      }
+    ]
+  }
+}
