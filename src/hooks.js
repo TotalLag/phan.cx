@@ -152,6 +152,31 @@ const hooks = [
       };
     },
   },
+  {
+    hook: 'stacks',
+    name: 'addGoogleAnalytics',
+    description: 'Adds Analytics scripts to the footer as it fires after all other JS.',
+    run: async ({ settings, footerStack }) => {
+      const string = `<!-- Global site tag (gtag.js) - Google Analytics -->
+                      <script async src="https://www.googletagmanager.com/gtag/js?id=${settings.TRACKING_ID}"></script>
+                      <script>
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+                      
+                        gtag('config', '${settings.TRACKING_ID}');
+                      </script>`;
+
+      return {
+        footerStack: [
+          {
+            string,
+          },
+          ...footerStack,
+        ],
+      };
+    },
+  },
   // {
   //   hook: 'html',
   //   name: 'compressHtml',

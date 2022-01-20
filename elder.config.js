@@ -2,6 +2,7 @@ require('dotenv').config();
 module.exports = {
   origin: process.env.NODE_ENV === 'production' ? 'https://phan.cx' : 'http://localhost:3000', // TODO: update this. The URL of your site's root, without a trailing slash
   sitename: 'Chris Phan',
+  TRACKING_ID: process.env.TRACKING_ID,
   lang: 'en',
   srcDir: 'src',
   distDir: 'public',
@@ -25,7 +26,7 @@ module.exports = {
   },
   plugins: {
     '@elderjs/plugin-markdown': {
-      routes: ['blog'],
+      routes: ['blog', 'projects'],
     },
     '@elderjs/plugin-browser-reload': {
       // this reloads your browser when nodemon restarts your server.
