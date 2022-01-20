@@ -135,16 +135,16 @@
     <div
       in:scale={{ duration: 100, start: 0.95 }}
       out:scale={{ duration: 75, start: 0.95 }}
-      class="absolute z-50 py-2 mt-1 overflow-y-auto origin-top-right bg-white border border-gray-200 rounded shadow-md -right-5 sm:right-0 w-80 sm:w-96 h-80"
+      class="absolute z-50 py-2 mt-1 overflow-hidden overflow-y-auto origin-top-right bg-white border border-gray-200 rounded shadow-md -right-5 sm:right-0 w-80 sm:w-96 h-80"
     >
       <ul class="absolute left-0 right-0 p-2 bg-white rounded-md">
         <li class="px-5 pb-2 mb-2 text-xs text-gray-400 uppercase border-b border-solid border-gray">Releases</li>
 
         {#if data}
           {#each data as release}
-            <li class="flex items-start px-2 py-2 rounded-lg cursor-pointer hover:bg-gray-50 github">
-              <div class="flex flex-col w-24 text-xs">
-                <span class="flex p-2"
+            <li class="flex items-start py-2 rounded-lg cursor-pointer hover:bg-gray-50 github">
+              <div class="flex flex-col text-xs min-w-[4rem]">
+                <span class="flex justify-center pt-1"
                   >{new Date(release.date).toLocaleString('default', { month: 'short', day: 'numeric' })}</span
                 >
                 <span class="flex items-center">
@@ -167,7 +167,7 @@
               </div>
               <div class="flex flex-col pl-2 border-l border-solid border-gray">
                 <h3>{release.name}</h3>
-                <div class="mt-1 text-sm text-gray-600 font-regular github">
+                <div class="w-56 mt-1 text-sm text-gray-600 font-regular github sm:w-72">
                   <SvelteMarkdown source={release.body.replace(/(\r\n|\\r)/gm, '')} />
                 </div>
               </div>
