@@ -3,18 +3,12 @@
   "packageRules": [
     {
       "groupName": "Tailwind CSS",
-      "matchPackageNames": [
-        "tailwindcss"
-      ],
-      "matchPackagePrefixes": [
-        "@tailwindcss/"
-      ]
+      "matchPackageNames": ["tailwindcss"],
+      "matchPackagePrefixes": ["@tailwindcss/"]
     },
     {
       "groupName": "ElderJS",
-      "matchPackagePrefixes": [
-        "@elderjs/"
-      ]
+      "matchPackagePrefixes": ["@elderjs/"]
     },
     {
       "matchPackagePatterns": ["*"],

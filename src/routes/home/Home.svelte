@@ -15,7 +15,7 @@
   <link href="{settings.origin}{request.permalink}" rel="canonical" />
 </svelte:head>
 
-<div class="mx-auto mt-6 md:w-4/5">
+<div class="mx-auto mt-6 md:w-4/5 print:p-10">
   <h1 class="uppercase">
     A beautiful, responsive, statically-generated, Svelte application written with modern JavaScript.
   </h1>

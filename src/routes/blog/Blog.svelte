@@ -131,7 +131,7 @@
 <a href="/" class="print:hidden">&LeftArrow; Home</a>
 
 {#if html}
-  <article class="w-full mx-auto mt-6 md:w-4/5 markdown">
+  <article class="flex flex-col w-full mx-auto mt-6 md:w-4/5 markdown print:p-10">
     <div class="mx-5 my-3 text-sm">
       <a href="" class="font-bold tracking-widest text-red-600 ">{frontmatter.topic ?? ''}</a>
     </div>
