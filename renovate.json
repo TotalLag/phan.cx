@@ -2,15 +2,31 @@
   "extends": ["config:base"],
   "packageRules": [
     {
+      "groupName": "Tailwind CSS",
+      "matchPackageNames": [
+        "tailwindcss"
+      ],
+      "matchPackagePrefixes": [
+        "@tailwindcss/"
+      ]
+    },
+    {
+      "groupName": "ElderJS",
+      "matchPackagePrefixes": [
+        "@elderjs/"
+      ]
+    },
+    {
       "matchPackagePatterns": ["*"],
+      "excludePackagePrefixes": ["@tailwindcss/", "@elderjs/"],
       "updateTypes": ["minor", "patch"],
       "automerge": true,
       "groupName": "all non-major dependencies",
-      "groupSlug": "all-minor-patch"
+      "groupSlug": "all-minor-patch",
+      "prPriority": -1
     }
   ],
   "prHourlyLimit": 5,
   "prConcurrentLimit": 10,
-  "rangeStrategy": "bump",
-  "includeForks": true
+  "rangeStrategy": "bump"
 }
