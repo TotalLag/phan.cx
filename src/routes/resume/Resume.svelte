@@ -17,6 +17,10 @@
     @apply font-bold tracking-widest uppercase print:font-semibold;
   }
 
+  .summary {
+    @apply print:tracking-wide;
+  }
+
   h3 {
     @apply font-semibold tracking-wide;
   }
@@ -30,6 +34,8 @@
   <meta name="robots" content="noindex, nofollow">
 </svelte:head>
 
+<div class="p-4 print:hidden">🖨️-friendly 😉</div>
+
 <div class="flex flex-col p-6 mx-auto align-middle border-8 print:-mt-4 print:w-full md:w-4/5">
   <article class="border-0 border-b border-black">
     <div class="flex flex-col pb-2 border-0 border-b-2 border-black">
@@ -40,13 +46,13 @@
 
     <div class="flex p-1 border-0 border-b-2 border-black">
       <div class="flex mx-auto">
-        <span> {address} | {phone} | {email} </span>
+        <span> {address} | {phone} | {@html email} </span>
       </div>
     </div>
 
     <div class="flex p-4">
       <div class="mx-auto">
-        <h2>{summary.map((i) => i.item).join(' ◆ ')}</h2>
+        <h2 class="summary">{summary.map((i) => i.item).join(' ◆ ')}</h2>
       </div>
     </div>
   </article>

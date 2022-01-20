@@ -4,20 +4,17 @@
       "name": "Christopher Phan",
       "address": "Austin, TX 78754",
       "phone": "(651) 252-1490",
-      "email": "chris@phan.cx"
+      "email": "c&#104;ris&#64;phan&#46;c&#120;"
     },
     "summary": [
       {
-        "item": "IT Professional"
+        "item": "Competitive Intelligence"
       },
       {
-        "item": "Development"
+        "item": "Solutions Engineering"
       },
       {
-        "item": "Systems Administration"
-      },
-      {
-        "item": "Management"
+        "item": "Systems Management"
       },
       {
         "item": "Customer Success"
@@ -28,7 +25,7 @@
         "item": "Extensive real-world customer experiences in enterprise architecture and global infrastructures."
       },
       {
-        "item": "Proven track record of success in identifying key improvement opportunities to optimize processes."
+        "item": "Creative problem solver with know how to get things done and ability to lead others to success."
       },
       {
         "item": "Excellent interpersonal skills with the ability to develop easy rapport with others while building trust."
@@ -39,11 +36,32 @@
     ],
     "experience": [
       {
+        "title": "Director of Competitive Intelligence",
+        "company": "Tanium",
+        "location": "Kirkland, WA",
+        "dateFrom": "September 2020",
+        "dateTo": "September 2021",
+        "work": [
+          {
+            "item": "Maintained a current view of the market dynamics and competitive landscape to ensure the Product Marketing team stays ahead in this ever-changing world."
+          },
+          {
+            "item": "Established and leveraged an internal and external network of subject matter experts to develop competitive positioning against a diverse set of competitors."
+          },
+          {
+            "item": "Took our strategies, sales tactics, evidence of our superiority to competitors, and turned it into materials that would help our customer facing teams sell our products more effectively."
+          },
+          {
+            "item": "Built a content and communication strategy to craft responses to key market events, such as competitive announcements and product launches."
+          }
+        ]
+      },
+      {
         "title": "Technical Account Manager",
         "company": "Tanium",
         "location": "Emeryville, CA",
         "dateFrom": "February 2018",
-        "dateTo": "Present",
+        "dateTo": "September 2020",
         "work": [
           {
             "item": "Presented and articulated Tanium product features and benefits to prospects, while identifying other opportunities within Tanium."
@@ -55,10 +73,7 @@
             "item": "Held multiple SME roles to understand what can be improved across products."
           },
           {
-            "item": "Created interim solutions utilizing a combination of technologies until made available in the product."
-          },
-          {
-            "item": "100% Renewal rate with accounts."
+            "item": "Created interim solutions around technologies until productization resulting in 100% renewal rate with personal accounts."
           }
         ]
       },
@@ -70,16 +85,10 @@
         "dateTo": "February 2018",
         "work": [
           {
-            "item": "Provided pre-sales technical/functional support for Security Tools to Enterprise Accounts and successfully assisted multi-million dollar deals to continuously increase CrashPlan revenue."
-          },
-          {
-            "item": "Provided solution architecture and recommendations to prospects, and created demos and complex proof of concepts as needed to help drive Code42 product selection."
+            "item": "Successfully assisted multi-million dollar deals by providing solution architecture and recommendations, creating demos and complex proof of concepts to prospects, driving Code42 product selection to continuously increase CrashPlan revenue."
           },
           {
             "item": "Liaised between Code42 Product Management, Information Experience, Sales, Development, and strategic partners to continuously influence product design and messaging."
-          },
-          {
-            "item": "Designed and developed scripts to facilitate the automation of Legal Hold matters."
           }
         ]
       },
@@ -90,12 +99,6 @@
         "dateFrom": "July 2013",
         "dateTo": "March 2015",
         "work": [
-          {
-            "item": "Collected relevant technical issue identification information and filter non-technical and technical issues."
-          },
-          {
-            "item": "Reviewed manuals, release notes, and patch documentation for possible issue resolution."
-          },
           {
             "item": "Successfully de-escalate frustrated clients effectively increasing comfort, trust and program visibility."
           },
@@ -115,9 +118,6 @@
             "item": "Successfully grew premium service from 10 pilot users to 3K+ franchised financial advisors."
           },
           {
-            "item": "Coordinated 10-man team’s technical activities to ensure adherence to standards of best practice and data integrity."
-          },
-          {
             "item": "Designed and implemented campus-wide Windows 7 migration tool streamlining performance and reducing cost."
           }
         ]
@@ -133,9 +133,6 @@
             "item": "Provided on-site and remote hardware and software support and implemented leading edge end-user systems."
           },
           {
-            "item": "Analyzed end user system architecture, developed and executed methods to test and integrate end user systems with standard infrastructure technologies."
-          },
-          {
             "item": "Provided basic planning and design of key enterprise systems, monitored performance and performed maintenance."
           }
         ]
@@ -148,10 +145,7 @@
         "dateTo": "September 2010",
         "work": [
           {
-            "item": "Conferenced with main IT developers to discuss requirements on new business portals."
-          },
-          {
-            "item": "Selected for identifying key points and handling procedures to decommission failing assets system."
+            "item": "Developed new business portals around MVC approach."
           },
           {
             "item": "Performed code reviews, software upgrades and implementations, and database admin tasks."
