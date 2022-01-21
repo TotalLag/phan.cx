@@ -4,10 +4,10 @@
   import PhotoGram from '../../components/PhotoGram.svelte';
 
   const sorted_blog = data.markdown.blog.sort((a, b) => {
-    const aa = a.frontmatter.hasOwnProperty('featured') ? 1 : -1
-    const bb = b.frontmatter.hasOwnProperty('featured') ? 1 : -1
+    const aa = a.frontmatter.hasOwnProperty('featured') ? 1 : -1;
+    const bb = b.frontmatter.hasOwnProperty('featured') ? 1 : -1;
     return bb - aa;
-  })
+  });
 </script>
 
 <style>
