@@ -11,7 +11,7 @@
   <div class="relative flex items-end justify-center w-full h-full px-4 py-3">
     <h3 class="text-center">
       <a class="text-sm font-bold text-center text-white" href={helpers.permalinks.blog({ slug: blog.slug })}>
-        <span class="absolute inset-0 px-4 py-3">{blog.frontmatter.topic ?? ''}</span>
+        <span class="absolute inset-0 px-4 py-3">{blog.frontmatter.topic ?? ''} {blog.frontmatter.featured?'⭐':''}</span>
         {blog.frontmatter.title}
       </a>
     </h3>

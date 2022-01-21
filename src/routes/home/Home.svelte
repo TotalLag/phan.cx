@@ -2,6 +2,12 @@
   export let data, helpers, request, settings;
   import BlogTeaser from '../../components/BlogTeaser.svelte';
   import PhotoGram from '../../components/PhotoGram.svelte';
+
+  const sorted_blog = data.markdown.blog.sort((a, b) => {
+    const aa = a.frontmatter.hasOwnProperty('featured') ? 1 : -1
+    const bb = b.frontmatter.hasOwnProperty('featured') ? 1 : -1
+    return bb - aa;
+  })
 </script>
 
 <style>
@@ -54,7 +60,7 @@
     </div>
 
     <div class="flex gap-6 pt-5 pb-5 overflow-x-auto flex-nowrap">
-      {#each data.markdown.blog as blog}
+      {#each sorted_blog as blog}
         <BlogTeaser {blog} {helpers} />
       {/each}
     </div>
