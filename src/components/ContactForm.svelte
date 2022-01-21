@@ -22,6 +22,11 @@
         isSubmitting = false;
       });
   };
+
+/**
+ * @todo add transitions to contact form
+ * @body add fancy animations for ease-in as well as after submission
+ */ 
 </script>
 
 <form form id="contact" name="contact" on:submit|preventDefault={handleSubmit} netlify netlify-honeypot="bot-field">
