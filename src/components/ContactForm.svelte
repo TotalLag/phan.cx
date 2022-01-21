@@ -94,7 +94,7 @@
       type="submit"
       class="w-full px-3 py-4 text-white bg-blue-600 rounded-md focus:bg-blue-700 focus:outline-none"
     >
-      {#if !isSubmitting}
+      {#if isSubmitting}
         <div class="flex items-center justify-center space-x-1 text-sm">
           <svg fill="none" class="w-6 h-6 animate-spin" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -112,7 +112,7 @@
     </button>
   </div>
   {#if doneSubmit}
-    <p class="text-base text-center text-gray-400" id="result">
+    <p class="text-center text-gray-400" id="result">
       Thank you for reaching out. I'll get back to you as soon possible!
     </p>
   {/if}
