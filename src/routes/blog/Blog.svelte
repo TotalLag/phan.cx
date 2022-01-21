@@ -145,7 +145,7 @@
 
     {#if frontmatter.cover}
       <div class="mx-5">
-        <img class="object-cover w-full max-h-96" src={frontmatter.cover} alt={frontmatter.caption} />
+        <img class="object-cover {frontmatter.top?'object-top':''} {frontmatter.bottom?'object-bottom':''} w-screen max-h-96" src={frontmatter.cover} alt={frontmatter.caption} />
       </div>
     {/if}
 
