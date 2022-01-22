@@ -25,6 +25,21 @@ module.exports = {
     // disable: ['elderWriteHtmlFileToPublic'], // this is used to disable internal hooks. Uncomment this hook to disabled writing your files during build.
   },
   plugins: {
+    '@elderjs/plugin-sitemap': {
+      origin: process.env.URL, // the https://yourdomain.com
+      exclude: ['404/'], // an array of permalinks or permalink prefixes. So you can do ['500'] and it will match /500**
+      routeDetails: {
+        blog: {
+          priority: 0.8,
+          changfreq: 'daily',
+        }
+      }, // set custom priority and change freq if not it falls back to default
+      lastUpdate: {
+        blog: async () => {
+          return new Date(Date.now());
+        }
+      }, // configurable last update for each route type.
+    },
     '@elderjs/plugin-markdown': {
       routes: ['blog', 'projects'],
     },
