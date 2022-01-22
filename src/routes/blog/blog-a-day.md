@@ -8,7 +8,7 @@ top: yes
 caption: "Credit: @justin_morgan / unsplash.com"
 ---
 
-In today's competitive market, it takes something extra to stand out from the crowd. Some companies do this with flashy ads or clever marketing schemes. Others rely on their quality products or customer service. But one of the best ways to set yourself apart is by being a prolific blogger. A blog a day can show your clients that you're constantly working and keep you top-of-mind. Not sure where to start? This post will give you some ideas on how to create content that engages your audience and drives results.
+In today's competitive market, it takes something extra to stand out from the crowd. Some companies do this with flashy ads or clever marketing schemes. Others rely on their quality products or customer service. But one of the best ways to set yourself apart is by being a frequent blogger. A blog a day can show your clients that you're constantly working and keep you top-of-mind. Not sure where to start? This post will give you some ideas on how to create content that engages your audience and drives results.
 
 ## What are you passionate about and what can you write about every day (or close enough) without getting bored?
 
@@ -16,7 +16,7 @@ Do you love Anime? Interior design? Cooking? Pets? There are blog posts for days
 
 I get a lot of my inspiration from Discord servers, Facebook groups, or subreddits that I subscribe to. I'm a member of those groups because I enjoy reading what they have to offer, and I'm sure your audience will feel the same way about your blog.
 
-Once you've found a topic you're interested in and are passionate about, it's time to start creating content. This doesn't mean you have to write a new blog post every day – although that would be impressive – you can also share articles, images, or videos that you think your audience will enjoy.
+Once you've found a topic you're interested in and are passionate about, it's time to start creating content. This doesn't mean you have to write a new blog post every day – there's other creative ways in keeping things interesting – you can also share articles, images, or videos that you think your audience will enjoy.
 
 {{protip}}
 **Protip**: You're probably already doing this on Facebook and gaining a lot of likes. You're already making readers feel good from each post, that they're more than likely enjoy your next post. Simply convert that energy into a blog!
