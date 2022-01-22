@@ -157,7 +157,7 @@
       <span class="flex flex-col text-xs">
         Posted on {new Date(frontmatter.date).toLocaleString('default', { dateStyle: 'long' })}<br />
         {#if frontmatter.updated}
-          Updated: {new Date('07/17/2020 10:33 AM EDT').toLocaleString('default', {
+          Updated: {new Date(frontmatter.updated).toLocaleString('default', {
             dateStyle: 'long',
             timeStyle: 'short',
           })}
