@@ -12,7 +12,7 @@ In today's competitive market, it takes something extra to stand out from the cr
 
 ## What are you passionate about and what can you write about every day (or close enough) without getting bored?
 
-Do you love Anime? Interior design? Cooking? Pets? There are blog posts for days (literally) on any topic that interests you. And if you're stuck for ideas, there are plenty of resources online to help get the creative juices flowing.
+Do you find yourself browing interior design? Looking up recipes? There are blog posts for days (literally) on any topic that interests you. And if you're stuck for ideas, there are plenty of resources online to help get the creative juices flowing.
 
 I get a lot of my inspiration from Discord servers, Facebook groups, or subreddits that I subscribe to. I'm a member of those groups because I enjoy reading what they have to offer, and I'm sure your audience will feel the same way about your blog.
 
