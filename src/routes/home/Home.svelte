@@ -35,12 +35,12 @@
       stats, or contact me.
     </p>
     <p>
-      This site serves as my portfolio and there will be many aspects that is still under development. As the pieces
+      This site serves as my portfolio and there will be many aspects that will be ongoing development. As the pieces
       come together, you can expect to see more of what makes up all parts for this website; but until then enjoy seeing
       how things are put together on GitHub!
     </p>
     <p>
-      Source available <a href="https://github.com/TotalLag/phan.cx">here</a>.
+      Source available <a href="https://github.com/TotalLag/phan.cx" class="underline">here</a>.
     </p>
   </span>
 
