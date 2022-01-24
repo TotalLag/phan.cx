@@ -41,7 +41,7 @@ module.exports = {
       }, // configurable last update for each route type.
     },
     '@elderjs/plugin-markdown': {
-      routes: ['blog', 'projects'],
+      routes: ['blog', 'project'],
     },
     '@elderjs/plugin-browser-reload': {
       // this reloads your browser when nodemon restarts your server.
