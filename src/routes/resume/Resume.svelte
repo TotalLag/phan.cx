@@ -36,7 +36,7 @@
 
 <div class="p-4 print:hidden">🖨️-friendly 😉</div>
 
-<div class="flex flex-col p-6 mx-auto align-middle border-8 print:-mt-4 print:w-full md:w-4/5">
+<div class="flex flex-col p-6 mx-auto align-middle border-8 print:-mt-4 print:w-full print:max-w-[40rem] md:w-4/5">
   <article class="border-0 border-b border-black">
     <div class="flex flex-col pb-2 border-0 border-b-2 border-black">
       <div class="flex mx-auto">
