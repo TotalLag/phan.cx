@@ -15,6 +15,9 @@
   h2 {
     @apply text-2xl font-bold;
   }
+  p {
+    @apply mb-6
+  }
 </style>
 
 <svelte:head>
@@ -27,10 +30,18 @@
   </h1>
 
   <span class="block pt-6">
-    Welcome to my website! Please feel free to read my musings, or you can check out my resume, projects, random stats,
-    or contact me.
-    <br />
-    Source available <a href="https://github.com/TotalLag/phan.cx">here</a>.
+    <p>
+      Welcome to my website! Please feel free to read my musings, or you can check out my resume, projects, random
+      stats, or contact me.
+    </p>
+    <p>
+      This site serves as my portfolio and there will be many aspects that will be ongoing development. As the pieces
+      come together, you can expect to see more of what makes up all parts for this website; but until then enjoy seeing
+      how things are put together on GitHub!
+    </p>
+    <p>
+      Source available <a href="https://github.com/TotalLag/phan.cx" class="underline">here</a>.
+    </p>
   </span>
 
   <hr class="mt-6 mb-6 border-gray-300" />
