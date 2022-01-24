@@ -7,7 +7,8 @@ module.exports = {
     // The data function populates what data should be in available in our Svelte template.
     // Since we will be listing out Elder.js's hooks, we make sure to populate that on the data object so it can be looped through
     // in our Svelte template.
+    const { projects } = require('./projects.json');
 
-    return { request, data };
+    return { request, data, projects };
   },
 };
