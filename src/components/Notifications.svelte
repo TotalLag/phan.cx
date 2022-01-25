@@ -94,14 +94,11 @@
   }
   /* Lists */
   .github ul {
-    @apply mb-4 ml-8;
+    @apply list-disc mb-4 ml-5 mr-5 break-words;
   }
   .github li > p,
   .github li > ul {
     @apply mb-0;
-  }
-  .github ul {
-    @apply list-disc;
   }
   /* purgecss end ignore */
 </style>
