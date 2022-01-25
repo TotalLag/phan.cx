@@ -1,11 +1,88 @@
 {
   "projects": [
     {
-      "link": "#",
-      "name": "TBD",
-      "what": "TBD",
-      "why": "TBD",
-      "tech": ["TBD"]
+      "link": "https://kolaprestaurant.com/",
+      "name": "Kolap Restaurant",
+      "what": "Website for a family restaurant that specializes in the most delicious Cambodian cuisine",
+      "why": "I'm looking to build my portfolio with more landing pages and showcases of work that was done for different clients.",
+      "tech": ["html", "css", "javascript", "svelte", "tailwindcss", "netlify"]
+    },
+    {
+      "link": "/projects/#",
+      "name": "PostgresDB Version Compatibility Test",
+      "what": "Tests your application against different versions of Postgres",
+      "why": "I needed a way to test for regression as we followed a rapid release cycle and wanted the best possible experience with each patch. This is what led me to create integration verification tests (IVT), which were executed alongside traditional smoke tests; this provided early warning signs before any issues arise within installed products themselves.",
+      "tech": ["docker", "bash", "bitlocker", "postgresql", "node", "windows", "jenkins"]
+    },
+    {
+      "link": "/projects/#",
+      "name": "Mac PKG Repackager",
+      "what": "Repackaging OS X apps with customizations",
+      "why": "With Docker, I was able to streamline the process for generating OS X installers that is much easier and faster than going through Packages. This meant teams were customizing packages with minimal effort which also leads into more frequent deploys with clients.",
+      "tech": ["docker", "bash", "mkbom", "make", "xmlstarlet", "linux", "osx"]
+    },
+    {
+      "link": "/projects/#",
+      "name": "Windows 10 Compatibility Checker",
+      "what": "Automatically downloads Application Compatibility Toolkit files for each operating system for Enterprise Win10 readiness",
+      "why": "When it comes to building the compatibility checker, Microsoft makes finding the right files difficult. I created a tool that made things easier by providing links and updates in one place for whichever OS build was needed to be downloaded at once.",
+      "tech": ["docker", "taiko", "windows", "async", "artifactory"]
+    },
+    {
+      "link": "/projects/#",
+      "name": "RBAC Wrapper Class",
+      "what": "SDK contribution to interface with role-based access control (RBAC)",
+      "why": "By abstracting away from RBAC, my clients were able to more freely integrate with the platform. The API library enabled them by taking care of administrative privileges and other complexity involved in managing user accounts.",
+      "tech": ["python", "rest", "postman", "api"]
+    },
+    {
+      "link": "/projects/#",
+      "name": "Postman API Automation",
+      "what": "Automate API calls in different environments",
+      "why": "Automating API testing is key for finding bugs before release. When one version breaks, you'll know exactly where to start revising so that your app can continue functioning as intended instead of having people rely on assumptions about what might have gone wrong due simply because no log data was available.",
+      "tech": ["rest", "postman", "api"]
+    },
+    {
+      "link": "/projects/#",
+      "name": "Front End Development Automation",
+      "what": "Use a web framework which provides API for interactivity with browsers",
+      "why": "The transition from Angular to React created challenges for me since there is no way we could do unit testing alone. To make sure that our product works as intended, behavioral tests and scenarios on how things should work had to be implemented.",
+      "tech": ["cypress", "taiko", "puppeteer", "testcafe", "postman", "api"]
+    },
+    {
+      "link": "/projects/#",
+      "name": "Virtual Machine Automation",
+      "what": "Create identical machine images for multiple platforms from a single json source configuration",
+      "why": "The challenge I faced was how to make sure all my tests returned the same value no matter what operating system they ran on.",
+      "tech": ["virtualbox", "packer", "bash", "powershell", "node"]
+    },
+    {
+      "link": "/projects/#",
+      "name": "Integrity Monitor",
+      "what": "File integrity monitoring on low compute resources",
+      "why": "Integrity monitoring is a fundamental part of systems management. When you have low resources, it becomes difficult to monitor everything that needs attention.",
+      "tech": ["auditd", "linux", "event log", "cgroups", "filebeat"]
+    },
+    {
+      "link": "/projects/#",
+      "name": "CVE to SLA",
+      "what": "Integrate vulnerabilities catalog from CISA",
+      "why": "The client wanted to ensure that they met their service level agreement for each vulnerability scanned.",
+      "tech": ["log4j", "python", "vbscript"]
+    },
+    {
+      "link": "/projects/#",
+      "name": "USMT Network Wrapper",
+      "what": "User State Migration Tool for remote users",
+      "why": "Clients won't always be at their desk and the computers they're using can become failed or disconnected. I devise a way to capture file layers so that you can easily migrate data when needed.",
+      "tech": ["usmt", "smb", "data backup", "disaster recovery", "vss"]
+    },
+    {
+      "link": "/projects/#",
+      "name": "Ansible Vault Bootstrap",
+      "what": "Bootstrap servers using secrets from Vault",
+      "why": "Hackers are always looking for ways into your database and if you have leaky users or processes that can be compromised by this kind of attack, then it's time consider implementing restrictions on source hosts.",
+      "tech": ["ansible", "vault", "linux", "api"]
     }
   ]
 }
