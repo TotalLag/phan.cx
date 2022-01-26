@@ -6,7 +6,8 @@
   .node {
     @apply text-purple-600 bg-purple-200;
   }
-  .python, .docker {
+  .python,
+  .docker {
     @apply text-blue-600 bg-blue-200;
   }
   .react {
@@ -48,13 +49,15 @@
                 <span>{project.why}</span>
               </div>
             </td>
-            <td class="px-2 py-3 text-center">
-              {#each project.tech as tech}
-                <span
-                  class="m-0.5 px-3 py-1 text-gray-600 bg-gray-200 text-xs rounded-full whitespace-nowrap inline-block {tech}"
-                  >{tech}</span
-                >
-              {/each}
+            <td class="px-2 py-3 text-right">
+              <div class="flex flex-wrap items-start justify-end shrink">
+                {#each project.tech as tech}
+                  <span
+                    class="m-0.5 px-3 py-1 text-gray-600 bg-gray-200 text-xs rounded-full whitespace-nowrap inline-block {tech}"
+                    >{tech}</span
+                  >
+                {/each}
+              </div>
             </td>
           </tr>
         {/each}
