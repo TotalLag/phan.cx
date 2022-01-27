@@ -22,7 +22,7 @@
       </button>
     </div>
     <div class="flex inline-flex mt-1 ml-2 sm:ml-6">
-      <h3 class="mr-2 text-sm {isActive ? 'font-bold text-gray-800' : 'font-medium text-gray-400'}">{text}</h3>
+      <h2 class="mr-2 text-sm {isActive ? 'font-bold text-gray-800' : 'font-medium text-gray-400'}">{text}</h2>
     </div>
   </div>
 </a>

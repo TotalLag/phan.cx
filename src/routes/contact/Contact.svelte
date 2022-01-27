@@ -1,5 +1,5 @@
 <script>
-  export let settings;
+  export let settings, request;
   import ContactForm from '../../components/ContactForm.svelte';
 </script>
 
@@ -10,6 +10,8 @@
     content="Connect with {settings.sitename}. Let's chat!"
   />
   <meta name="keywords" content="reach out, ping, message, connect with" />
+  <link href="{settings.origin}{request.permalink}" rel="canonical" />
+  <title>{settings.sitename} - Contact</title>
 </svelte:head>
 
 <div class="flex flex-col">

@@ -1,5 +1,5 @@
 <script>
-  export let data;
+  export let data, settings;
 </script>
 
 <style>
@@ -22,9 +22,10 @@
   <meta name="title" content="{settings.sitename} - Projects" />
   <meta
     name="description"
-    content="{settings.sitename} is a professional who has worked on diverse projects. He's been consulting for companies to help them develop better strategies, and also offers insights that can provide you with a competitive edge."
+    content="{settings.sitename} is a professional who offers insights that can provide you with a competitive edge."
   />
   <meta name="keywords" content="python, front-end, professional services, automation, ci, devops" />
+  <title>{settings.sitename} - Projects</title>
 </svelte:head>
 
 <div class="mx-auto min-w-fit sm:w-5/6">

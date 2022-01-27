@@ -25,7 +25,7 @@
 
   <div class="hidden {blogActive ? 'sm:inline' : ''} flex py-2 pr-5 m-2 text-center -ml-4 text-gray-700 bg-gray-50">
     <div class="flex inline-flex mt-1">
-      <h3 class="mr-2 text-sm font-bold text-gray-800">Blog</h3>
+      <h2 class="mr-2 text-sm font-bold text-gray-800">Blog</h2>
     </div>
   </div>
 

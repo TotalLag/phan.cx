@@ -38,7 +38,6 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico" />
   <base href={settings.origin} />
-  <title>{settings.sitename} - Consulting | Competitive Intelligence | Quality Solutions</title>
 </svelte:head>
 
 <main class="flex flex-col w-full sm:h-screen z-1">

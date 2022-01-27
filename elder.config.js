@@ -50,7 +50,7 @@ module.exports = {
     },
     '@elderjs/plugin-seo-check': {
       display: ['errors', 'warnings'], // If the errors are too verbose remove 'warnings'
-      //writeLocation: './report.json', // if you want to write a report of errors
+      writeLocation: './report.json', // if you want to write a report of errors
     },
   },
   shortcodes: { closePattern: '}}', openPattern: '{{' },
