@@ -1,5 +1,4 @@
 <script>
-  export let settings, request;
   import ContactForm from '../../components/ContactForm.svelte';
 </script>
 
