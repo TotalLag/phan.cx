@@ -16,7 +16,7 @@ For eCommerce businesses, this growth is translating into an increased demand fo
 
 Headless eCommerce is an architecture where the front-end and backend are decoupled, meaning they are not linked together.  In a headless eCommerce setup, the backend manages products, inventory, and checkouts while the front-end displays these products on whatever platform the business desires – whether it be a website, mobile app, or even voice assistant like Alexa. This is advantageous in a number of ways:
 
-- Using one central location for all your eCommerce dealings makes it easier for finance teams to report and analyze things.
+- Using one central location for all your eCommerce dealings makes it easier for finance teams to report and analyze things like revenue, expenses and profit margins.
 - It allows businesses to quickly adapt their online presence to stay ahead of the competition, as consumer preferences are always changing.
 - It can handle large amounts of volume. This is important for businesses that are seeing a lot of growth in online sales and need a platform that can handle the load.
 
@@ -28,7 +28,7 @@ Another benefit of headless eCommerce is that it may reduce the amount of paperw
 
 ## How to Get Started with Headless eCommerce
 
-If you're ready to start taking advantage of the benefits headless eCommerce has to offer, there are a few things you need to do first: 
+If you're ready to start taking advantage of the benefits headless eCommerce has to offer, there are a few action items you need to do first: 
 
 - Evaluate your needs and decide which front-end platform you want to use. This could be anything from a custom website or mobile app built using PHP, HTML, and CSS to an existing platform like Shopify or Wordpress. 
 - Choose an eCommerce provider that can support a headless setup. Not all providers offer this flexibility, so make sure to do your research. 
@@ -39,7 +39,7 @@ Once you've completed these steps, you'll be ready to take advantage of all that
 
 ## The Future of Headless eCommerce
 
-Increasing use of headless eCommerce is forcing businesses to adapt. More and more companies are moving to headless eCommerce. As the number of headless eCommerce installations grows, providers are providing additional features and options to make the shift simpler. Some providers, for example, now provide pre-built integrations with popular front-end technologies so that enterprises may get up and running faster.
+Increasing use of headless eCommerce is forcing businesses to adapt. More and more companies are moving to headless eCommerce. As the number of headless eCommerce installations grows, providers are offering additional features and options to make the shift simpler. Some providers, for example, now offer pre-built integrations with popular front-end technologies so that enterprises may get up and running faster.
 
 If you're looking for a nimble eCommerce platform that can keep up with your company's ever-changing needs, headless eCommerce is well worth exploring. Get started now by speaking with your provider about whether they provide a headless solution.
 
@@ -48,7 +48,7 @@ If you're looking for a nimble eCommerce platform that can keep up with your com
 Headless eCommerce...
 - platform gives you greater freedom when selecting a front-end framework, resulting in personalized experiences for customers.
 - allows businesses to react faster to market changes and speed up product upgrades.
-- provides a single underwriting review of the whole transaction which may help both merchant service provider & underwriter.
+- offers a single underwriting review of the whole transaction which may help both merchant service provider & underwriter.
 - simplifies the purchasing process for customers, making it easier for them to return.
 - is here to stay with more and more providers adapting their services to include it.
 
