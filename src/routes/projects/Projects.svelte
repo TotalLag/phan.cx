@@ -22,7 +22,7 @@
   <meta name="title" content="{settings.sitename} - Projects" />
   <meta
     name="description"
-    content="{settings.sitename} is a professional who offers insights that can provide you with a competitive edge."
+    content="{settings.sitename} is the best candidate for your project with his diverse range of experience."
   />
   <meta name="keywords" content="python, front-end, professional services, automation, ci, devops" />
   <title>{settings.sitename} - Projects</title>
