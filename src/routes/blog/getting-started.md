@@ -2,7 +2,11 @@
 featured: yes
 topic: 'Getting Started'
 title: 'Just put your best foot forward'
+<<<<<<< HEAD
 excerpt: "Don't over analyze. This personal project is about discovering the value in taking action and moving forward."
+=======
+excerpt: "This is a personal project about how I discovered the value of putting my best foot forward in life and business. It's not just about what you do, but why you do it that matters most."
+>>>>>>> fix: update meta
 keywords: "Personal development, advice for millennials, entrepreneurship tips, success stories"
 date: '2022-01-17T20:15:48Z'
 updated: '2022-01-22T04:01:52Z'

@@ -1,7 +1,11 @@
 ---
 topic: "Getting Started"
 title: "A blog a day. What does it take?"
+<<<<<<< HEAD
 excerpt: "Achieving a blog a day is easy, and with the right tips, you'll be able to hit your target without breaking a sweat."
+=======
+excerpt: "Who doesn't want to build their personal brand or impress their clients with the work they're doing online? But how do you make sure your blog is getting seen and read by as many people as possible without sacrificing quality in the process?"
+>>>>>>> fix: update meta
 keywords: "seo, ecommerce, marketing, blogging"
 date: "2022-01-22T01:58:52Z"
 cover: "https://images.unsplash.com/photo-1625296276703-3fbc924f07b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80"
