@@ -18,6 +18,15 @@
   }
 </style>
 
+<svelte:head>
+  <meta name="title" content="{settings.sitename} - Projects" />
+  <meta
+    name="description"
+    content="{settings.sitename} is a professional who has worked on diverse projects. He's been consulting for companies to help them develop better strategies, and also offers insights that can provide you with a competitive edge."
+  />
+  <meta name="keywords" content="python, front-end, professional services, automation, ci, devops" />
+</svelte:head>
+
 <div class="mx-auto min-w-fit sm:w-5/6">
   <div class="my-6 bg-white rounded shadow-md min-w-fit">
     <table class="w-full table-auto">

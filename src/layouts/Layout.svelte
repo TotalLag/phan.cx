@@ -26,12 +26,6 @@
 
 <svelte:head>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="title" content="{settings.sitename} - Consulting | Competitive Intelligence | Quality Solutions" />
-  <meta
-    name="description"
-    content="{settings.sitename} helps companies save money by improving their processes, getting more done with less effort, and make better decisions faster. He specializes in helping companies discover and execute strategies to win market share and increase revenue."
-  />
-  <meta name="keywords" content="consulting, programming, professional services, engineer, ci, solutions" />
   <meta name="robots" content="index, follow" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="language" content="English" />

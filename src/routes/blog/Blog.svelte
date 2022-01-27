@@ -123,9 +123,11 @@
 </style>
 
 <svelte:head>
-  <title>{settings.sitename} - {frontmatter.title}</title>
-  <meta name="description" content={frontmatter.excerpt} />
+  <meta name="title" content="{settings.sitename} - {frontmatter.title}" />
+  <meta name="description" content="{frontmatter.excerpt}" />
+  <meta name="keywords" content="{frontmatter.keywords}" />
   <link href="{settings.origin}{request.permalink}" rel="canonical" />
+  <title>{settings.sitename} - {frontmatter.title}</title>
 </svelte:head>
 
 <a href="/" class="print:hidden">&LeftArrow; Home</a>
