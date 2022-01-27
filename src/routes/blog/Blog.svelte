@@ -123,9 +123,11 @@
 </style>
 
 <svelte:head>
-  <title>{settings.sitename} - {frontmatter.title}</title>
-  <meta name="description" content={frontmatter.excerpt} />
+  <meta name="title" content="{settings.sitename} - {frontmatter.title}" />
+  <meta name="description" content="{frontmatter.excerpt}" />
+  <meta name="keywords" content="{frontmatter.keywords}" />
   <link href="{settings.origin}{request.permalink}" rel="canonical" />
+  <title>{settings.sitename} - {frontmatter.title}</title>
 </svelte:head>
 
 <a href="/" class="print:hidden">&LeftArrow; Home</a>
@@ -136,7 +138,7 @@
       <a href="" class="font-bold tracking-widest text-red-600 ">{frontmatter.topic ?? ''}</a>
     </div>
     <div class="px-5 text-4xl font-bold leading-none text-gray-800">
-      {frontmatter.title}
+      <h1>{frontmatter.title}</h1>
     </div>
 
     <div class="px-5 pt-2 pb-5 text-gray-500">

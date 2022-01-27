@@ -1,7 +1,8 @@
 ---
 topic: "Personal Development"
 title: "Why Continuous Learning is the Key to Personal Success"
-excerpt: "In order to stay ahead of the competition, it's essential that you continuously learn and develop new skills. Here are three tactics that will help you do just that!"
+excerpt: "In order to stay ahead of the competition, it's essential that you continuously learn and develop new skills."
+keywords: "personal, success, continuous learning"
 date: "2022-01-21T03:29:22Z"
 cover: "https://images.unsplash.com/photo-1521714161819-15534968fc5f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
 top: yes
@@ -20,7 +21,7 @@ I personally to listen to a side hustle podcast in the morning. It's an excellen
 If you don't have time for a full hour each day, try breaking up your development time into smaller chunks. Dedicate 15 minutes in the morning and evening to reading or spend 30 minutes one day per week working on a new skill. Make sure you do something every day to get closer to your objectives.
 
 {{protip}} 
-  **Protip**: If you find it difficult to dedicate time specifically for personal development, try integrating it into other activities you already do each day. For example, listen to an audio book while you're driving or working out, or read articles on your lunch break. 
+**Protip**: If you find it difficult to dedicate time specifically for personal development, try integrating it into other activities you already do each day. For example, listen to an audio book while you're driving or working out, or read articles on your lunch break.
 {{/protip}}
 
 

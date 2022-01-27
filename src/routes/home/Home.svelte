@@ -21,7 +21,14 @@
 </style>
 
 <svelte:head>
+  <meta name="title" content="{settings.sitename} offers quality solutions that give you a competitive edge!" />
+  <meta
+    name="description"
+    content="{settings.sitename} will show you how to improve your processes, get more done with less effort and make better decisions faster"
+  />
+  <meta name="keywords" content="consulting, programming, professional services, engineer, ci, solutions" />
   <link href="{settings.origin}{request.permalink}" rel="canonical" />
+  <title>{settings.sitename} - Hello World!</title>
 </svelte:head>
 
 <div class="mx-auto mt-6 md:w-4/5 print:p-10">
@@ -48,7 +55,7 @@
 
   <div class="flex flex-col mb-10">
     <div class="flex justify-between">
-      <h1>Featured Posts</h1>
+      <h2>Featured Posts</h2>
       <div class="relative inline-flex">
         <svg
           class="absolute -top-0.5 right-0 w-2 h-2 m-4 pointer-events-none"
@@ -79,7 +86,7 @@
 
   <div class="flex flex-col mb-10">
     <div class="flex justify-between">
-      <h1>Instagram Photo Feed</h1>
+      <h2>Instagram Photo Feed</h2>
       <div class="relative inline-flex">
         <svg
           class="absolute -top-0.5 right-0 w-2 h-2 m-4 pointer-events-none"

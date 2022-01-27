@@ -1,7 +1,8 @@
 ---
 topic: "Getting Started"
 title: "A blog a day. What does it take?"
-excerpt: "Who doesn't want to build their personal brand or impress their clients with the work they're doing online? But how do you make sure your blog is getting seen and read by as many people as possible without sacrificing quality in the process?"
+excerpt: "Achieving a blog a day is easy, and with the right tips, you'll be able to hit your target without breaking a sweat."
+keywords: "seo, ecommerce, marketing, blogging"
 date: "2022-01-22T01:58:52Z"
 cover: "https://images.unsplash.com/photo-1625296276703-3fbc924f07b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80"
 top: yes
@@ -10,7 +11,7 @@ caption: "Credit: @justin_morgan / unsplash.com"
 
 In today's competitive market, it takes something extra to stand out from the crowd. Some companies do this with flashy ads or clever marketing schemes. Others rely on their quality products or customer service. But one of the best ways to set yourself apart is by being a frequent blogger. A blog a day can show your clients that you're constantly working and keep you top-of-mind. Not sure where to start? This post will give you some ideas on how to create content that engages your audience and drives results.
 
-## What are you passionate about and what can you write about every day (or close enough) without getting bored?
+## What are you passionate about and can write topics on without getting bored?
 
 Do you find yourself browing interior design? Looking up recipes? There are blog posts for days (literally) on any topic that interests you. And if you're stuck for ideas, there are plenty of resources online to help get the creative juices flowing.
 
@@ -23,7 +24,7 @@ Once you've found a topic you're interested in and are passionate about, it's ti
 {{/protip}}
 
 
-## Encourage your readers to share why they enjoy what you like by including reasons for their own enjoyment. 
+## Encourage your readers to share why they enjoy what you like. 
 
 This is a great way to start building a community around your blog and create loyalty among your readers. Don't be afraid to experiment with different formats and styles, either. Some people prefer shorter posts while others enjoy longer-form content. Find what works best for you and stick to it, but always be willing to try something new.
 
@@ -34,7 +35,7 @@ I prefer to keep blog articles between 600 and 1,000 words because this is the n
 {{/protip}}
 
 
-## It all comes back to where it started. Use social media to share your material and get people interested in what you have to say.
+## It all comes back to where it started. Use social media to share your material.
 
 After you've established a few pieces, start promoting them on social media. Make sure to utilize relevant hashtags and @mentioning people who might be interested in your content. You may also post short excerpts from your writing on Twitter or Facebook, asking readers to go to your blog for the full story. This is an excellent method to attract new fans and followers.
 
