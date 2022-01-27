@@ -1,11 +1,7 @@
 ---
 topic: "Personal Development"
 title: "Why Continuous Learning is the Key to Personal Success"
-<<<<<<< HEAD
 excerpt: "In order to stay ahead of the competition, it's essential that you continuously learn and develop new skills."
-=======
-excerpt: "In order to stay ahead of the competition, it's essential that you continuously learn and develop new skills. Here are three tactics that will help you do just that!"
->>>>>>> fix: update meta
 keywords: "personal, success, continuous learning"
 date: "2022-01-21T03:29:22Z"
 cover: "https://images.unsplash.com/photo-1521714161819-15534968fc5f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
