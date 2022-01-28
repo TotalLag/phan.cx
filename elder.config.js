@@ -32,12 +32,12 @@ module.exports = {
         blog: {
           priority: 0.8,
           changfreq: 'daily',
-        }
+        },
       }, // set custom priority and change freq if not it falls back to default
       lastUpdate: {
         blog: async () => {
           return new Date(Date.now());
-        }
+        },
       }, // configurable last update for each route type.
     },
     '@elderjs/plugin-markdown': {

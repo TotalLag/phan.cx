@@ -3,6 +3,8 @@
   import SideBar from '../components/SideBar.svelte';
   import Header from '../components/Header.svelte';
   import Footer from '../components/Footer.svelte';
+
+  const routeName = request.route.charAt(0).toUpperCase() + request.route.slice(1) || 'Hello World!';
 </script>
 
 <style global lang="postcss">
@@ -30,6 +32,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="language" content="English" />
   <meta name="author" content="chris@phan.cx" />
+  <meta name="title" content={data.title ?? settings.sitename + ' - ' + routeName} />
+  {#if data.description}
+    <meta name="description" content={data.description} />
+  {/if}
+  {#if data.keywords}
+    <meta name="keywords" content={data.keywords} />
+  {/if}
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link
     rel="stylesheet"
@@ -38,6 +47,8 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico" />
   <base href={settings.origin} />
+  <link href="{settings.origin}{request.permalink}" rel="canonical" />
+  <title>{data.title ?? settings.sitename + ' - ' + routeName}</title>
 </svelte:head>
 
 <main class="flex flex-col w-full sm:h-screen z-1">

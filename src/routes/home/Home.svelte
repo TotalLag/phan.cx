@@ -16,7 +16,7 @@
     @apply text-2xl font-bold;
   }
   p {
-    @apply mb-6
+    @apply mb-6;
   }
 </style>
 

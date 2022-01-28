@@ -10,8 +10,15 @@ module.exports = {
   // },
 
   // This is telling the simple markdown plugin, which route to control.
-
-  data: {},
   all: () => [],
   permalink: '/blog/:slug/',
+  data: ({ settings, request, data }) => {
+    const { frontmatter } = data.markdown.blog.find((e) => e.slug == request.slug);
+
+    const title = `${settings.sitename} - ${frontmatter.title}`;
+    const description = frontmatter.excerpt;
+    const keywords = frontmatter.keywords;
+
+    return { ...data, title, description, keywords };
+  },
 };
