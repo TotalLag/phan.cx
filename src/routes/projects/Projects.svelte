@@ -18,16 +18,6 @@
   }
 </style>
 
-<svelte:head>
-  <meta name="title" content="{settings.sitename} - Projects" />
-  <meta
-    name="description"
-    content="{settings.sitename} is the best candidate for your project with his diverse range of experience."
-  />
-  <meta name="keywords" content="python, front-end, professional services, automation, ci, devops" />
-  <title>{settings.sitename} - Projects</title>
-</svelte:head>
-
 <div class="mx-auto min-w-fit sm:w-5/6">
   <div class="my-6 bg-white rounded shadow-md min-w-fit snap-x">
     <table class="w-full">

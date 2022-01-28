@@ -3,11 +3,10 @@ module.exports = {
   all: () => [{ slug: 'contact' }],
   // the permalink function takes a 'request' object and returns a relative permalink. In this case "/"
   permalink: ({ request }) => request.slug,
-  data: ({ request, data }) => {
-    // The data function populates what data should be in available in our Svelte template.
-    // Since we will be listing out Elder.js's hooks, we make sure to populate that on the data object so it can be looped through
-    // in our Svelte template.
+  data: ({ settings, data }) => {
+    const description = `Connect with ${settings.sitename}. Let's chat!`;
+    const keywords = 'reach out, ping, message, connect with';
 
-    return { request, data };
+    return { ...data, description, keywords };
   },
 };

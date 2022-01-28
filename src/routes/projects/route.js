@@ -3,12 +3,11 @@ module.exports = {
   all: () => [{ slug: 'projects' }],
   // the permalink function takes a 'request' object and returns a relative permalink. In this case "/"
   permalink: ({ request }) => request.slug,
-  data: ({ data }) => {
-    // The data function populates what data should be in available in our Svelte template.
-    // Since we will be listing out Elder.js's hooks, we make sure to populate that on the data object so it can be looped through
-    // in our Svelte template.
+  data: ({ settings, data }) => {
     const { projects } = require('./projects.json');
+    const description = `${settings.sitename} is the best candidate for your project with his diverse range of experience.`;
+    const keywords = 'python, front-end, professional services, automation, ci, devops';
 
-    return { data, projects };
+    return { data, projects, description, keywords };
   },
 };

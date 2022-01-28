@@ -6,5 +6,5 @@ test('default true', async (t) => {
   return true;
 });
 test('Check the home page title', async (t) => {
-  await t.expect(HomePage.title).eql('Chris Phan - Hello World!');
+  await t.expect(HomePage.title).eql('Chris Phan offers quality solutions that give you a competitive edge!');
 });

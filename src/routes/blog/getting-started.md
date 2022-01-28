@@ -3,7 +3,7 @@ featured: yes
 topic: 'Getting Started'
 title: 'Just put your best foot forward'
 excerpt: "Don't over analyze. This personal project is about discovering the value in taking action and moving forward."
-keywords: "Personal development, advice for millennials, entrepreneurship tips, success stories"
+keywords: 'Personal development, advice for millennials, entrepreneurship tips, success stories'
 date: '2022-01-17T20:15:48Z'
 updated: '2022-01-22T04:01:52Z'
 cover: https://images.unsplash.com/photo-1545665277-5937489579f2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80
@@ -46,7 +46,6 @@ Currently Google doesn't even know about me. Let's see how long it takes for thi
 
 Google results as of 1/18/2022:
 ![Google rank as of 1/18/2022](google.jpg 'Google results as of 1/18/2022')
-
 
 A lot of bots coming through. I haven't even submitted to search engines yet.
 

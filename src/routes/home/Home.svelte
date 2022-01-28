@@ -16,20 +16,9 @@
     @apply text-2xl font-bold;
   }
   p {
-    @apply mb-6
+    @apply mb-6;
   }
 </style>
-
-<svelte:head>
-  <meta name="title" content="{settings.sitename} offers quality solutions that give you a competitive edge!" />
-  <meta
-    name="description"
-    content="{settings.sitename} will show you how to improve your processes, get more done with less effort and make better decisions faster"
-  />
-  <meta name="keywords" content="consulting, programming, professional services, engineer, ci, solutions" />
-  <link href="{settings.origin}{request.permalink}" rel="canonical" />
-  <title>{settings.sitename} - Hello World!</title>
-</svelte:head>
 
 <div class="mx-auto mt-6 md:w-4/5 print:p-10">
   <h1 class="uppercase">
