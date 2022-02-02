@@ -1,6 +1,13 @@
 {
   "projects": [
     {
+      "link": "https://www.tanium.com/platform/tanium-vs-qualys/",
+      "name": "Tanium VS ...",
+      "what": "One of many content to help make informed decisions",
+      "why": "To utilize my skills and knowledge in the industry by publishing impactful pieces of content. This not only helped me improve myself, but it also empowered others on our team so that we can work together more effectively for future projects.",
+      "tech": ["html", "css", "javascript", "svelte", "tailwindcss", "netlify"]
+    },
+    {
       "link": "https://kolaprestaurant.com/",
       "name": "Kolap Restaurant",
       "what": "Website for a family restaurant that specializes in the most delicious Cambodian cuisine",
