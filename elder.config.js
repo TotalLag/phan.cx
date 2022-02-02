@@ -27,11 +27,11 @@ module.exports = {
   plugins: {
     '@elderjs/plugin-sitemap': {
       origin: process.env.URL, // the https://yourdomain.com
-      exclude: ['404/','resume/'], // an array of permalinks or permalink prefixes. So you can do ['500'] and it will match /500**
+      exclude: ['404/', 'resume/'], // an array of permalinks or permalink prefixes. So you can do ['500'] and it will match /500**
       routeDetails: {
         blog: {
           priority: 0.8,
-          changfreq: 'daily',
+          changefreq: 'daily',
         },
       }, // set custom priority and change freq if not it falls back to default
       lastUpdate: {
