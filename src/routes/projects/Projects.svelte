@@ -26,7 +26,7 @@
           <th class="px-2 py-3 shrink">Project</th>
           <th class="px-2 py-3 shrink">What</th>
           <th class="px-2 py-3 min-w-[24rem] grow snap-center">Why</th>
-          <th class="px-2 py-3 shrink">Tech</th>
+          <th class="px-2 py-3 shrink">Skill</th>
         </tr>
       </thead>
       <tbody class="text-sm font-light">

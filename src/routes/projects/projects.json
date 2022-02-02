@@ -2,10 +2,10 @@
   "projects": [
     {
       "link": "https://www.tanium.com/platform/tanium-vs-qualys/",
-      "name": "Tanium VS ...",
-      "what": "One of many content to help make informed decisions",
+      "name": "Tanium vs. <insert here>",
+      "what": "One of many content to help customers make better, informed decisions",
       "why": "To utilize my skills and knowledge in the industry by publishing impactful pieces of content. This not only helped me improve myself, but it also empowered others on our team so that we can work together more effectively for future projects.",
-      "tech": ["html", "css", "javascript", "svelte", "tailwindcss", "netlify"]
+      "tech": ["competitive", "analysis", "security", "risk", "compliance", "tanium"]
     },
     {
       "link": "https://kolaprestaurant.com/",
