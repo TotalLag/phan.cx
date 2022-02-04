@@ -5,7 +5,7 @@ title: 'Just put your best foot forward'
 excerpt: "Don't over analyze. This personal project is about discovering the value in taking action and moving forward."
 keywords: 'Personal development, advice for millennials, entrepreneurship tips, success stories'
 date: '2022-01-17T20:15:48Z'
-updated: '2022-01-22T04:01:52Z'
+updated: '2022-02-04T22:50:27Z'
 cover: https://images.unsplash.com/photo-1545665277-5937489579f2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80
 bottom: yes
 caption: 'Credit: Joshua Aragon / unsplash.com'
@@ -44,10 +44,12 @@ Making this site live! I'm so excited to share my first post with you. [ElderJS]
 
 Currently Google doesn't even know about me. Let's see how long it takes for this site to rank. It will be some time before I can return to this post with updates on the status of my experiment.
 
-Google results as of 1/18/2022:
-![Google rank as of 1/18/2022](google.jpg 'Google results as of 1/18/2022')
+#### Update - 2/4/2022
+I am on the 8th page of Google and on the first page of Bing. What if I changed my meta description a bit?
 
+#### Visits as of 1/21/2022:
 A lot of bots coming through. I haven't even submitted to search engines yet.
-
-Visits as of 1/21/2022:
 ![Page Visits as of 1/21/2022](blog/visits.png 'Page Visits as of 1/21/2022')
+
+#### Google results as of 1/18/2022:
+![Google rank as of 1/18/2022](google.jpg 'Google results as of 1/18/2022')
