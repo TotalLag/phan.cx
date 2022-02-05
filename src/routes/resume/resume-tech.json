@@ -1,0 +1,173 @@
+{
+  "resume": {
+    "info": {
+      "name": "Christopher Phan",
+      "address": "Austin, TX 78754",
+      "phone": "(651) 252-1490",
+      "email": "c&#104;ris&#64;phan&#46;c&#120;"
+    },
+    "summary": [
+      {
+        "item": "Development"
+      },
+      {
+        "item": "Systems Engineering"
+      },
+      {
+        "item": "Systems Management"
+      },
+      {
+        "item": "Customer Success"
+      }
+    ],
+    "qualifications": [
+      {
+        "item": "Extensive real-world customer experiences in enterprise architecture and global infrastructures."
+      },
+      {
+        "item": "Creative problem solver with know how to get things done and ability to lead others to success."
+      },
+      {
+        "item": "Excellent interpersonal skills with the ability to develop easy rapport with others while building trust."
+      },
+      {
+        "item": "Success driven, passionate, and committed to excellence, high standards, and customer satisfaction."
+      }
+    ],
+    "experience": [
+      {
+        "title": "Director of Competitive Intelligence",
+        "company": "Tanium",
+        "location": "Kirkland, WA",
+        "dateFrom": "September 2020",
+        "dateTo": "September 2021",
+        "work": [
+          {
+            "item": "Maintained a current view of the market dynamics and competitive landscape to ensure the Product Marketing team stays ahead in this ever-changing world."
+          },
+          {
+            "item": "Established and leveraged an internal and external network of subject matter experts to develop competitive positioning against a diverse set of competitors."
+          },
+          {
+            "item": "Took our strategies, sales tactics, evidence of our superiority to competitors, and turned it into materials that would help our customer facing teams sell our products more effectively."
+          },
+          {
+            "item": "Built a content and communication strategy to craft responses to key market events, such as competitive announcements and product launches."
+          }
+        ]
+      },
+      {
+        "title": "Technical Account Manager",
+        "company": "Tanium",
+        "location": "Emeryville, CA",
+        "dateFrom": "February 2018",
+        "dateTo": "September 2020",
+        "work": [
+          {
+            "item": "Presented and articulated Tanium product features and benefits to prospects, while identifying other opportunities within Tanium."
+          },
+          {
+            "item": "Recreate, track, and verify software defects in the field or under lab conditions reported by customers."
+          },
+          {
+            "item": "Held multiple SME roles to understand what can be improved across products."
+          },
+          {
+            "item": "Created interim solutions around technologies until productization resulting in 100% renewal rate with personal accounts."
+          }
+        ]
+      },
+      {
+        "title": "Solutions Consultant",
+        "company": "Code 42 Software, Inc.",
+        "location": "Minneapolis, MN",
+        "dateFrom": "March 2015",
+        "dateTo": "February 2018",
+        "work": [
+          {
+            "item": "Successfully assisted multi-million dollar deals by providing solution architecture and recommendations, creating demos and complex proof of concepts to prospects, driving Code42 product selection to continuously increase CrashPlan revenue."
+          },
+          {
+            "item": "Liaised between Code42 Product Management, Information Experience, Sales, Development, and strategic partners to continuously influence product design and messaging."
+          }
+        ]
+      },
+      {
+        "title": "Tier 2 Customer Champion",
+        "company": "Code 42 Software, Inc.",
+        "location": "Minneapolis, MN",
+        "dateFrom": "July 2013",
+        "dateTo": "March 2015",
+        "work": [
+          {
+            "item": "Successfully de-escalate frustrated clients effectively increasing comfort, trust and program visibility."
+          },
+          {
+            "item": "Cultivated relationships and liaised across all department levels, earning recognition as the “go-to” SME."
+          }
+        ]
+      },
+      {
+        "title": "Technical Lead",
+        "company": "IBM",
+        "location": "Minneapolis, MN",
+        "dateFrom": "May 2012",
+        "dateTo": "July 2013",
+        "work": [
+          {
+            "item": "Successfully grew premium service from 10 pilot users to 3K+ franchised financial advisors."
+          },
+          {
+            "item": "Designed and implemented campus-wide Windows 7 migration tool streamlining performance and reducing cost."
+          }
+        ]
+      },
+      {
+        "title": "Deskside Representative",
+        "company": "IBM",
+        "location": "Minneapolis, MN",
+        "dateFrom": "September 2010",
+        "dateTo": "May 2012",
+        "work": [
+          {
+            "item": "Provided on-site and remote hardware and software support and implemented leading edge end-user systems."
+          },
+          {
+            "item": "Provided basic planning and design of key enterprise systems, monitored performance and performed maintenance."
+          }
+        ]
+      },
+      {
+        "title": "Web Developer / Tech Support",
+        "company": "University of Minnesota",
+        "location": "Minneapolis, MN",
+        "dateFrom": "May 2008",
+        "dateTo": "September 2010",
+        "work": [
+          {
+            "item": "Developed new business portals around MVC approach."
+          },
+          {
+            "item": "Performed code reviews, software upgrades and implementations, and database admin tasks."
+          }
+        ]
+      }
+    ],
+    "education": [
+      {
+        "degree": "110 Credits, Bachelor of Arts, Computer Science",
+        "name": "Metropolitan State University",
+        "location": "MN",
+        "dateFrom": "",
+        "dateTo": "In Progress"
+      },
+      {
+        "degree": "100 Credits, Business Management Information Systems",
+        "name": "Carlson School of Management",
+        "location": "MN",
+        "dateFrom": "2007",
+        "dateTo": "2010"
+      }
+    ]
+  }
+}
