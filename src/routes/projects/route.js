@@ -5,8 +5,8 @@ module.exports = {
   permalink: ({ request }) => request.slug,
   data: ({ settings, data }) => {
     const { projects } = require('./projects.json');
-    const description = `${settings.sitename} is the best candidate for your project with his diverse range of experience.`;
-    const keywords = 'python, front-end, professional services, automation, ci, devops';
+    const description = `I am a professional mistake maker. I make mistakes on purpose so that you don't have to. Learn more about my solutions for you and your business!`;
+    const keywords = 'python, front-end, professional services, automation, ci, devops, solutions, marketing';
 
     return { data, projects, description, keywords };
   },
