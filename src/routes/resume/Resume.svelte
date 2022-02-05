@@ -1,5 +1,5 @@
 <script>
-  export let data;
+  export let request, data;
   const { resume } = data;
   const { name, address, phone, email } = resume.info;
   const { summary, qualifications, experience, education } = resume;
@@ -28,13 +28,37 @@
   ul {
     @apply list-disc pl-4;
   }
+
+  .selected {
+    @apply text-gray-800 border-gray-700 font-bold;
+  }
 </style>
 
 <svelte:head>
   <meta name="robots" content="noindex, nofollow, noarchive" />
 </svelte:head>
 
-<div class="p-4 print:hidden">🖨️-friendly 😉</div>
+<div class="grid items-center grid-cols-3 justify-self-stretch print:hidden">
+  <div class="p-4 justify-self-start whitespace-nowrap">🖨️-friendly 😉</div>
+  <ul class="flex my-4 text-sm font-medium flex-nowrap sm:justify-self-center justify-self-between">
+    <a href={request.slug}
+      ><li
+        class="px-4 py-2 text-gray-400 list-none border-b-8 cursor-pointer"
+        class:selected={resume.type !== 'technical'}
+      >
+        Strategic
+      </li></a
+    >
+    <a href="{request.slug}/technical"
+      ><li
+        class="px-4 py-2 text-gray-400 list-none border-b-8 cursor-pointer"
+        class:selected={resume.type === 'technical'}
+      >
+        technical
+      </li></a
+    >
+  </ul>
+</div>
 
 <div class="flex flex-col p-6 mx-auto align-middle border-8 print:-mt-2 print:border-0 print:max-w-[49rem] md:w-4/5">
   <article class="border-0 border-b border-black">
