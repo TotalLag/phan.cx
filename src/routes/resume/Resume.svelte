@@ -54,7 +54,7 @@
         class="px-4 py-2 text-gray-400 list-none border-b-8 cursor-pointer"
         class:selected={resume.type === 'technical'}
       >
-        technical
+        Tactical
       </li></a
     >
   </ul>

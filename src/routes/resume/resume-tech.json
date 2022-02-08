@@ -8,16 +8,16 @@
     },
     "summary": [
       {
-        "item": "Development"
-      },
-      {
         "item": "Systems Engineering"
       },
       {
-        "item": "Systems Management"
+        "item": "Development"
       },
       {
-        "item": "Customer Success"
+        "item": "Technologist"
+      },
+      {
+        "item": "Quality Assurance"
       }
     ],
     "qualifications": [
@@ -43,16 +43,16 @@
         "dateTo": "September 2021",
         "work": [
           {
-            "item": "Maintained a current view of the market dynamics and competitive landscape to ensure the Product Marketing team stays ahead in this ever-changing world."
+            "item": "Built criteria used by WideNarrow platform to automatically extract news from different sources and transform them into RSS feeds, making it easy for CI team to consume and publish on Google Workspace."
           },
           {
-            "item": "Established and leveraged an internal and external network of subject matter experts to develop competitive positioning against a diverse set of competitors."
+            "item": "Leveraged Microsoft O365 to create a personalized CRM with SMEs and established automatic cadence in order build positioning against competitors."
           },
           {
-            "item": "Took our strategies, sales tactics, evidence of our superiority to competitors, and turned it into materials that would help our customer facing teams sell our products more effectively."
+            "item": "Scripted Google Slide API to automatically generate PPT presentations with updated materials at internal team's request."
           },
           {
-            "item": "Built a content and communication strategy to craft responses to key market events, such as competitive announcements and product launches."
+            "item": "Built a Power Automate bot to disseminate intelligence over Slack, Microsoft Sharepoint and Teams."
           }
         ]
       },
@@ -64,16 +64,16 @@
         "dateTo": "September 2020",
         "work": [
           {
-            "item": "Presented and articulated Tanium product features and benefits to prospects, while identifying other opportunities within Tanium."
+            "item": "Pioneered Appliances, cgroups, Mac OS notarization, SAML, BitLocker, Integrity Monitoring, REST token lifecycle with customers, and created documentation on implementation."
           },
           {
-            "item": "Recreate, track, and verify software defects in the field or under lab conditions reported by customers."
+            "item": "Interfaced with user experience designers and other developers to ensure thoughtful and coherent user experiences."
           },
           {
-            "item": "Held multiple SME roles to understand what can be improved across products."
+            "item": "Tested site in various browsers and devices to ensure cross-browser compatibility and accessibility."
           },
           {
-            "item": "Created interim solutions around technologies until productization resulting in 100% renewal rate with personal accounts."
+            "item": "Proposed and implemented scalable solutions to issues identified with customers and applications responsible for communicating with Tanium."
           }
         ]
       },
@@ -85,10 +85,10 @@
         "dateTo": "February 2018",
         "work": [
           {
-            "item": "Successfully assisted multi-million dollar deals by providing solution architecture and recommendations, creating demos and complex proof of concepts to prospects, driving Code42 product selection to continuously increase CrashPlan revenue."
+            "item": "Delivered on SOWs around 5G, IPv6, SCCM, GPO, Munki, NSIS, Casper (JAMF), Meraki, KACE, Ivanti, VMware, AWS, Ansible, Terraform, Jenkins, Symantec."
           },
           {
-            "item": "Liaised between Code42 Product Management, Information Experience, Sales, Development, and strategic partners to continuously influence product design and messaging."
+            "item": "Write modern, performant, and robust code for a diverse array of client and internal projects."
           }
         ]
       },
@@ -100,10 +100,10 @@
         "dateTo": "March 2015",
         "work": [
           {
-            "item": "Successfully de-escalate frustrated clients effectively increasing comfort, trust and program visibility."
+            "item": "Monitored cloud and appliances using observability tools such as Zabbix."
           },
           {
-            "item": "Cultivated relationships and liaised across all department levels, earning recognition as the “go-to” SME."
+            "item": "Deep log dives using grep, sed, awk to quickly get to RCA."
           }
         ]
       },
@@ -115,10 +115,10 @@
         "dateTo": "July 2013",
         "work": [
           {
-            "item": "Successfully grew premium service from 10 pilot users to 3K+ franchised financial advisors."
+            "item": "Engineered and maintained major features of Evergreen's CRM using Lotus Notes 8, LotusScript, DB2, SQL, and CSS"
           },
           {
-            "item": "Designed and implemented campus-wide Windows 7 migration tool streamlining performance and reducing cost."
+            "item": "Architected and implemented custom front-end to USMT, which lets deskside reps perform account migrations over the network."
           }
         ]
       },
@@ -130,10 +130,10 @@
         "dateTo": "May 2012",
         "work": [
           {
-            "item": "Provided on-site and remote hardware and software support and implemented leading edge end-user systems."
+            "item": "Supported Lenovo, Dells, ManageNow, and executives."
           },
           {
-            "item": "Provided basic planning and design of key enterprise systems, monitored performance and performed maintenance."
+            "item": "Completed Install, Move, Add, Change according to RFPs."
           }
         ]
       },
@@ -145,10 +145,10 @@
         "dateTo": "September 2010",
         "work": [
           {
-            "item": "Developed new business portals around MVC approach."
+            "item": "Work with a variety of different languages, frameworks, and content management systems such as JavaScript, HTML, CSS, PHP, jQuery, CodeIgniter, ASP.NET, SQL, etc."
           },
           {
-            "item": "Performed code reviews, software upgrades and implementations, and database admin tasks."
+            "item": "Developed and shipped interactive web application for dormitory walkthrough."
           }
         ]
       }
