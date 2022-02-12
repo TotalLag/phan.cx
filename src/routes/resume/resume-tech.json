@@ -8,16 +8,16 @@
     },
     "summary": [
       {
-        "item": "Systems Engineering"
-      },
-      {
-        "item": "Development"
-      },
-      {
         "item": "Technologist"
       },
       {
-        "item": "Quality Assurance"
+        "item": "Quality Advocate"
+      },
+      {
+        "item": "Systems Engineer"
+      },
+      {
+        "item": "Developer Advocate"
       }
     ],
     "qualifications": [
@@ -43,16 +43,16 @@
         "dateTo": "September 2021",
         "work": [
           {
-            "item": "Built criteria used by WideNarrow platform to automatically extract news from different sources and transform them into RSS feeds, making it easy for CI team to consume and publish on Google Workspace."
+            "item": "Generated criteria used by WideNarrow platform to automatically extract news from different sources (RSS, XPath) and transform them into feeds, making it easy for CI team to consume and publish."
           },
           {
-            "item": "Leveraged Microsoft O365 to create a personalized CRM with SMEs and established automatic cadence in order build positioning against competitors."
+            "item": "Leveraged Microsoft O365 to create a personalized CRM with SMEs and established automatic cadence (Kanban) in order build positioning against competitors."
           },
           {
-            "item": "Scripted Google Slide API to automatically generate PPT presentations with updated materials at internal team's request."
+            "item": "Scripted (NPM) Google Slide API to automatically generate PPT presentations with updated materials at internal team's request."
           },
           {
-            "item": "Built a Power Automate bot to disseminate intelligence over Slack, Microsoft Sharepoint and Teams."
+            "item": "Built a (Power Automate) bot to distribute intelligence over Slack, Microsoft Sharepoint and Teams."
           }
         ]
       },
@@ -64,16 +64,16 @@
         "dateTo": "September 2020",
         "work": [
           {
-            "item": "Pioneered Appliances, cgroups, Mac OS notarization, SAML, BitLocker, Integrity Monitoring, REST token lifecycle with customers, and created documentation on implementation."
+            "item": "Pioneered adoption of black box appliances (physical/virtual), cgroups, Mac OS notarization, SAML, BitLocker, integrity monitoring, REST token lifecycle with customers, and created documentation on implementation."
           },
           {
-            "item": "Interfaced with user experience designers and other developers to ensure thoughtful and coherent user experiences."
+            "item": "Advocated for customers and interfaced them with user experience designers and other developers to ensure thoughtful and coherent user experiences."
           },
           {
-            "item": "Tested site in various browsers and devices to ensure cross-browser compatibility and accessibility."
+            "item": "Submitted PR after testing platform in various browsers (TestCafe), devices, and OS (Packer) to ensure cross-compatibility and accessibility."
           },
           {
-            "item": "Proposed and implemented scalable solutions to issues identified with customers and applications responsible for communicating with Tanium."
+            "item": "Proposed and implemented scalable code (Python) to solve issues identified with customers and their applications."
           }
         ]
       },
@@ -88,7 +88,7 @@
             "item": "Delivered on SOWs around 5G, IPv6, SCCM, GPO, Munki, NSIS, Casper (JAMF), Meraki, KACE, Ivanti, VMware, AWS, Ansible, Terraform, Jenkins, Symantec."
           },
           {
-            "item": "Write modern, performant, and robust code for a diverse array of client and internal projects."
+            "item": "Wrote modern, performant, and robust code for a diverse array of client and internal projects."
           }
         ]
       },
@@ -103,7 +103,7 @@
             "item": "Monitored cloud and appliances using observability tools such as Zabbix."
           },
           {
-            "item": "Deep log dives using grep, sed, awk to quickly get to RCA."
+            "item": "Deep log dives to RCA and posted patch file to JIRA."
           }
         ]
       },
@@ -118,7 +118,7 @@
             "item": "Engineered and maintained major features of Evergreen's CRM using Lotus Notes 8, LotusScript, DB2, SQL, and CSS"
           },
           {
-            "item": "Architected and implemented custom front-end to USMT, which lets deskside reps perform account migrations over the network."
+            "item": "Designed and implemented campus-wide Windows 7 migration tool streamlining performance and reducing cost."
           }
         ]
       },
@@ -130,10 +130,10 @@
         "dateTo": "May 2012",
         "work": [
           {
-            "item": "Supported Lenovo, Dells, ManageNow, and executives."
+            "item": "Provided on-site and remote hardware and software support for Dell, Lenovo and ManageNow."
           },
           {
-            "item": "Completed Install, Move, Add, Change according to RFPs."
+            "item": "Provided Install, Move, Add, Change accordingly to RFPs."
           }
         ]
       },
@@ -145,10 +145,10 @@
         "dateTo": "September 2010",
         "work": [
           {
-            "item": "Work with a variety of different languages, frameworks, and content management systems such as JavaScript, HTML, CSS, PHP, jQuery, CodeIgniter, ASP.NET, SQL, etc."
+            "item": "Developed new business portals around JavaScript, HTML, CSS, PHP, jQuery, CodeIgniter, ASP.NET, SQL, etc."
           },
           {
-            "item": "Developed and shipped interactive web application for dormitory walkthrough."
+            "item": "Developed and shipped interactive web application for dormitory walk-through."
           }
         ]
       }
