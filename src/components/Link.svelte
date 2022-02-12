@@ -2,7 +2,7 @@
   export let link, text, request;
   let isActive = false;
 
-  $: isActive = request.permalink == link;
+  $: isActive = request.permalink == link || request.permalink.split('/')[1] == link.split('/')[1];
 </script>
 
 <a href={link}>

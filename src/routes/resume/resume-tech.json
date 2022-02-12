@@ -1,0 +1,173 @@
+{
+  "resume": {
+    "info": {
+      "name": "Christopher Phan",
+      "address": "Austin, TX 78754",
+      "phone": "(651) 252-1490",
+      "email": "c&#104;ris&#64;phan&#46;c&#120;"
+    },
+    "summary": [
+      {
+        "item": "Technologist"
+      },
+      {
+        "item": "Quality Advocate"
+      },
+      {
+        "item": "Systems Engineer"
+      },
+      {
+        "item": "Developer Advocate"
+      }
+    ],
+    "qualifications": [
+      {
+        "item": "Extensive real-world customer experiences in enterprise architecture and global infrastructures."
+      },
+      {
+        "item": "Creative problem solver with know how to get things done and ability to lead others to success."
+      },
+      {
+        "item": "Excellent interpersonal skills with the ability to develop easy rapport with others while building trust."
+      },
+      {
+        "item": "Success driven, passionate, and committed to excellence, high standards, and customer satisfaction."
+      }
+    ],
+    "experience": [
+      {
+        "title": "Director of Competitive Intelligence",
+        "company": "Tanium",
+        "location": "Kirkland, WA",
+        "dateFrom": "September 2020",
+        "dateTo": "September 2021",
+        "work": [
+          {
+            "item": "Generated criteria used by WideNarrow platform to automatically extract news from different sources (RSS, XPath) and transform them into feeds, making it easy for CI team to consume and publish."
+          },
+          {
+            "item": "Leveraged Microsoft O365 to create a personalized CRM with SMEs and established automatic cadence (Kanban) in order build positioning against competitors."
+          },
+          {
+            "item": "Scripted (NPM) Google Slide API to automatically generate PPT presentations with updated materials at internal team's request."
+          },
+          {
+            "item": "Built a (Power Automate) bot to distribute intelligence over Slack, Microsoft Sharepoint and Teams."
+          }
+        ]
+      },
+      {
+        "title": "Technical Account Manager",
+        "company": "Tanium",
+        "location": "Emeryville, CA",
+        "dateFrom": "February 2018",
+        "dateTo": "September 2020",
+        "work": [
+          {
+            "item": "Pioneered adoption of black box appliances (physical/virtual), cgroups, Mac OS notarization, SAML, BitLocker, integrity monitoring, REST token lifecycle with customers, and created documentation on implementation."
+          },
+          {
+            "item": "Advocated for customers and interfaced them with user experience designers and other developers to ensure thoughtful and coherent user experiences."
+          },
+          {
+            "item": "Submitted PR after testing platform in various browsers (TestCafe), devices, and OS (Packer) to ensure cross-compatibility and accessibility."
+          },
+          {
+            "item": "Proposed and implemented scalable code (Python) to solve issues identified with customers and their applications."
+          }
+        ]
+      },
+      {
+        "title": "Solutions Consultant",
+        "company": "Code 42 Software, Inc.",
+        "location": "Minneapolis, MN",
+        "dateFrom": "March 2015",
+        "dateTo": "February 2018",
+        "work": [
+          {
+            "item": "Delivered on SOWs around 5G, IPv6, SCCM, GPO, Munki, NSIS, Casper (JAMF), Meraki, KACE, Ivanti, VMware, AWS, Ansible, Terraform, Jenkins, Symantec."
+          },
+          {
+            "item": "Wrote modern, performant, and robust code for a diverse array of client and internal projects."
+          }
+        ]
+      },
+      {
+        "title": "Tier 2 Customer Champion",
+        "company": "Code 42 Software, Inc.",
+        "location": "Minneapolis, MN",
+        "dateFrom": "July 2013",
+        "dateTo": "March 2015",
+        "work": [
+          {
+            "item": "Monitored cloud and appliances using observability tools such as Zabbix."
+          },
+          {
+            "item": "Deep log dives to RCA and posted patch file to JIRA."
+          }
+        ]
+      },
+      {
+        "title": "Technical Lead",
+        "company": "IBM",
+        "location": "Minneapolis, MN",
+        "dateFrom": "May 2012",
+        "dateTo": "July 2013",
+        "work": [
+          {
+            "item": "Engineered and maintained major features of Evergreen's CRM using Lotus Notes 8, LotusScript, DB2, SQL, and CSS"
+          },
+          {
+            "item": "Designed and implemented campus-wide Windows 7 migration tool streamlining performance and reducing cost."
+          }
+        ]
+      },
+      {
+        "title": "Deskside Representative",
+        "company": "IBM",
+        "location": "Minneapolis, MN",
+        "dateFrom": "September 2010",
+        "dateTo": "May 2012",
+        "work": [
+          {
+            "item": "Provided on-site and remote hardware and software support for Dell, Lenovo and ManageNow."
+          },
+          {
+            "item": "Provided Install, Move, Add, Change accordingly to RFPs."
+          }
+        ]
+      },
+      {
+        "title": "Web Developer / Tech Support",
+        "company": "University of Minnesota",
+        "location": "Minneapolis, MN",
+        "dateFrom": "May 2008",
+        "dateTo": "September 2010",
+        "work": [
+          {
+            "item": "Developed new business portals around JavaScript, HTML, CSS, PHP, jQuery, CodeIgniter, ASP.NET, SQL, etc."
+          },
+          {
+            "item": "Developed and shipped interactive web application for dormitory walk-through."
+          }
+        ]
+      }
+    ],
+    "education": [
+      {
+        "degree": "110 Credits, Bachelor of Arts, Computer Science",
+        "name": "Metropolitan State University",
+        "location": "MN",
+        "dateFrom": "",
+        "dateTo": "In Progress"
+      },
+      {
+        "degree": "100 Credits, Business Management Information Systems",
+        "name": "Carlson School of Management",
+        "location": "MN",
+        "dateFrom": "2007",
+        "dateTo": "2010"
+      }
+    ]
+  }
+}
