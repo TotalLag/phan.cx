@@ -11,6 +11,10 @@
       "matchPackagePrefixes": ["@elderjs/"]
     },
     {
+      "groupName": "Node",
+      "matchPackagePrefixes": ["nodejs/"]
+    },
+    {
       "matchPackagePatterns": ["*"],
       "excludePackagePrefixes": ["@tailwindcss/", "@elderjs/"],
       "updateTypes": ["minor", "patch"],
