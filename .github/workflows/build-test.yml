@@ -28,7 +28,7 @@ jobs:
           key: npm-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-
       - name: Install dependencies
-        run: npm ci --cache ~/.npm --prefer-offline --no-audit --production
+        run: npm ci
       - name: Build the project
         run: npm run build --if-present
       - name: Run tests
