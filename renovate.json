@@ -17,7 +17,8 @@
     },
     {
       "matchPackagePatterns": ["*"],
-      "excludePackagePrefixes": ["@tailwindcss/", "@elderjs/", "tailwindcss", "node"],
+      "excludePackagePrefixes": ["@tailwindcss/", "@elderjs/", "tailwind"],
+      "excludePackageNames": ["node"],
       "updateTypes": ["minor", "patch"],
       "automerge": true,
       "groupName": "all non-major dependencies",
