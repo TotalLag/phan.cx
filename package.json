@@ -59,7 +59,7 @@
     "postcss": "^8.4.13",
     "prettier": "^2.6.2",
     "prettier-plugin-svelte": "^2.7.0",
-    "rollup": "^2.72.0"
+    "rollup": "^2.72.1"
   },
   "author": "Nick Reese",
   "license": "MIT",
