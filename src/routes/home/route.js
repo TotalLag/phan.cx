@@ -8,8 +8,8 @@ module.exports = {
     // Since we will be listing out Elder.js's hooks, we make sure to populate that on the data object so it can be looped through
     // in our Svelte template.
     const title = `${settings.sitename} | Professional Mistake Maker`;
-    const description = `${settings.sitename} is a professional mistake maker and problem solver. He helps you make better decisions by understanding your processes, letting go of perfectionism, and gathering information to weigh all the options.`;
-    const keywords = 'consulting, programming, professional services, engineer, ci, solutions';
+    const description = `${settings.sitename} made all the mistakes that you're about to make - so, you don't have to! Now, he helps people to adopt and use technology services so they can get back to doing what they love.`;
+    const keywords = 'consulting, web development, professional services, solutions engineer, market intelligence, human design';
 
     return { ...data, title, description, keywords };
   },
