@@ -19,7 +19,7 @@
   },
   "type": "commonjs",
   "engines": {
-    "node": ">= v16.15.1"
+    "node": ">= v16.16.0"
   },
   "dependencies": {
     "@elderjs/elderjs": "^1.7.5",
