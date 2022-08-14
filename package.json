@@ -52,14 +52,14 @@
     "@babel/preset-env": "^7.18.10",
     "@babel/runtime": "^7.18.9",
     "autoprefixer": "^10.4.8",
-    "eslint": "^8.21.0",
+    "eslint": "^8.22.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^2.0.19",
     "postcss": "^8.4.16",
     "prettier": "^2.7.1",
     "prettier-plugin-svelte": "^2.7.0",
-    "rollup": "^2.77.3"
+    "rollup": "^2.78.0"
   },
   "author": "Nick Reese",
   "license": "MIT",
