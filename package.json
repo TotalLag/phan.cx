@@ -46,20 +46,20 @@
     "testcafe": "^2.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.7",
+    "@babel/core": "^7.20.12",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.19.6",
     "@babel/preset-env": "^7.20.2",
     "@babel/runtime": "^7.20.7",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.31.0",
-    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^2.0.20",
     "postcss": "^8.4.20",
     "prettier": "^2.8.1",
     "prettier-plugin-svelte": "^2.9.0",
-    "rollup": "^3.9.0"
+    "rollup": "^3.9.1"
   },
   "author": "Nick Reese",
   "license": "MIT",
