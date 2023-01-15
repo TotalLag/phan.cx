@@ -43,7 +43,7 @@
     "svelte-markdown": "^0.2.3",
     "svelte-preprocess": "^4.10.7",
     "tailwindcss": "^3.2.1",
-    "testcafe": "^2.2.0"
+    "testcafe": "^13.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
