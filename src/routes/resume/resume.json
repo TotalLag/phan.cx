@@ -152,22 +152,6 @@
           }
         ]
       }
-    ],
-    "education": [
-      {
-        "degree": "110 Credits, Bachelor of Arts, Computer Science",
-        "name": "Metropolitan State University",
-        "location": "MN",
-        "dateFrom": "",
-        "dateTo": "In Progress"
-      },
-      {
-        "degree": "100 Credits, Business Management Information Systems",
-        "name": "Carlson School of Management",
-        "location": "MN",
-        "dateFrom": "2007",
-        "dateTo": "2010"
-      }
     ]
   }
 }
