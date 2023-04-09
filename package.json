@@ -33,7 +33,7 @@
     "del": "^6.1.1",
     "dotenv": "^16.0.3",
     "fs-extra": "^10.1.0",
-    "glob": "^8.1.0",
+    "glob": "^9.3.5",
     "instagram-web-api": "^2.2.2",
     "intersection-observer": "^0.12.2",
     "node-fetch": "^2.6.9",
