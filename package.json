@@ -1,6 +1,49 @@
 {
+  "name": "phan.cx",
+  "version": "2.0.0",
+  "description": "Personal website of Christopher Phan, built with Astro and Qwik",
+  "type": "module",
+  "scripts": {
+    "start": "astro dev",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "eslint --ext .js,.astro,.ts .",
+    "lint:fix": "eslint --fix --ext .js,.astro,.ts .",
+    "format": "prettier --write ."
+  },
   "dependencies": {
     "@qwikdev/astro": "^0.6.1",
     "astro": "^4.12.2"
-  }
+  },
+  "devDependencies": {
+    "eslint": "^8.35.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-astro": "^0.23.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.4",
+    "prettier-plugin-astro": "^0.8.0"
+  },
+  "engines": {
+    "node": ">=18.14.1"
+  },
+  "author": "Christopher Phan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/totallag/phan.cx.git"
+  },
+  "keywords": [
+    "astro",
+    "qwik",
+    "ssr",
+    "static site generator",
+    "seo",
+    "ssg"
+  ],
+  "bugs": {
+    "url": "https://github.com/totallag/phan.cx/issues"
+  },
+  "homepage": "https://phan.cx"
 }
