@@ -1,10 +1,35 @@
 ---
-// Stub component
+import Profile from './Profile.astro';
+import Notifications from './Notifications.astro';
+import Stats from './Stats.astro';
+import Navigation from './Navigation.astro';
+import SocialMedia from './SocialMedia.astro';
+
+const { request, settings, data } = Astro.props;
 ---
 
-<aside class="w-fixed bg-gray-100 sm:h-full">
-  <div class="p-4">
-    <h2 class="text-xl font-bold">Sidebar</h2>
-    <p>This is a stub sidebar component.</p>
+<aside class="flex flex-col p-4 bg-white border border-b-0 border-gray-200 w-fixed print:hidden">
+  <div class="flex hidden font-light min-h-[3.5rem] sm:inline animate-pulse">
+    <span class="font-extrabold underline">></span> â±§Éâ± â± Ã â©Ãâ±¤â± Ä!
   </div>
+
+  <div class="flex items-center justify-between px-4 py-3 sm:text-center sm:flex-col">
+    <Profile name="Chris Phan" location="Texas, USA">
+      <img class="object-cover w-full h-full" src={`${settings.origin}/me.jpg`} alt="Me" />
+    </Profile>
+
+    <Notifications class="relative inline-block sm:hidden" data={data.GHData} />
+  </div>
+
+  <div class="hidden sm:inline">
+    <hr class="mt-6 mb-6 border-gray-300" />
+
+    <Stats code={settings.lineCount} cat="1" />
+
+    <hr class="mt-6 mb-6 border-gray-300" />
+  </div>
+
+  <Navigation request={request} />
+
+  <SocialMedia />
 </aside>
