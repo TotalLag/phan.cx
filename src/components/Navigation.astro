@@ -1,23 +1,23 @@
 ---
+const { currentPath } = Astro.props;
 import Link from './Link.astro';
-
-const { request } = Astro.props;
-const blogActive = request.route === 'blog';
+const blogActive = currentPath.startsWith('/blog');
 ---
 
 <div class="flex flex-row flex-wrap justify-between sm:flex-col sm:-ml-6">
-  <Link text="About" link="/" request={request}>
+  <Link text="About" link="/" currentPath={currentPath}>
     <svg
+      xmlns="http://www.w3.org/2000/svg"
       class="w-6 h-6"
       fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      stroke="currentColor"
       viewBox="0 0 24 24"
+      stroke="currentColor"
     >
       <path
-        d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
       />
     </svg>
   </Link>
@@ -28,47 +28,54 @@ const blogActive = request.route === 'blog';
     </div>
   </div>
 
-  <Link text="Resume" link="/resume/" request={request}>
+  <Link text="Resume" link="/resume/" currentPath={currentPath}>
     <svg
+      xmlns="http://www.w3.org/2000/svg"
       class="w-6 h-6"
       fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      stroke="currentColor"
       viewBox="0 0 24 24"
+      stroke="currentColor"
     >
       <path
-        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
       />
     </svg>
   </Link>
 
-  <Link text="Projects" link="/projects/" request={request}>
+  <Link text="Projects" link="/projects/" currentPath={currentPath}>
     <svg
+      xmlns="http://www.w3.org/2000/svg"
       class="w-6 h-6"
       fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      stroke="currentColor"
       viewBox="0 0 24 24"
+      stroke="currentColor"
     >
-      <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+      />
     </svg>
   </Link>
 
-  <Link text="Contact" link="/contact/" request={request}>
+  <Link text="Contact" link="/contact/" currentPath={currentPath}>
     <svg
+      xmlns="http://www.w3.org/2000/svg"
       class="w-6 h-6"
       fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      stroke="currentColor"
       viewBox="0 0 24 24"
+      stroke="currentColor"
     >
-      <path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+      />
     </svg>
   </Link>
 </div>

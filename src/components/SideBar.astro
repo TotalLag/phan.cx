@@ -7,6 +7,7 @@ import SocialMedia from './SocialMedia.astro';
 
 const GHData = import.meta.env.GH_DATA;
 const lineCount = import.meta.env.LINE_COUNT;
+const currentPath = Astro.url.pathname;
 
 const { request, settings, data } = Astro.props;
 ---
@@ -32,7 +33,7 @@ const { request, settings, data } = Astro.props;
     <hr class="mt-6 mb-6 border-gray-300" />
   </div>
 
-  <Navigation request={request} />
+  <Navigation currentPath={currentPath} />
 
   <SocialMedia />
 </aside>

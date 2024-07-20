@@ -3,37 +3,38 @@ import SideBar from '../components/SideBar.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-interface Props {
-  title: string;
-  description?: string;
-  keywords?: string;
-}
+const { title, description, keywords } = Astro.props.frontmatter || {};
+const { settings } = Astro.props;
 
-const { title, description, keywords } = Astro.props;
-const sitename = "Your Site Name"; // Replace with your site name
+const currentPath = Astro.url.pathname;
+const routeName = currentPath.split('/')[1].charAt(0).toUpperCase() + currentPath.split('/')[1].slice(1) || 'Hello World!';
 ---
 
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
     <meta name="author" content="chris@phan.cx" />
-    <meta name="title" content={title} />
+    <meta name="title" content={title ?? `${settings.sitename} - ${routeName}`} />
     {description && <meta name="description" content={description} />}
     {keywords && <meta name="keywords" content={keywords} />}
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400|Noto+Sans:400|Roboto+Mono:400&subset=latin" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Inter:400|Noto+Sans:400|Roboto+Mono:400&subset=latin"
+    />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico" />
-    <link rel="canonical" href={Astro.url} />
-    <title>{title}</title>
+    <base href={settings.origin} />
+    <link href={`${settings.origin}${currentPath}`} rel="canonical" />
+    <title>{title ?? `${settings.sitename} - ${routeName}`}</title>
   </head>
   <body>
     <main class="flex flex-col w-full sm:h-screen z-1">
       <div class="h-full overflow-hidden sm:flex grow z-1">
-        <SideBar />
+        <SideBar currentPath={currentPath} settings={settings} />
         <div class="flex flex-col sm:max-w-[calc(100%-16.25rem)] grow z-1">
           <Header />
           <div class="h-full px-2 py-4 overflow-y-auto bg-white grow print:-m-10">

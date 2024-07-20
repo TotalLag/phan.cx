@@ -1,15 +1,14 @@
 ---
-// Link.astro
-const { text, link, request } = Astro.props;
-const active = request.route === link.replace(/\//g, '');
+const { text, link, currentPath } = Astro.props;
+const isActive = currentPath === link;
 ---
 
 <a
   href={link}
-  class={`flex items-center px-4 py-2 mt-2 text-gray-600 transition-colors duration-200 transform rounded-md hover:bg-gray-200 hover:text-gray-700 ${
-    active ? 'bg-gray-200 text-gray-700' : ''
+  class={`flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 ${
+    isActive ? 'bg-gray-100 text-gray-900' : ''
   }`}
 >
   <slot />
-  <span class="mx-4 font-medium">{text}</span>
+  <span class="ml-3">{text}</span>
 </a>
