@@ -2,6 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import BlogTeaser from '../components/BlogTeaser.astro';
 import PhotoGram from '../components/PhotoGram.astro';
+import { getEntry } from 'astro:content';
+
+const settings = await getEntry('config', 'settings');
 
 // You'll need to implement data fetching logic here
 const blogPosts = []; // Fetch blog posts
@@ -12,9 +15,10 @@ const sortedBlog = blogPosts.sort((a, b) => {
   const bb = b.frontmatter.hasOwnProperty('featured') ? 1 : -1;
   return bb - aa;
 });
+
 ---
 
-<Layout title="Home - Your Site Name" description="Welcome to my website!" keywords="portfolio, blog, projects">
+<Layout settings={settings.data} title="Home - Your Site Name" description="Welcome to my website!" keywords="portfolio, blog, projects">
   <div class="mx-auto mt-6 md:w-4/5 print:p-10">
     <h1 class="text-2xl font-bold uppercase">
       A beautiful, responsive, statically-generated, Astro application written with modern JavaScript.
