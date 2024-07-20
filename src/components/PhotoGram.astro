@@ -1,0 +1,9 @@
+---
+const { photo } = Astro.props;
+---
+
+<div class="bg-white shadow rounded-lg overflow-hidden">
+  <img src={photo.url} alt={photo.caption} class="w-full h-48 object-cover" />
+  <div class="p-4">
+    <p>{photo.caption}</p>
+  </div>

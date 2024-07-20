@@ -1,0 +1,70 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BlogTeaser from '../components/BlogTeaser.astro';
+import PhotoGram from '../components/PhotoGram.astro';
+
+// You'll need to implement data fetching logic here
+const blogPosts = []; // Fetch blog posts
+const photos = []; // Fetch Instagram photos
+
+const sortedBlog = blogPosts.sort((a, b) => {
+  const aa = a.frontmatter.hasOwnProperty('featured') ? 1 : -1;
+  const bb = b.frontmatter.hasOwnProperty('featured') ? 1 : -1;
+  return bb - aa;
+});
+---
+
+<Layout title="Home - Your Site Name" description="Welcome to my website!" keywords="portfolio, blog, projects">
+  <div class="mx-auto mt-6 md:w-4/5 print:p-10">
+    <h1 class="text-2xl font-bold uppercase">
+      A beautiful, responsive, statically-generated, Astro application written with modern JavaScript.
+    </h1>
+
+    <span class="block pt-6">
+      <p class="mb-6">
+        Welcome to my website! Please feel free to read my musings, or you can check out my resume, projects, random
+        stats, or contact me.
+      </p>
+      <p class="mb-6">
+        This site serves as my portfolio and there will be many aspects that will be ongoing development. As the pieces
+        come together, you can expect to see more of what makes up all parts for this website; but until then enjoy seeing
+        how things are put together on GitHub!
+      </p>
+      <p class="mb-6">
+        Source available <a href="https://github.com/TotalLag/phan.cx" class="underline">here</a>.
+      </p>
+    </span>
+
+    <hr class="mt-6 mb-6 border-gray-300" />
+
+    <div class="flex flex-col mb-10">
+      <div class="flex justify-between">
+        <h2 class="text-2xl font-bold">Featured Posts</h2>
+        <div class="relative inline-flex">
+          <!-- Add select component for time filter -->
+        </div>
+      </div>
+
+      <div class="flex gap-6 pt-5 pb-5 overflow-x-auto flex-nowrap">
+        {sortedBlog.map((blog) => (
+          <BlogTeaser blog={blog} />
+        ))}
+      </div>
+    </div>
+
+    <div class="flex flex-col mb-10">
+      <div class="flex justify-between">
+        <h2 class="text-2xl font-bold">Instagram Photo Feed</h2>
+        <div class="relative inline-flex">
+          <!-- Add select component for time filter -->
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-10 pt-5 pb-5 mx-auto sm:grid sm:grid-cols-2 md:grid-cols-3">
+        {photos.map((photo) => (
+          <PhotoGram photo={photo} />
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
