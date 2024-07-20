@@ -1,12 +1,43 @@
----
-const { photos, helpers } = Astro.props;
----
+<script>
+  export let photos, helpers;
+</script>
 
 <div
-  class="relative w-64 h-64 overflow-hidden transition duration-300 ease-in-out bg-center bg-cover rounded-lg shadow-lg lg:w-64 lg:h-64 md:w-32 md:h-32 shrink-0 group hover:shadow-2xl"
-  style={`background-image: url('${photos}');`}
+  class="photo-container"
+  style="background-image: url('{photos}');"
 >
   <!-- <div class="relative flex items-end justify-center w-full h-full px-4 py-3">
     <h3 class="text-center" />
   </div> -->
 </div>
+
+<style>
+  .photo-container {
+    width: var(--spacing-large);
+    height: var(--spacing-large);
+    overflow: hidden;
+    transition: var(--transition-duration) ease-in-out;
+    background-position: center;
+    background-size: cover;
+    border-radius: var(--button-border-radius);
+    box-shadow: var(--shadow-lg);
+  }
+
+  @media (min-width: 1024px) {
+    .photo-container {
+      width: var(--spacing-large);
+      height: var(--spacing-large);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .photo-container {
+      width: var(--spacing-medium);
+      height: var(--spacing-medium);
+    }
+  }
+
+  .photo-container:hover {
+    box-shadow: var(--shadow-2xl);
+  }
+</style>
