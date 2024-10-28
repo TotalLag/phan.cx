@@ -1,55 +1,17 @@
 {
-  "name": "phan.cx",
-  "version": "2.0.0",
-  "description": "Personal website of Christopher Phan, built with Astro and Qwik",
+  "name": "red-raspberry",
   "type": "module",
+  "version": "0.0.1",
   "scripts": {
-    "start": "astro dev",
     "dev": "astro dev",
-    "build": "astro build",
+    "start": "astro dev",
+    "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "lint": "eslint --ext .js,.astro,.ts .",
-    "lint:fix": "eslint --fix --ext .js,.astro,.ts .",
-    "format": "prettier --write .",
-    "count:lines": "find src -name '*.ts' -o -name '*.js' -o -name '*.astro' | xargs wc -l | tail -n 1 | awk '{print $1}'"
+    "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/tailwind": "^5.1.0",
-    "@qwikdev/astro": "^0.6.1",
-    "astro": "^4.12.2"
-  },
-  "devDependencies": {
-    "@tailwindcss/typography": "^0.5.13",
-    "autoprefixer": "^10.4.19",
-    "eslint": "^8.35.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-astro": "^0.23.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "postcss": "^8.4.39",
-    "prettier": "^2.8.4",
-    "prettier-plugin-astro": "^0.8.0",
-    "tailwindcss": "^3.4.6"
-  },
-  "engines": {
-    "node": ">=18.14.1"
-  },
-  "author": "Christopher Phan",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/totallag/phan.cx.git"
-  },
-  "keywords": [
-    "astro",
-    "qwik",
-    "ssr",
-    "static site generator",
-    "seo",
-    "ssg"
-  ],
-  "bugs": {
-    "url": "https://github.com/totallag/phan.cx/issues"
-  },
-  "homepage": "https://phan.cx"
+    "astro": "^4.16.7",
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.6.3"
+  }
 }
