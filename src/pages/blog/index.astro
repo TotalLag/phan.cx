@@ -9,14 +9,14 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
 
 <Layout title="Blog">
   <div class="container px-4 py-8 mx-auto">
-    <h1 class="mb-8 text-4xl font-bold text-primary">Blog Posts</h1>
+    <h1 class="mb-8 text-4xl font-bold text-primary" transition:animate="slide">Blog Posts</h1>
     
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3" transition:animate="fade">
       {sortedPosts.map(post => (
         <a href={`/blog/${post.slug}`} class="group">
           <article class="overflow-hidden transition-shadow duration-300 bg-surface-secondary rounded-xl hover:shadow-lg">
             {post.data.cover && (
-              <div class="relative aspect-video">
+              <div class="relative aspect-video" transition:name={`hero-${post.slug}`}>
                 <Image
                   src={post.data.cover}
                   alt={post.data.title}
@@ -27,11 +27,24 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
               </div>
             )}
             <div class="p-6">
-              <h2 class="mb-2 text-xl font-semibold text-primary">{post.data.title}</h2>
-              <p class="mb-4 text-sm text-secondary">{post.data.excerpt}</p>
+              <h2 
+                class="mb-2 text-xl font-semibold text-primary"
+                transition:name={`title-${post.slug}`}
+              >
+                {post.data.title}
+              </h2>
+              <p 
+                class="mb-4 text-sm text-secondary"
+                transition:name={`excerpt-${post.slug}`}
+              >
+                {post.data.excerpt}
+              </p>
               <div class="flex items-center justify-between text-sm text-muted">
-                <span>{post.data.topic}</span>
-                <time datetime={post.data.date.toISOString()}>
+                <span transition:name={`topic-${post.slug}`}>{post.data.topic}</span>
+                <time 
+                  datetime={post.data.date.toISOString()}
+                  transition:name={`date-${post.slug}`}
+                >
                   {post.data.date.toLocaleDateString('en-us', {
                     year: 'numeric',
                     month: 'short',

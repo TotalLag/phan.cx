@@ -1,26 +1,7 @@
-import { createSignal, onMount } from 'solid-js';
 import CircleButton from './CircleButton';
+import { toggleTheme } from '../../stores/theme';
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = createSignal('light');
-
-  onMount(() => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
-  });
-
-  const toggleTheme = () => {
-    const newTheme = theme() === 'dark' ? 'light' : 'dark';
-    const root = document.documentElement;
-    
-    // Remove both classes and add the new one
-    root.classList.remove('light', 'dark');
-    root.classList.add(newTheme);
-    
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-  };
-
   return (
     <CircleButton
       label="Toggle theme"

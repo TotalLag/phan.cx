@@ -5,27 +5,32 @@ import Layout from './Layout.astro';
 type Props = CollectionEntry<"blog">["data"];
 
 const { title, topic, excerpt, date, updated } = Astro.props;
+const slug = Astro.url.pathname.split('/').pop();
 ---
 
 <Layout title={title}>
   <article class="flex flex-col w-full mx-auto mt-6 md:w-4/5 print:p-10">
-    <div class="mx-5 my-3 text-sm">
-      {topic && <a href="" class="font-bold tracking-widest transition-colors text-accent hover:text-accent-hover">{topic}</a>}
+    <div class="mx-5 my-3 text-sm" transition:animate="slide">
+      {topic && <a href="" class="font-bold tracking-widest transition-colors text-accent hover:text-accent-hover" transition:name={`topic-${slug}`}>{topic}</a>}
     </div>
     
-    <div class="px-5 text-4xl font-bold leading-tight text-primary">
-      <h1>{title}</h1>
+    <div class="px-5 text-4xl font-bold leading-tight text-primary" transition:animate="slide">
+      <h1 transition:name={`title-${slug}`}>{title}</h1>
     </div>
 
-    <div class="px-5 pt-4 pb-6 text-lg text-secondary">
-      {excerpt}
+    <div class="px-5 pt-4 pb-6 text-lg text-secondary" transition:animate="slide">
+      <p transition:name={`excerpt-${slug}`}>{excerpt}</p>
     </div>
 
-    <slot name="hero" />
+    <div transition:name={`hero-${slug}`}>
+      <slot name="hero" />
+    </div>
 
-    <div class="px-5 pt-4 italic font-light text-muted">
+    <div class="px-5 pt-4 italic font-light text-muted" transition:animate="slide">
       <span class="flex flex-col text-sm">
-        Posted on {date.toLocaleString('default', { dateStyle: 'long' })}<br />
+        <time transition:name={`date-${slug}`}>
+          Posted on {date.toLocaleString('default', { dateStyle: 'long' })}
+        </time>
         {updated && (
           <>
             Updated: {updated.toLocaleString('default', {
@@ -37,7 +42,7 @@ const { title, topic, excerpt, date, updated } = Astro.props;
       </span>
     </div>
 
-    <div class="px-5 py-8 mx-auto prose prose-lg dark:prose-invert prose-pre:bg-surface-tertiary prose-pre:rounded-lg prose-code:bg-surface-tertiary prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:text-sm prose-img:rounded-lg prose-img:my-6 prose-blockquote:italic prose-blockquote:border-border prose-blockquote:bg-surface-secondary max-w-none">
+    <div class="px-5 py-8 mx-auto prose prose-lg dark:prose-invert prose-pre:bg-surface-tertiary prose-pre:rounded-lg prose-code:bg-surface-tertiary prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:text-sm prose-img:rounded-lg prose-img:my-6 prose-blockquote:italic prose-blockquote:border-border prose-blockquote:bg-surface-secondary max-w-none" transition:animate="fade">
       <slot />
     </div>
   </article>

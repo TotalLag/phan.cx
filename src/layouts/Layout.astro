@@ -3,6 +3,8 @@ import '../styles/base.css';
 import Header from '../components/Header.astro';
 import Sidebar from '../components/Sidebar.astro';
 import MobileSidebar from '../components/MobileSidebar.astro';
+import { ViewTransitions } from 'astro:transitions';
+import ThemeScript from '../components/ThemeScript';
 
 interface Props {
   title: string;
@@ -21,10 +23,12 @@ const { title } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <ViewTransitions />
+    <ThemeScript client:load />
   </head>
   <body class="min-h-screen bg-surface-primary">
     <!-- Mobile Menu Container -->
-    <div class="lg:hidden">
+    <div class="lg:hidden" transition:persist transition:persist-props>
       <input 
         type="checkbox" 
         id="nav-toggle" 
@@ -33,14 +37,7 @@ const { title } = Astro.props;
       >
       
       <!-- Mobile Sidebar -->
-      <div 
-        class:list={[
-          'fixed inset-y-0 left-0 w-sidebar bg-surface-primary z-modal',
-          'transform -translate-x-full',
-          'peer-checked:translate-x-0 peer-checked:shadow-modal',
-          'transition-transform duration-modal ease-soft'
-        ]}
-      >
+      <div class="site-sidebar-mobile">
         <div class="h-full pt-20 overflow-y-auto">
           <Sidebar />
         </div>
@@ -61,7 +58,9 @@ const { title } = Astro.props;
 
     <!-- Desktop Sidebar -->
     <div 
-      class="fixed inset-y-0 left-0 hidden border-r lg:block w-sidebar border-border bg-surface-primary"
+      class="site-sidebar"
+      transition:persist
+      transition:persist-props
     >
       <Sidebar />
     </div>
@@ -80,7 +79,9 @@ const { title } = Astro.props;
 
       <!-- Footer -->
       <footer 
-        class="fixed inset-x-0 bottom-0 h-16 border-t bg-surface-primary border-border"
+        class="site-footer"
+        transition:persist
+        transition:persist-props
       >
         <div class="h-full flex-layout px-container-px">
           <div class="text-sm text-icon-muted">
@@ -91,36 +92,17 @@ const { title } = Astro.props;
       </footer>
     </div>
 
-    <!-- Theme initialization script -->
+    <!-- Initialize theme before view transitions -->
     <script>
-      function initializeTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-          document.documentElement.classList.add(savedTheme);
-          return;
-        }
-
-        // Check system preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.classList.add(savedTheme);
+      } else {
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const initialTheme = prefersDark ? 'dark' : 'light';
-        document.documentElement.classList.add(initialTheme);
-        localStorage.setItem('theme', initialTheme);
-
-        // Listen for system preference changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-          const newTheme = e.matches ? 'dark' : 'light';
-          const userTheme = localStorage.getItem('theme');
-          // Only update if user hasn't manually set a theme
-          if (!userTheme) {
-            document.documentElement.classList.remove('light', 'dark');
-            document.documentElement.classList.add(newTheme);
-            localStorage.setItem('theme', newTheme);
-          }
-        });
+        const theme = prefersDark ? 'dark' : 'light';
+        document.documentElement.classList.add(theme);
+        localStorage.setItem('theme', theme);
       }
-
-      // Run initialization
-      initializeTheme();
     </script>
   </body>
 </html>
