@@ -99,7 +99,30 @@ module.exports = {
         soft: 'cubic-bezier(0.4, 0, 0.2, 1)',
         emphasis: 'cubic-bezier(0.2, 0.8, 0.4, 1)',
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': 'var(--text-secondary)',
+            '--tw-prose-headings': 'var(--text-primary)',
+            '--tw-prose-links': 'var(--accent)',
+            '--tw-prose-bold': 'var(--text-primary)',
+            '--tw-prose-counters': 'var(--text-muted)',
+            '--tw-prose-bullets': 'var(--text-muted)',
+            '--tw-prose-hr': 'var(--border)',
+            '--tw-prose-quotes': 'var(--text-muted)',
+            '--tw-prose-quote-borders': 'var(--border)',
+            '--tw-prose-captions': 'var(--text-muted)',
+            '--tw-prose-code': 'var(--text-primary)',
+            '--tw-prose-pre-code': 'var(--text-primary)',
+            '--tw-prose-pre-bg': 'var(--surface-tertiary)',
+            '--tw-prose-th-borders': 'var(--border)',
+            '--tw-prose-td-borders': 'var(--border)',
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 };

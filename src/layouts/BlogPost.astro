@@ -16,7 +16,7 @@ const { title, topic, excerpt, date, updated, cover, top, caption } = Astro.prop
 ---
 
 <Layout title={title}>
-  <article class="flex flex-col w-full mx-auto mt-6 md:w-4/5 markdown print:p-10">
+  <article class="flex flex-col w-full mx-auto mt-6 md:w-4/5 print:p-10">
     <div class="mx-5 my-3 text-sm">
       {topic && <a href="" class="font-bold tracking-widest transition-colors text-accent hover:text-accent-hover">{topic}</a>}
     </div>
@@ -39,12 +39,9 @@ const { title, topic, excerpt, date, updated, cover, top, caption } = Astro.prop
           src={cover}
           alt={caption}
         />
-      </div>
-    )}
-
-    {caption && (
-      <div class="mx-5 text-muted">
-        <p class="py-3 text-sm italic border-b border-border">{caption}</p>
+        {caption && (
+          <p class="mt-2 text-xs italic text-muted">{caption}</p>
+        )}
       </div>
     )}
 
@@ -62,90 +59,44 @@ const { title, topic, excerpt, date, updated, cover, top, caption } = Astro.prop
       </span>
     </div>
 
-    <div class="px-5 py-8 mx-auto prose prose-lg max-w-none">
+    <div class="px-5 py-8 mx-auto prose prose-lg dark:prose-invert max-w-none">
       <slot />
     </div>
   </article>
 </Layout>
 
-<style is:global>
-  /* Markdown Styles */
-  .markdown {
-    @apply leading-relaxed;
-    color: var(--text-secondary);
+<style>
+  /* Additional custom styles if needed */
+  :global(.prose) {
+    max-width: none;
   }
 
-  .markdown h2 {
-    @apply text-2xl font-bold mt-12 mb-6;
-    color: var(--text-primary);
+  :global(.prose a) {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
   }
 
-  .markdown h3 {
-    @apply text-xl font-semibold mt-8 mb-4;
-    color: var(--text-primary);
+  :global(.prose pre) {
+    background-color: var(--surface-tertiary);
+    border-radius: 0.5rem;
   }
 
-  .markdown p {
-    @apply mb-6 text-lg leading-relaxed;
+  :global(.prose code) {
+    background-color: var(--surface-tertiary);
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.25rem;
+    font-size: 0.875em;
   }
 
-  .markdown ul,
-  .markdown ol {
-    @apply mb-6 ml-8 text-lg;
+  :global(.prose img) {
+    border-radius: 0.5rem;
+    margin: 1.5rem auto;
   }
 
-  .markdown li > p,
-  .markdown li > ul,
-  .markdown li > ol {
-    @apply mb-2;
-  }
-
-  .markdown ol {
-    @apply list-decimal;
-  }
-
-  .markdown ul {
-    @apply list-disc;
-  }
-
-  .markdown blockquote {
-    @apply p-4 mx-6 border-l-4 italic my-6;
+  :global(.prose blockquote) {
+    font-style: italic;
+    border-left-color: var(--border);
     background-color: var(--surface-secondary);
-    border-color: var(--border);
-    color: var(--text-muted);
-  }
-
-  .markdown blockquote > p {
-    @apply mb-0;
-  }
-
-  .markdown pre {
-    @apply p-4 rounded-lg overflow-x-auto my-6;
-    background-color: var(--surface-tertiary);
-  }
-
-  .markdown code {
-    @apply px-1 py-0.5 rounded text-sm;
-    background-color: var(--surface-tertiary);
-    color: var(--text-primary);
-  }
-
-  .markdown a {
-    @apply underline transition-colors;
-    color: var(--accent);
-  }
-
-  .markdown a:hover {
-    color: var(--accent-hover);
-  }
-
-  /* Dark mode adjustments */
-  :root.dark .markdown pre,
-  :root.dark .markdown code {
-    background-color: var(--surface-tertiary);
-  }
-
-  :root.dark .markdown blockquote {
-    background-color: var(--surface-tertiary);
   }
 </style>
