@@ -1,0 +1,74 @@
+.stats-counter {
+  position: relative;
+  display: inline-block;
+}
+
+.counter-value {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.stats-counter.is-animating .counter-value {
+  transform: scale(1.2);
+  color: var(--accent);
+}
+
+.increment-indicator {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.875rem;
+  color: var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.5s ease-out;
+}
+
+.increment-indicator.show {
+  animation: floatAndFade 1s ease-out forwards;
+}
+
+@keyframes floatAndFade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -5px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+}
+
+/* Add a subtle glow effect during animation */
+.stats-counter.is-animating::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: radial-gradient(circle, var(--accent-muted) 0%, transparent 70%);
+  opacity: 0.2;
+  border-radius: 50%;
+  z-index: -1;
+  animation: glowPulse 1s ease-out;
+}
+
+@keyframes glowPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}

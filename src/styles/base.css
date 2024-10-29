@@ -1,3 +1,6 @@
+/* Import Inter variable font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -66,6 +69,8 @@
   /* Base text color and transitions */
   body {
     color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
   /* Add transitions for theme changes */
@@ -74,27 +79,6 @@
     transition-property: background-color, border-color, color, fill, stroke;
     transition-duration: 200ms;
     transition-timing-function: ease-out;
-  }
-
-  /* Modern optimized font loading */
-  @font-face {
-    font-family: 'Inter var';
-    font-weight: 100 900;
-    font-display: swap;
-    font-style: normal;
-    font-named-instance: 'Regular';
-    src: url('https://rsms.me/inter/font-files/Inter-roman.var.woff2?v=3.19')
-      format('woff2');
-  }
-
-  @font-face {
-    font-family: 'Inter var';
-    font-weight: 100 900;
-    font-display: swap;
-    font-style: italic;
-    font-named-instance: 'Italic';
-    src: url('https://rsms.me/inter/font-files/Inter-italic.var.woff2?v=3.19')
-      format('woff2');
   }
 }
 
@@ -143,12 +127,6 @@
     min-height: calc(
       100vh - theme('spacing.14') - theme('spacing.16')
     ); /* 100vh - header - footer */
-  }
-
-  .glitch-text {
-    @apply font-medium tracking-wide;
-    font-size: clamp(1.125rem, calc(1.125rem + 0.5vw), 1.375rem);
-    color: var(--text-primary);
   }
 }
 

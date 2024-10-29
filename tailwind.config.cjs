@@ -10,7 +10,7 @@ module.exports = {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
-        xs: 'clamp(0.75rem, calc(0.75rem + 0.25vw), 0.875rem)',
+        xs: 'clamp(0.625rem, calc(0.625rem + 0.2vw), 0.75rem)',
         sm: 'clamp(0.875rem, calc(0.875rem + 0.25vw), 1rem)',
         base: 'clamp(1rem, calc(1rem + 0.25vw), 1.125rem)',
         lg: 'clamp(1.125rem, calc(1.125rem + 0.5vw), 1.375rem)',
