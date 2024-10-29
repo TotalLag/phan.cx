@@ -1,0 +1,73 @@
+---
+import '../styles/base.css';
+import Header from '../components/Header.astro';
+import Sidebar from '../components/Sidebar.astro';
+import MobileSidebar from '../components/MobileSidebar.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-surface-primary">
+    <!-- Mobile Menu Container -->
+    <div class="lg:hidden">
+      <input type="checkbox" id="nav-toggle" class="hidden peer" aria-hidden="true">
+      
+      <!-- Mobile Sidebar -->
+      <div 
+        class="fixed inset-y-0 left-0 transition-transform transform -translate-x-full w-sidebar bg-surface-primary duration-modal ease-soft z-modal peer-checked:translate-x-0 peer-checked:shadow-modal"
+      >
+        <div class="h-full pt-20 overflow-y-auto">
+          <Sidebar />
+        </div>
+      </div>
+
+      <!-- Backdrop -->
+      <label
+        for="nav-toggle"
+        class="fixed inset-0 invisible transition-all opacity-0 bg-overlay-dark peer-checked:opacity-100 peer-checked:visible duration-modal ease-soft z-overlay"
+        aria-hidden="true"
+      />
+    </div>
+
+    <!-- Desktop Sidebar -->
+    <div class="fixed inset-y-0 left-0 hidden border-r lg:block w-sidebar border-border bg-surface-primary">
+      <Sidebar />
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex flex-col min-h-screen lg:pl-sidebar bg-surface-primary">
+      <!-- Header -->
+      <Header />
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="max-w-screen-xl mx-auto">
+          <slot />
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="fixed inset-x-0 bottom-0 h-16 border-t bg-surface-primary border-border">
+        <div class="flex items-center h-full px-container-px">
+          <div class="text-sm text-icon-muted">
+            Built with <span class="text-red-500">❤️</span> and Astro + Tailwind CSS
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

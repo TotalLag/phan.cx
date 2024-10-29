@@ -1,0 +1,20 @@
+---
+interface Props {
+  label: string;
+  class?: string;
+  as?: 'button' | 'label';
+  for?: string;
+}
+
+const { label, class: className, as = 'button', for: forId } = Astro.props;
+
+const Tag = as;
+---
+
+<Tag 
+  class={`inline-flex items-center justify-center p-3 rounded-button bg-surface-primary hover:bg-surface-hover active:bg-surface-active active:shadow-button focus:shadow-button focus:outline-none focus:ring-2 focus:ring-accent transition-all duration-fast ease-soft cursor-pointer ${className}`}
+  aria-label={label}
+  {...(as === 'button' ? {} : { for: forId })}
+>
+  <slot />
+</Tag>

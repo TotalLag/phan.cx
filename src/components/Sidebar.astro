@@ -1,0 +1,160 @@
+---
+const stats = {
+  cups: "21.4k",
+  lines: "1.8k",
+  cats: "1"
+};
+---
+
+<aside class="flex flex-col h-full">
+  <div class="flex-1">
+    <div class="px-container-px py-section">
+      <h1 class="glitch-text">
+        <span class="glitch" data-text="Hello World!">> ⱧɆⱠⱠØ ₩ØⱤⱠĐ!</span>
+      </h1>
+    </div>
+
+    <div class="flex flex-col items-center pt-8 pb-6">
+      <div class="relative mb-3 w-profile h-profile">
+        <div class="w-full h-full overflow-hidden border-4 border-profile rounded-profile shadow-card">
+          <img src="/me.jpg" alt="Profile" class="object-cover w-full h-full" />
+        </div>
+      </div>
+      <h2 class="text-base font-medium mb-0.5">Chris Phan</h2>
+      <p class="text-sm text-icon-muted">Texas, USA</p>
+    </div>
+
+    <div class="flex justify-around py-4 border-t border-b px-container-px border-border">
+      <div class="text-center">
+        <div class="text-base font-bold">{stats.cups}</div>
+        <div class="text-xs leading-tight uppercase text-icon-muted">
+          CUPS OF<br/>COFFEE
+        </div>
+      </div>
+      <div class="text-center">
+        <div class="text-base font-bold">{stats.lines}</div>
+        <div class="text-xs leading-tight uppercase text-icon-muted">
+          LINES OF<br/>CODE
+        </div>
+      </div>
+      <div class="text-center">
+        <div class="text-base font-bold">{stats.cats}</div>
+        <div class="text-xs leading-tight uppercase text-icon-muted">
+          CAT
+        </div>
+      </div>
+    </div>
+
+    <nav class="py-4">
+      <a href="/" class="flex items-center py-2 text-sm px-container-px text-icon hover:bg-surface-hover">
+        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        About
+      </a>
+      <a href="/resume" class="flex items-center py-2 text-sm px-container-px text-icon hover:bg-surface-hover">
+        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a1.5 1.5 0 00-1.5-1.5H15" />
+        </svg>
+        Resume
+      </a>
+      <a href="/projects" class="flex items-center py-2 text-sm px-container-px text-icon hover:bg-surface-hover">
+        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        Projects
+      </a>
+      <a href="/contact" class="flex items-center py-2 text-sm px-container-px text-icon hover:bg-surface-hover">
+        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+        Contact
+      </a>
+    </nav>
+  </div>
+
+  <div class="mb-16 p-container-px">
+    <div class="flex justify-center space-x-inline">
+      <a href="https://linkedin.com" class="text-icon-muted hover:text-icon-hover">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+        </svg>
+      </a>
+      <a href="https://github.com" class="text-icon-muted hover:text-icon-hover">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .glitch {
+    position: relative;
+    display: inline-block;
+    color: #000;
+    letter-spacing: 2px;
+    z-index: 2;
+  }
+
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 110%;
+    z-index: -1;
+  }
+
+  .glitch::before {
+    animation: paths 5s step-end infinite,
+               opacity 5s step-end infinite,
+               font 8s step-end infinite,
+               movement 10s step-end infinite;
+  }
+
+  .glitch::after {
+    animation: paths 5s step-end infinite,
+               opacity 5s step-end infinite,
+               font 7s step-end infinite,
+               movement 8s step-end infinite;
+  }
+
+  @keyframes paths {
+    0% { clip-path: polygon(0% 43%, 83% 43%, 83% 22%, 23% 22%, 23% 24%, 91% 24%, 91% 26%, 18% 26%, 18% 83%, 29% 83%, 29% 17%, 41% 17%, 41% 39%, 18% 39%, 18% 82%, 54% 82%, 54% 88%, 19% 88%, 19% 4%, 39% 4%, 39% 14%, 76% 14%, 76% 52%, 23% 52%, 23% 35%, 19% 35%, 19% 8%, 36% 8%, 36% 31%, 73% 31%, 73% 16%, 1% 16%, 1% 56%, 50% 56%, 50% 8%); }
+    5% { clip-path: polygon(0% 29%, 44% 29%, 44% 83%, 94% 83%, 94% 56%, 11% 56%, 11% 64%, 94% 64%, 94% 70%, 88% 70%, 88% 32%, 18% 32%, 18% 96%, 10% 96%, 10% 62%, 9% 62%, 9% 84%, 68% 84%, 68% 50%, 52% 50%, 52% 55%, 35% 55%, 35% 87%, 25% 87%, 25% 39%, 15% 39%, 15% 88%, 52% 88%); }
+    30% { clip-path: none; }
+    45% { clip-path: polygon(0% 33%, 2% 33%, 2% 69%, 58% 69%, 58% 94%, 55% 94%, 55% 25%, 33% 25%, 33% 85%, 16% 85%, 16% 19%, 5% 19%, 5% 20%, 79% 20%, 79% 96%, 93% 96%, 93% 50%, 5% 50%, 5% 74%, 55% 74%, 55% 57%, 96% 57%, 96% 59%, 87% 59%, 87% 65%, 82% 65%, 82% 39%, 63% 39%, 63% 92%, 4% 92%, 4% 36%, 24% 36%, 24% 70%, 1% 70%, 1% 43%, 15% 43%, 15% 28%, 23% 28%, 23% 71%, 90% 71%, 90% 86%, 97% 86%, 97% 1%, 60% 1%, 60% 67%, 71% 67%, 71% 91%, 17% 91%, 17% 14%, 39% 14%, 39% 30%, 58% 30%, 58% 11%, 52% 11%, 52% 83%, 68% 83%); }
+    76% { clip-path: none; }
+    90% { clip-path: polygon(0% 41%, 13% 41%, 13% 6%, 87% 6%, 87% 93%, 10% 93%, 10% 13%, 89% 13%, 89% 6%, 3% 6%, 3% 8%, 16% 8%, 16% 79%, 0% 79%, 0% 99%, 92% 99%, 92% 90%, 5% 90%, 5% 60%, 0% 60%, 0% 48%, 89% 48%, 89% 13%, 80% 13%, 80% 43%, 95% 43%, 95% 19%, 80% 19%, 80% 85%, 38% 85%, 38% 62%); }
+    1%, 7%, 33%, 47%, 78%, 93% { clip-path: none; }
+  }
+
+  @keyframes movement {
+    0% { transform: translate(-5px, 0); }
+    15% { transform: translate(2px, 2px); }
+    60% { transform: translate(-2px, 1px); }
+    75% { transform: translate(5px, -1px); }
+    100% { transform: translate(1px, 2px); }
+  }
+
+  @keyframes opacity {
+    0% { opacity: 0.3; }
+    5% { opacity: 0.5; }
+    30% { opacity: 0.2; }
+    45% { opacity: 0.4; }
+    76% { opacity: 0.2; }
+    90% { opacity: 0.5; }
+    1%, 7%, 33%, 47%, 78%, 93% { opacity: 0; }
+  }
+
+  @keyframes font {
+    0% { font-weight: 100; color: rgba(0, 0, 0, 0.7); filter: blur(1px); }
+    20% { font-weight: 500; color: #000; filter: blur(0); }
+    50% { font-weight: 300; color: rgba(0, 0, 0, 0.8); filter: blur(1px); }
+    60% { font-weight: 700; color: #000; filter: blur(0); }
+    90% { font-weight: 500; color: rgba(0, 0, 0, 0.6); filter: blur(2px); }
+  }
+</style>

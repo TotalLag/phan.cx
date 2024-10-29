@@ -1,16 +1,105 @@
 ---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
 
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+interface InstagramPost {
+  id: string;
+  image: string;
+}
+
+const instagramPosts: InstagramPost[] = [
+  { id: '1', image: 'https://via.placeholder.com/400x400/2563eb/ffffff' },
+  { id: '2', image: 'https://via.placeholder.com/400x400/1e40af/ffffff' },
+  { id: '3', image: 'https://via.placeholder.com/400x400/1d4ed8/ffffff' },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Home">
+  <div>
+    <section class="mb-16">
+      <h1 class="text-[28px] font-bold mb-6 leading-tight">
+        A BEAUTIFUL, RESPONSIVE, STATICALLY-GENERATED, SVELTE APPLICATION WRITTEN WITH MODERN JAVASCRIPT.
+      </h1>
+      
+      <div class="space-y-4 text-[15px] leading-relaxed text-gray-600">
+        <p>
+          Welcome to my website! Please feel free to read my musings, or you can check out my resume, projects, random stats, or contact me.
+        </p>
+        
+        <p>
+          This site serves as my portfolio and there will be many aspects that will be ongoing development. As the pieces come together, you can expect to see more of what makes us all parts for this website; but until then enjoy seeing how things are put together on GitHub!
+        </p>
+        
+        <p>
+          Source available <a href="#" class="text-blue-600 hover:underline">here</a>.
+        </p>
+      </div>
+    </section>
+
+    <section class="mb-16">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-bold">Featured Posts</h2>
+        <select class="h-10 px-4 transition-all border cursor-pointer text-small bg-surface-secondary border-border rounded-input hover:border-border-hover focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-accent/20 duration-base ease-soft">
+          <option>All Time</option>
+          <option>This Week</option>
+          <option>This Month</option>
+          <option>This Year</option>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {sortedPosts.map(post => (
+          <a href={`/blog/${post.slug}`} class="group">
+            <div class="relative overflow-hidden rounded shadow-sm h-44">
+              {post.data.cover && (
+                <img 
+                  src={post.data.cover} 
+                  alt={post.data.title}
+                  class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                />
+              )}
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+              <div class="absolute bottom-0 p-3">
+                <div class="text-white/80 text-[10px] uppercase tracking-wide mb-1">{post.data.topic}</div>
+                <h3 class="text-sm font-medium leading-snug text-white">{post.data.title}</h3>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-bold">Instagram Photo Feed</h2>
+        <select class="h-10 px-4 transition-all border cursor-pointer text-small bg-surface-secondary border-border rounded-input hover:border-border-hover focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-accent/20 duration-base ease-soft">
+          <option>All Time</option>
+          <option>This Week</option>
+          <option>This Month</option>
+          <option>This Year</option>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {instagramPosts.map(post => (
+          <div class="overflow-hidden rounded shadow-sm aspect-square">
+            <img 
+              src={post.image} 
+              alt={`Instagram post ${post.id}`}
+              class="object-cover w-full h-full"
+            />
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  h1 {
+    letter-spacing: -0.02em;
+  }
+</style>

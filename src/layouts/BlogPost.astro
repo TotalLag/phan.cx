@@ -1,0 +1,127 @@
+---
+import Layout from './Layout.astro';
+
+interface Props {
+  title: string;
+  topic?: string;
+  excerpt: string;
+  date: Date;
+  updated?: Date;
+  cover?: string;
+  top?: boolean;
+  caption?: string;
+}
+
+const { title, topic, excerpt, date, updated, cover, top, caption } = Astro.props;
+---
+
+<Layout title={title}>
+  <article class="flex flex-col w-full mx-auto mt-6 md:w-4/5 markdown print:p-10">
+    <div class="mx-5 my-3 text-sm">
+      {topic && <a href="" class="font-bold tracking-widest text-blue-600 hover:text-blue-800">{topic}</a>}
+    </div>
+    
+    <div class="px-5 text-4xl font-bold leading-tight text-gray-900">
+      <h1>{title}</h1>
+    </div>
+
+    <div class="px-5 pt-4 pb-6 text-lg text-gray-600">
+      {excerpt}
+    </div>
+
+    {cover && (
+      <div class="mx-5">
+        <img
+          class:list={[
+            "object-cover w-full max-h-96 rounded-lg shadow-lg",
+            { "object-top": top }
+          ]}
+          src={cover}
+          alt={caption}
+        />
+      </div>
+    )}
+
+    {caption && (
+      <div class="mx-5 text-gray-600">
+        <p class="py-3 text-sm italic text-gray-500 border-b">{caption}</p>
+      </div>
+    )}
+
+    <div class="px-5 pt-4 italic font-light text-gray-600">
+      <span class="flex flex-col text-sm">
+        Posted on {date.toLocaleString('default', { dateStyle: 'long' })}<br />
+        {updated && (
+          <>
+            Updated: {updated.toLocaleString('default', {
+              dateStyle: 'long',
+              timeStyle: 'short',
+            })}
+          </>
+        )}
+      </span>
+    </div>
+
+    <div class="px-5 py-8 mx-auto prose prose-lg max-w-none">
+      <slot />
+    </div>
+  </article>
+</Layout>
+
+<style is:global>
+  /* Markdown Styles */
+  .markdown {
+    @apply leading-relaxed text-gray-700;
+  }
+
+  .markdown h2 {
+    @apply text-2xl font-bold text-gray-900 mt-12 mb-6;
+  }
+
+  .markdown h3 {
+    @apply text-xl font-semibold text-gray-900 mt-8 mb-4;
+  }
+
+  .markdown p {
+    @apply mb-6 text-lg leading-relaxed;
+  }
+
+  .markdown ul,
+  .markdown ol {
+    @apply mb-6 ml-8 text-lg;
+  }
+
+  .markdown li > p,
+  .markdown li > ul,
+  .markdown li > ol {
+    @apply mb-2;
+  }
+
+  .markdown ol {
+    @apply list-decimal;
+  }
+
+  .markdown ul {
+    @apply list-disc;
+  }
+
+  .markdown blockquote {
+    @apply p-4 mx-6 bg-gray-50 border-l-4 border-gray-300 italic my-6;
+  }
+
+  .markdown blockquote > p {
+    @apply mb-0;
+  }
+
+  .markdown pre {
+    @apply p-4 rounded-lg bg-gray-50 overflow-x-auto my-6;
+  }
+
+  .markdown code {
+    @apply bg-gray-50 px-1 py-0.5 rounded text-sm;
+  }
+
+  .markdown a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+  }
+</style>
