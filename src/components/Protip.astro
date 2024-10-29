@@ -2,7 +2,7 @@
 ---
 <div class="p-6 my-6 border-l-4 rounded-r shadow-sm protip-container">
   <div class="mb-2 text-lg font-bold protip-title">Protip</div>
-  <div class="prose protip-content">
+  <div class="prose prose-base prose-unrestricted">
     <slot />
   </div>
 </div>
@@ -15,26 +15,6 @@
 
   .protip-title {
     color: var(--accent);
-  }
-
-  .protip-content {
-    color: var(--text-primary);
-  }
-
-  .prose :global(p) {
-    margin: 0;
-    line-height: 1.6;
-  }
-  
-  .prose :global(a) {
-    color: var(--accent);
-    text-decoration: underline;
-    transition: color 200ms ease-out;
-  }
-  
-  .prose :global(a:hover) {
-    color: var(--accent-hover);
-    text-decoration: none;
   }
 
   /* Dark mode adjustments */

@@ -119,6 +119,12 @@ module.exports = {
             '--tw-prose-td-borders': 'var(--border)',
           },
         },
+        // Add custom modifier for no max-width
+        unrestricted: {
+          css: {
+            maxWidth: 'none',
+          },
+        },
       },
     },
   },

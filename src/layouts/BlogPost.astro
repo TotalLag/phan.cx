@@ -1,18 +1,10 @@
 ---
+import type { CollectionEntry } from "astro:content";
 import Layout from './Layout.astro';
 
-interface Props {
-  title: string;
-  topic?: string;
-  excerpt: string;
-  date: Date;
-  updated?: Date;
-  cover?: string;
-  top?: boolean;
-  caption?: string;
-}
+type Props = CollectionEntry<"blog">["data"];
 
-const { title, topic, excerpt, date, updated, cover, top, caption } = Astro.props;
+const { title, topic, excerpt, date, updated } = Astro.props;
 ---
 
 <Layout title={title}>
@@ -29,21 +21,7 @@ const { title, topic, excerpt, date, updated, cover, top, caption } = Astro.prop
       {excerpt}
     </div>
 
-    {cover && (
-      <div class="mx-5">
-        <img
-          class:list={[
-            "object-cover w-full max-h-96 rounded-lg shadow-lg",
-            { "object-top": top }
-          ]}
-          src={cover}
-          alt={caption}
-        />
-        {caption && (
-          <p class="mt-2 text-xs italic text-muted">{caption}</p>
-        )}
-      </div>
-    )}
+    <slot name="hero" />
 
     <div class="px-5 pt-4 italic font-light text-muted">
       <span class="flex flex-col text-sm">
@@ -59,44 +37,8 @@ const { title, topic, excerpt, date, updated, cover, top, caption } = Astro.prop
       </span>
     </div>
 
-    <div class="px-5 py-8 mx-auto prose prose-lg dark:prose-invert max-w-none">
+    <div class="px-5 py-8 mx-auto prose prose-lg dark:prose-invert prose-pre:bg-surface-tertiary prose-pre:rounded-lg prose-code:bg-surface-tertiary prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:text-sm prose-img:rounded-lg prose-img:my-6 prose-blockquote:italic prose-blockquote:border-border prose-blockquote:bg-surface-secondary max-w-none">
       <slot />
     </div>
   </article>
 </Layout>
-
-<style>
-  /* Additional custom styles if needed */
-  :global(.prose) {
-    max-width: none;
-  }
-
-  :global(.prose a) {
-    text-decoration-line: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 2px;
-  }
-
-  :global(.prose pre) {
-    background-color: var(--surface-tertiary);
-    border-radius: 0.5rem;
-  }
-
-  :global(.prose code) {
-    background-color: var(--surface-tertiary);
-    border-radius: 0.25rem;
-    padding: 0.125rem 0.25rem;
-    font-size: 0.875em;
-  }
-
-  :global(.prose img) {
-    border-radius: 0.5rem;
-    margin: 1.5rem auto;
-  }
-
-  :global(.prose blockquote) {
-    font-style: italic;
-    border-left-color: var(--border);
-    background-color: var(--surface-secondary);
-  }
-</style>

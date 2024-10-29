@@ -1,19 +1,44 @@
 ---
 import { getCollection } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map(post => ({
+  return posts.map((post) => ({
     params: { slug: post.slug },
-    props: { post },
+    props: post,
   }));
 }
 
-const { post } = Astro.props;
+const post = Astro.props;
 const { Content } = await post.render();
 ---
 
 <BlogPost {...post.data}>
+  {post.data.cover && (
+    <div class="mx-5" slot="hero">
+      <figure>
+        <Image
+          src={post.data.cover}
+          alt={post.data.caption || post.data.title}
+          width={1200}
+          height={675}
+          class="w-full rounded-lg shadow-lg"
+        />
+        {post.data.caption && (
+          <figcaption class="mt-2 text-xs italic text-muted">
+            {post.data.caption}
+          </figcaption>
+        )}
+      </figure>
+    </div>
+  )}
   <Content />
 </BlogPost>
+
+<style>
+  figure {
+    margin: 0;
+  }
+</style>

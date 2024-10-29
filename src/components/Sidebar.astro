@@ -7,6 +7,8 @@ const stats = {
 
 import '../styles/glitch.css';
 import CoffeeCounter from './CoffeeCounter';
+import { Image } from 'astro:assets';
+import profileImage from '../../public/me.jpg';
 ---
 
 <aside class="flex flex-col h-full">
@@ -20,7 +22,13 @@ import CoffeeCounter from './CoffeeCounter';
     <div class="flex flex-col items-center pt-8 pb-6">
       <div class="relative mb-3 w-profile h-profile">
         <div class="w-full h-full overflow-hidden border-4 border-profile rounded-profile shadow-card">
-          <img src="/me.jpg" alt="Profile" class="object-cover w-full h-full" />
+          <Image 
+            src={profileImage} 
+            alt="Profile" 
+            class="object-cover w-full h-full" 
+            width={128}
+            height={128}
+          />
         </div>
       </div>
       <h2 class="text-base font-medium mb-0.5 text-primary">Chris Phan</h2>
