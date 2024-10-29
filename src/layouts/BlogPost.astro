@@ -18,14 +18,14 @@ const { title, topic, excerpt, date, updated, cover, top, caption } = Astro.prop
 <Layout title={title}>
   <article class="flex flex-col w-full mx-auto mt-6 md:w-4/5 markdown print:p-10">
     <div class="mx-5 my-3 text-sm">
-      {topic && <a href="" class="font-bold tracking-widest text-blue-600 hover:text-blue-800">{topic}</a>}
+      {topic && <a href="" class="font-bold tracking-widest transition-colors text-accent hover:text-accent-hover">{topic}</a>}
     </div>
     
-    <div class="px-5 text-4xl font-bold leading-tight text-gray-900">
+    <div class="px-5 text-4xl font-bold leading-tight text-primary">
       <h1>{title}</h1>
     </div>
 
-    <div class="px-5 pt-4 pb-6 text-lg text-gray-600">
+    <div class="px-5 pt-4 pb-6 text-lg text-secondary">
       {excerpt}
     </div>
 
@@ -43,12 +43,12 @@ const { title, topic, excerpt, date, updated, cover, top, caption } = Astro.prop
     )}
 
     {caption && (
-      <div class="mx-5 text-gray-600">
-        <p class="py-3 text-sm italic text-gray-500 border-b">{caption}</p>
+      <div class="mx-5 text-muted">
+        <p class="py-3 text-sm italic border-b border-border">{caption}</p>
       </div>
     )}
 
-    <div class="px-5 pt-4 italic font-light text-gray-600">
+    <div class="px-5 pt-4 italic font-light text-muted">
       <span class="flex flex-col text-sm">
         Posted on {date.toLocaleString('default', { dateStyle: 'long' })}<br />
         {updated && (
@@ -71,15 +71,18 @@ const { title, topic, excerpt, date, updated, cover, top, caption } = Astro.prop
 <style is:global>
   /* Markdown Styles */
   .markdown {
-    @apply leading-relaxed text-gray-700;
+    @apply leading-relaxed;
+    color: var(--text-secondary);
   }
 
   .markdown h2 {
-    @apply text-2xl font-bold text-gray-900 mt-12 mb-6;
+    @apply text-2xl font-bold mt-12 mb-6;
+    color: var(--text-primary);
   }
 
   .markdown h3 {
-    @apply text-xl font-semibold text-gray-900 mt-8 mb-4;
+    @apply text-xl font-semibold mt-8 mb-4;
+    color: var(--text-primary);
   }
 
   .markdown p {
@@ -106,7 +109,10 @@ const { title, topic, excerpt, date, updated, cover, top, caption } = Astro.prop
   }
 
   .markdown blockquote {
-    @apply p-4 mx-6 bg-gray-50 border-l-4 border-gray-300 italic my-6;
+    @apply p-4 mx-6 border-l-4 italic my-6;
+    background-color: var(--surface-secondary);
+    border-color: var(--border);
+    color: var(--text-muted);
   }
 
   .markdown blockquote > p {
@@ -114,14 +120,32 @@ const { title, topic, excerpt, date, updated, cover, top, caption } = Astro.prop
   }
 
   .markdown pre {
-    @apply p-4 rounded-lg bg-gray-50 overflow-x-auto my-6;
+    @apply p-4 rounded-lg overflow-x-auto my-6;
+    background-color: var(--surface-tertiary);
   }
 
   .markdown code {
-    @apply bg-gray-50 px-1 py-0.5 rounded text-sm;
+    @apply px-1 py-0.5 rounded text-sm;
+    background-color: var(--surface-tertiary);
+    color: var(--text-primary);
   }
 
   .markdown a {
-    @apply text-blue-600 hover:text-blue-800 underline;
+    @apply underline transition-colors;
+    color: var(--accent);
+  }
+
+  .markdown a:hover {
+    color: var(--accent-hover);
+  }
+
+  /* Dark mode adjustments */
+  :root.dark .markdown pre,
+  :root.dark .markdown code {
+    background-color: var(--surface-tertiary);
+  }
+
+  :root.dark .markdown blockquote {
+    background-color: var(--surface-tertiary);
   }
 </style>

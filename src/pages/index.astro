@@ -20,11 +20,11 @@ const instagramPosts: InstagramPost[] = [
 <Layout title="Home">
   <div>
     <section class="mb-16">
-      <h1 class="text-[28px] font-bold mb-6 leading-tight">
+      <h1 class="text-[28px] font-bold mb-6 leading-tight text-primary">
         A BEAUTIFUL, RESPONSIVE, STATICALLY-GENERATED, SVELTE APPLICATION WRITTEN WITH MODERN JAVASCRIPT.
       </h1>
       
-      <div class="space-y-4 text-[15px] leading-relaxed text-gray-600">
+      <div class="space-y-4 text-[15px] leading-relaxed text-secondary">
         <p>
           Welcome to my website! Please feel free to read my musings, or you can check out my resume, projects, random stats, or contact me.
         </p>
@@ -34,15 +34,15 @@ const instagramPosts: InstagramPost[] = [
         </p>
         
         <p>
-          Source available <a href="#" class="text-blue-600 hover:underline">here</a>.
+          Source available <a href="#" class="transition-colors text-accent hover:text-accent-hover hover:underline">here</a>.
         </p>
       </div>
     </section>
 
     <section class="mb-16">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold">Featured Posts</h2>
-        <select class="h-10 px-4 transition-all border cursor-pointer text-small bg-surface-secondary border-border rounded-input hover:border-border-hover focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-accent/20 duration-base ease-soft">
+        <h2 class="text-xl font-bold text-primary">Featured Posts</h2>
+        <select class="h-10 px-4 transition-all border cursor-pointer text-small bg-surface-secondary border-border text-primary rounded-input hover:border-border-hover focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-accent/20 duration-base ease-soft">
           <option>All Time</option>
           <option>This Week</option>
           <option>This Month</option>
@@ -74,8 +74,8 @@ const instagramPosts: InstagramPost[] = [
 
     <section>
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold">Instagram Photo Feed</h2>
-        <select class="h-10 px-4 transition-all border cursor-pointer text-small bg-surface-secondary border-border rounded-input hover:border-border-hover focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-accent/20 duration-base ease-soft">
+        <h2 class="text-xl font-bold text-primary">Instagram Photo Feed</h2>
+        <select class="h-10 px-4 transition-all border cursor-pointer text-small bg-surface-secondary border-border text-primary rounded-input hover:border-border-hover focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-accent/20 duration-base ease-soft">
           <option>All Time</option>
           <option>This Week</option>
           <option>This Month</option>
@@ -101,5 +101,22 @@ const instagramPosts: InstagramPost[] = [
 <style>
   h1 {
     letter-spacing: -0.02em;
+  }
+
+  /* Add glitch effect styles that work with dark mode */
+  .text-primary {
+    color: var(--text-primary);
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-accent {
+    color: var(--accent);
+  }
+
+  .text-accent-hover {
+    color: var(--accent-hover);
   }
 </style>

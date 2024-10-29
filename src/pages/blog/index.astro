@@ -20,21 +20,28 @@ const sortedPosts = posts.sort((a: BlogPost, b: BlogPost) =>
 
 <Layout title="Blog">
   <main class="max-w-4xl px-4 py-8 mx-auto">
-    <h1 class="mb-8 text-4xl font-bold">Blog Posts</h1>
+    <h1 class="mb-8 text-4xl font-bold text-primary">Blog Posts</h1>
     <div class="space-y-8">
       {sortedPosts.map((post: BlogPost) => (
-        <article class="pb-8 border-b">
-          <a href={`/blog/${post.slug}`} class="block hover:opacity-75">
+        <article class="pb-8 border-b border-border">
+          <a 
+            href={`/blog/${post.slug}`} 
+            class="block transition-opacity hover:opacity-75"
+          >
             {post.data.cover && (
               <img 
                 src={post.data.cover} 
                 alt={post.data.title}
-                class="object-cover w-full h-48 mb-4"
+                class="object-cover w-full h-48 mb-4 rounded-lg shadow-sm"
               />
             )}
-            <h2 class="mb-2 text-2xl font-bold">{post.data.title}</h2>
-            <p class="mb-2 text-gray-600">{post.data.excerpt}</p>
-            <div class="text-sm text-gray-500">
+            <h2 class="mb-2 text-2xl font-bold transition-colors text-primary">
+              {post.data.title}
+            </h2>
+            <p class="mb-2 transition-colors text-secondary">
+              {post.data.excerpt}
+            </p>
+            <div class="text-sm transition-colors text-muted">
               {post.data.date.toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
@@ -47,3 +54,18 @@ const sortedPosts = posts.sort((a: BlogPost, b: BlogPost) =>
     </div>
   </main>
 </Layout>
+
+<style>
+  /* Add smooth transitions for theme changes */
+  article {
+    transition: border-color 200ms ease-out;
+  }
+
+  h2, p, div {
+    transition: color 200ms ease-out;
+  }
+
+  img {
+    transition: opacity 200ms ease-out, box-shadow 200ms ease-out;
+  }
+</style>

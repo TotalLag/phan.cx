@@ -20,25 +20,25 @@ const stats = {
           <img src="/me.jpg" alt="Profile" class="object-cover w-full h-full" />
         </div>
       </div>
-      <h2 class="text-base font-medium mb-0.5">Chris Phan</h2>
+      <h2 class="text-base font-medium mb-0.5 text-primary">Chris Phan</h2>
       <p class="text-sm text-icon-muted">Texas, USA</p>
     </div>
 
     <div class="flex justify-around py-4 border-t border-b px-container-px border-border">
       <div class="text-center">
-        <div class="text-base font-bold">{stats.cups}</div>
+        <div class="text-base font-bold text-primary">{stats.cups}</div>
         <div class="text-xs leading-tight uppercase text-icon-muted">
           CUPS OF<br/>COFFEE
         </div>
       </div>
       <div class="text-center">
-        <div class="text-base font-bold">{stats.lines}</div>
+        <div class="text-base font-bold text-primary">{stats.lines}</div>
         <div class="text-xs leading-tight uppercase text-icon-muted">
           LINES OF<br/>CODE
         </div>
       </div>
       <div class="text-center">
-        <div class="text-base font-bold">{stats.cats}</div>
+        <div class="text-base font-bold text-primary">{stats.cats}</div>
         <div class="text-xs leading-tight uppercase text-icon-muted">
           CAT
         </div>
@@ -93,9 +93,10 @@ const stats = {
   .glitch {
     position: relative;
     display: inline-block;
-    color: #000;
+    color: var(--text-primary);
     letter-spacing: 2px;
     z-index: 2;
+    transition: color 200ms ease-out;
   }
 
   .glitch::before,
@@ -106,6 +107,8 @@ const stats = {
     left: 0;
     width: 110%;
     z-index: -1;
+    color: var(--text-primary);
+    transition: color 200ms ease-out;
   }
 
   .glitch::before {
@@ -151,10 +154,10 @@ const stats = {
   }
 
   @keyframes font {
-    0% { font-weight: 100; color: rgba(0, 0, 0, 0.7); filter: blur(1px); }
-    20% { font-weight: 500; color: #000; filter: blur(0); }
-    50% { font-weight: 300; color: rgba(0, 0, 0, 0.8); filter: blur(1px); }
-    60% { font-weight: 700; color: #000; filter: blur(0); }
-    90% { font-weight: 500; color: rgba(0, 0, 0, 0.6); filter: blur(2px); }
+    0% { font-weight: 100; color: var(--text-secondary); filter: blur(1px); }
+    20% { font-weight: 500; color: var(--text-primary); filter: blur(0); }
+    50% { font-weight: 300; color: var(--text-muted); filter: blur(1px); }
+    60% { font-weight: 700; color: var(--text-primary); filter: blur(0); }
+    90% { font-weight: 500; color: var(--text-secondary); filter: blur(2px); }
   }
 </style>

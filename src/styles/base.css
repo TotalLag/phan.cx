@@ -3,55 +3,199 @@
 @tailwind utilities;
 
 @layer base {
-  /* Modern optimized font loading */
-  @supports (font-variation-settings: normal) {
-    @font-face {
-      font-family: 'Inter var';
-      font-weight: 100 900;
-      font-display: swap;
-      font-style: normal;
-      font-named-instance: 'Regular';
-      src: url('https://rsms.me/inter/font-files/Inter-roman.var.woff2?v=3.19')
-        format('woff2');
-    }
+  :root {
+    /* Color tokens */
+    --surface-primary: #ffffff;
+    --surface-secondary: #f9fafb;
+    --surface-tertiary: #f3f4f6;
+    --surface-hover: #f3f4f6;
+    --surface-active: #e5e7eb;
+    --surface-disabled: #f9fafb;
 
-    @font-face {
-      font-family: 'Inter var';
-      font-weight: 100 900;
-      font-display: swap;
-      font-style: italic;
-      font-named-instance: 'Italic';
-      src: url('https://rsms.me/inter/font-files/Inter-italic.var.woff2?v=3.19')
-        format('woff2');
-    }
+    --border: #e5e7eb;
+    --border-focus: #9ca3af;
+    --border-hover: #d1d5db;
+    --border-disabled: #e5e7eb;
+    --border-profile: #ee6633;
+
+    --text-primary: #111827;
+    --text-secondary: #374151;
+    --text-muted: #6b7280;
+
+    --icon: #6b7280;
+    --icon-muted: #9ca3af;
+    --icon-hover: #4b5563;
+    --icon-disabled: #d1d5db;
+
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --accent-muted: #60a5fa;
+
+    --overlay-light: rgba(255, 255, 255, 0.8);
+    --overlay-dark: rgba(0, 0, 0, 0.7);
+    --overlay-modal: rgba(0, 0, 0, 0.4);
+
+    /* Spacing tokens */
+    --gutter: clamp(1rem, 3vw, 1.5rem);
+    --flow-space: 1em;
+  }
+
+  :root.dark {
+    --surface-primary: #18181b;
+    --surface-secondary: #27272a;
+    --surface-tertiary: #3f3f46;
+    --surface-hover: #3f3f46;
+    --surface-active: #52525b;
+    --surface-disabled: #27272a;
+
+    --border: #3f3f46;
+    --border-focus: #71717a;
+    --border-hover: #52525b;
+    --border-disabled: #3f3f46;
+
+    --text-primary: #f9fafb;
+    --text-secondary: #e5e7eb;
+    --text-muted: #9ca3af;
+
+    --icon: #a1a1aa;
+    --icon-muted: #71717a;
+    --icon-hover: #d4d4d8;
+    --icon-disabled: #52525b;
+  }
+
+  /* Base text color and transitions */
+  body {
+    color: var(--text-primary);
+  }
+
+  /* Add transitions for theme changes */
+  body, 
+  body *:not(script):not(style) {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 200ms;
+    transition-timing-function: ease-out;
+  }
+
+  /* Modern optimized font loading */
+  @font-face {
+    font-family: 'Inter var';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+    font-named-instance: 'Regular';
+    src: url('https://rsms.me/inter/font-files/Inter-roman.var.woff2?v=3.19')
+      format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Inter var';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: italic;
+    font-named-instance: 'Italic';
+    src: url('https://rsms.me/inter/font-files/Inter-italic.var.woff2?v=3.19')
+      format('woff2');
   }
 }
 
 @layer components {
+  /* Layout compositions */
+  .flex-layout {
+    @apply flex items-center;
+  }
+
+  .center-layout {
+    @apply w-full mx-auto px-container-px;
+  }
+
+  .grid-layout {
+    display: grid;
+    grid-template-columns: 
+      minmax(0, 1fr)
+      min(65ch, 100%)
+      minmax(0, 1fr);
+    gap: var(--gutter);
+  }
+
+  .grid-layout > * {
+    grid-column: 2;
+  }
+
+  /* Base component styles */
   .search-input {
-    @apply h-10 w-full rounded-input border border-border bg-surface-secondary pl-10 pr-input-px text-sm text-icon;
+    @apply w-full h-12 text-sm border rounded-input border-border bg-surface-secondary;
+    @apply pl-10 pr-4;
     @apply placeholder:text-icon-muted;
-    @apply hover:border-border-hover focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-accent/20;
+    @apply hover:border-border-hover;
+    @apply focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-blue-500/20;
     @apply transition-colors duration-base ease-soft;
+    color: var(--text-primary);
   }
 
   .site-header {
-    @apply sticky top-0 z-sticky border-b border-border bg-surface-primary;
-  }
-
-  .header-container {
-    @apply mx-auto flex h-16 max-w-screen-2xl items-center px-container-px;
+    @apply sticky top-0 border-b z-sticky border-border bg-surface-primary;
+    @apply flex items-center;
+    height: 4rem;
   }
 
   .main-content {
-    @apply flex-1 px-container-px py-section pb-32;
+    @apply pb-32 px-container-px py-section;
     min-height: calc(
       100vh - theme('spacing.14') - theme('spacing.16')
     ); /* 100vh - header - footer */
   }
 
   .glitch-text {
-    @apply text-lg font-medium tracking-wide;
+    @apply font-medium tracking-wide;
     font-size: clamp(1.125rem, calc(1.125rem + 0.5vw), 1.375rem);
+    color: var(--text-primary);
+  }
+}
+
+@layer utilities {
+  /* Layout utilities */
+  .center {
+    @apply mx-auto px-container-px;
+  }
+
+  /* Spacing utilities */
+  .flow > * + * {
+    margin-top: var(--flow-space, 1em);
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--stack-space, var(--gutter));
+  }
+
+  .cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cluster-space, var(--gutter));
+  }
+
+  /* Visual utilities */
+  .surface {
+    @apply bg-surface-primary;
+    color: var(--text-primary);
+  }
+
+  .surface-alt {
+    @apply bg-surface-secondary;
+    color: var(--text-primary);
+  }
+
+  .text-primary {
+    color: var(--text-primary);
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-muted {
+    color: var(--text-muted);
   }
 }

@@ -7,6 +7,8 @@
     },
     "types": ["@astrojs/image/client"],
     "strictNullChecks": true,
-    "allowJs": true
+    "allowJs": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js"
   }
 }

@@ -12,11 +12,12 @@ const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="antialiased">
   <head>
     <meta charset="UTF-8" />
+    <meta name="description" content="Personal website and blog" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -24,11 +25,21 @@ const { title } = Astro.props;
   <body class="min-h-screen bg-surface-primary">
     <!-- Mobile Menu Container -->
     <div class="lg:hidden">
-      <input type="checkbox" id="nav-toggle" class="hidden peer" aria-hidden="true">
+      <input 
+        type="checkbox" 
+        id="nav-toggle" 
+        class="hidden peer" 
+        aria-hidden="true"
+      >
       
       <!-- Mobile Sidebar -->
       <div 
-        class="fixed inset-y-0 left-0 transition-transform transform -translate-x-full w-sidebar bg-surface-primary duration-modal ease-soft z-modal peer-checked:translate-x-0 peer-checked:shadow-modal"
+        class:list={[
+          'fixed inset-y-0 left-0 w-sidebar bg-surface-primary z-modal',
+          'transform -translate-x-full',
+          'peer-checked:translate-x-0 peer-checked:shadow-modal',
+          'transition-transform duration-modal ease-soft'
+        ]}
       >
         <div class="h-full pt-20 overflow-y-auto">
           <Sidebar />
@@ -38,13 +49,20 @@ const { title } = Astro.props;
       <!-- Backdrop -->
       <label
         for="nav-toggle"
-        class="fixed inset-0 invisible transition-all opacity-0 bg-overlay-dark peer-checked:opacity-100 peer-checked:visible duration-modal ease-soft z-overlay"
+        class:list={[
+          'fixed inset-0 bg-overlay-dark z-overlay',
+          'invisible opacity-0',
+          'peer-checked:visible peer-checked:opacity-100',
+          'transition-all duration-modal ease-soft'
+        ]}
         aria-hidden="true"
       />
     </div>
 
     <!-- Desktop Sidebar -->
-    <div class="fixed inset-y-0 left-0 hidden border-r lg:block w-sidebar border-border bg-surface-primary">
+    <div 
+      class="fixed inset-y-0 left-0 hidden border-r lg:block w-sidebar border-border bg-surface-primary"
+    >
       <Sidebar />
     </div>
 
@@ -55,19 +73,54 @@ const { title } = Astro.props;
 
       <!-- Main Content -->
       <main class="main-content">
-        <div class="max-w-screen-xl mx-auto">
+        <div class="w-full max-w-none">
           <slot />
         </div>
       </main>
 
       <!-- Footer -->
-      <footer class="fixed inset-x-0 bottom-0 h-16 border-t bg-surface-primary border-border">
-        <div class="flex items-center h-full px-container-px">
+      <footer 
+        class="fixed inset-x-0 bottom-0 h-16 border-t bg-surface-primary border-border"
+      >
+        <div class="h-full flex-layout px-container-px">
           <div class="text-sm text-icon-muted">
-            Built with <span class="text-red-500">❤️</span> and Astro + Tailwind CSS
+            Built with <span class="text-red-500" aria-hidden="true">❤️</span>
+            <span class="sr-only">love</span> and Astro + Tailwind CSS
           </div>
         </div>
       </footer>
     </div>
+
+    <!-- Theme initialization script -->
+    <script>
+      function initializeTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          document.documentElement.classList.add(savedTheme);
+          return;
+        }
+
+        // Check system preference
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const initialTheme = prefersDark ? 'dark' : 'light';
+        document.documentElement.classList.add(initialTheme);
+        localStorage.setItem('theme', initialTheme);
+
+        // Listen for system preference changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+          const newTheme = e.matches ? 'dark' : 'light';
+          const userTheme = localStorage.getItem('theme');
+          // Only update if user hasn't manually set a theme
+          if (!userTheme) {
+            document.documentElement.classList.remove('light', 'dark');
+            document.documentElement.classList.add(newTheme);
+            localStorage.setItem('theme', newTheme);
+          }
+        });
+      }
+
+      // Run initialization
+      initializeTheme();
+    </script>
   </body>
 </html>

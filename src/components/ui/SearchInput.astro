@@ -7,10 +7,12 @@ interface Props {
 const { placeholder = "Search", class: className } = Astro.props;
 ---
 
-<div class={`relative flex-1 ${className}`}>
-  <div class="relative">
+<div class={`relative ${className}`}>
+  <label class="relative block">
+    <span class="sr-only">{placeholder}</span>
+    
     <svg 
-      class="absolute w-4 h-4 -translate-y-1/2 pointer-events-none left-3 top-1/2 text-icon-muted" 
+      class="absolute w-5 h-5 transition-colors duration-200 -translate-y-1/2 pointer-events-none left-3 top-1/2 text-icon-muted" 
       fill="none" 
       stroke="currentColor" 
       viewBox="0 0 24 24"
@@ -23,11 +25,67 @@ const { placeholder = "Search", class: className } = Astro.props;
         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
       />
     </svg>
+
     <input 
       type="search" 
       placeholder={placeholder}
       class="search-input"
-      aria-label={placeholder}
+      role="searchbox"
+      autocomplete="off"
+      spellcheck="false"
     />
-  </div>
+  </label>
 </div>
+
+<style>
+  /* Enhanced theme-aware styles */
+  .search-input {
+    transition: all 200ms ease-out;
+    background-color: var(--surface-secondary);
+    color: var(--text-primary);
+    border-color: var(--border);
+  }
+
+  .search-input::placeholder {
+    color: var(--icon-muted);
+    transition: color 200ms ease-out;
+  }
+
+  .search-input:hover {
+    border-color: var(--border-hover);
+  }
+
+  .search-input:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 2px var(--accent-muted/0.2);
+    outline: none;
+  }
+
+  /* Remove default search input styles */
+  .search-input::-webkit-search-decoration,
+  .search-input::-webkit-search-cancel-button,
+  .search-input::-webkit-search-results-button,
+  .search-input::-webkit-search-results-decoration {
+    display: none;
+  }
+
+  /* Dark mode adjustments */
+  :root.dark .search-input {
+    background-color: var(--surface-secondary);
+  }
+
+  :root.dark .search-input:focus {
+    box-shadow: 0 0 0 2px var(--accent/0.2);
+  }
+
+  /* High contrast mode support */
+  @media (forced-colors: active) {
+    .search-input {
+      border: 2px solid ButtonText;
+    }
+    .search-input:focus {
+      outline: 2px solid ButtonText;
+      outline-offset: 2px;
+    }
+  }
+</style>

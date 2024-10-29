@@ -1,24 +1,44 @@
 ---
 ---
-<div class="p-6 my-6 border-l-4 border-blue-500 rounded-r shadow-sm bg-blue-50">
-  <div class="mb-2 text-lg font-bold text-blue-800">Protip</div>
-  <div class="prose text-blue-700 prose-blue">
+<div class="p-6 my-6 border-l-4 rounded-r shadow-sm protip-container">
+  <div class="mb-2 text-lg font-bold protip-title">Protip</div>
+  <div class="prose protip-content">
     <slot />
   </div>
 </div>
 
 <style>
+  .protip-container {
+    border-color: var(--accent);
+    background-color: var(--surface-secondary);
+  }
+
+  .protip-title {
+    color: var(--accent);
+  }
+
+  .protip-content {
+    color: var(--text-primary);
+  }
+
   .prose :global(p) {
     margin: 0;
     line-height: 1.6;
   }
   
   .prose :global(a) {
-    color: #2563eb;
+    color: var(--accent);
     text-decoration: underline;
+    transition: color 200ms ease-out;
   }
   
   .prose :global(a:hover) {
+    color: var(--accent-hover);
     text-decoration: none;
+  }
+
+  /* Dark mode adjustments */
+  :root.dark .protip-container {
+    background-color: var(--surface-tertiary);
   }
 </style>

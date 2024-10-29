@@ -72,7 +72,7 @@ import CircleButton from './ui/CircleButton.astro';
   .overflow-y-auto {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    scrollbar-color: var(--text-muted) transparent;
   }
 
   .overflow-y-auto::-webkit-scrollbar {
@@ -84,7 +84,16 @@ import CircleButton from './ui/CircleButton.astro';
   }
 
   .overflow-y-auto::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--text-muted);
     border-radius: 3px;
+  }
+
+  /* Dark mode adjustments */
+  :root.dark .overflow-y-auto {
+    scrollbar-color: var(--text-muted) transparent;
+  }
+
+  :root.dark .overflow-y-auto::-webkit-scrollbar-thumb {
+    background-color: var(--text-muted);
   }
 </style>
