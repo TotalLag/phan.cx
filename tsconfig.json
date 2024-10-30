@@ -5,10 +5,11 @@
     "paths": {
       "~/*": ["src/*"]
     },
-    "types": ["@astrojs/image/client"],
     "strictNullChecks": true,
     "allowJs": true,
     "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+    "jsxImportSource": "solid-js",
+    "resolveJsonModule": true,
+    "moduleResolution": "node"
   }
 }

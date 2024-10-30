@@ -134,6 +134,14 @@
     @apply flex items-center;
     height: 4rem;
     view-transition-name: header;
+    transition: background-color 200ms ease-out, border-color 200ms ease-out;
+  }
+
+  /* High contrast mode support */
+  @media (forced-colors: active) {
+    .site-header {
+      border-bottom: 2px solid ButtonText;
+    }
   }
 
   .site-sidebar {

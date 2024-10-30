@@ -1,7 +1,12 @@
 {
-  "name": "red-raspberry",
+  "name": "phan.cx",
   "type": "module",
-  "version": "0.0.1",
+  "version": "2.0.1",
+  "description": "Personal website built with Astro",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TotalLag/phan.cx.git"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -15,14 +20,22 @@
     "@astrojs/solid-js": "^4.4.2",
     "astro": "^4.16.7",
     "solid-js": "^1.9.3",
+    "solid-transition-group": "^0.2.3",
     "typescript": "^5.6.3"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^5.1.2",
     "@tailwindcss/typography": "^0.5.15",
+    "@types/node": "^22.8.4",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "tailwindcss": "^3.4.14"
-  }
+  },
+  "author": "TotalLag",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TotalLag/phan.cx/issues"
+  },
+  "homepage": "https://github.com/TotalLag/phan.cx#readme"
 }

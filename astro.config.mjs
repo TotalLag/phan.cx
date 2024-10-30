@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import solid from '@astrojs/solid-js';
+import githubReleases from './src/integrations/github-releases';
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,6 +21,7 @@ export default defineConfig({
       // Enable remark/rehype plugins
       gfm: true,
     }),
+    githubReleases(),
   ],
   markdown: {
     shikiConfig: {

@@ -1,0 +1,38 @@
+---
+import NotificationsButton from './NotificationsButton';
+
+interface Release {
+  id: string;
+  name: string;
+  tag: string;
+  date: string;
+  body: string;
+}
+
+// Import releases at build time
+const releases: Release[] = await import('../../data/releases.json')
+  .then(m => m.default)
+  .then(releases => releases.sort((a, b) => 
+    new Date(b.date).getTime() - new Date(a.date).getTime()
+  ));
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={["relative", className]}>
+  <NotificationsButton client:load releases={releases} />
+</div>
+
+<script>
+  // Handle escape key globally
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      document.querySelectorAll<HTMLButtonElement>('[aria-expanded="true"]')
+        .forEach(button => button.click());
+    }
+  });
+</script>

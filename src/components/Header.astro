@@ -2,6 +2,7 @@
 import CircleButton from './ui/CircleButton.astro';
 import SearchInput from './ui/SearchInput.astro';
 import ThemeToggle from './ui/ThemeToggle';
+import Notifications from './ui/Notifications.astro';
 ---
 
 <header class="site-header" transition:persist transition:persist-props>
@@ -35,48 +36,9 @@ import ThemeToggle from './ui/ThemeToggle';
         
         <div class="flex-shrink-0 gap-2 flex-layout">
           <ThemeToggle client:load />
-          
-          <CircleButton 
-            label="Notifications"
-          >
-            <svg 
-              class="w-5 h-5 transition-colors duration-200 text-icon hover:text-icon-hover" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path 
-                stroke-linecap="round" 
-                stroke-linejoin="round" 
-                stroke-width="2" 
-                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-              />
-            </svg>
-          </CircleButton>
+          <Notifications />
         </div>
       </div>
     </nav>
   </div>
 </header>
-
-<style>
-  /* Theme-aware header styles */
-  .site-header {
-    background-color: var(--surface-primary);
-    border-color: var(--border);
-    transition: background-color 200ms ease-out, border-color 200ms ease-out;
-  }
-
-  /* Ensure smooth icon transitions */
-  svg {
-    transition: color 200ms ease-out;
-  }
-
-  /* High contrast mode support */
-  @media (forced-colors: active) {
-    .site-header {
-      border-bottom: 2px solid ButtonText;
-    }
-  }
-</style>
