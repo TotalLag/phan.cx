@@ -83,15 +83,15 @@
 
   /* View transition group styles */
   ::view-transition-group(header) {
-    z-index: 90;
+    z-index: theme('zIndex.sticky');
   }
 
   ::view-transition-group(sidebar) {
-    z-index: 80;
+    z-index: theme('zIndex.dropdown');
   }
 
   ::view-transition-group(footer) {
-    z-index: 100;
+    z-index: theme('zIndex.banner');
   }
 }
 
@@ -132,7 +132,7 @@
   .site-header {
     @apply sticky top-0 border-b z-sticky border-border bg-surface-primary;
     @apply flex items-center;
-    height: 4rem;
+    height: 5rem;
     view-transition-name: header;
     transition: background-color 200ms ease-out, border-color 200ms ease-out;
   }
