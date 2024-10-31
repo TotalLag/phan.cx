@@ -74,8 +74,8 @@ const instagramPosts: InstagramPost[] = [
       </div>
     </section>
 
-    <section class="mb-16" transition:animate="fade">
-      <div class="flex items-center justify-between mb-6">
+    <section class="mb-16 -mx-[var(--gutter)]" transition:animate="fade">
+      <div class="flex items-center justify-between mb-6 px-[var(--gutter)]">
         <h2 class="text-xl font-bold text-primary">Featured Posts</h2>
         <select class="h-10 px-4 text-sm transition-all border cursor-pointer bg-surface-secondary border-border text-primary rounded-input hover:border-border-hover focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-accent/20 duration-base ease-soft">
           <option>All Time</option>
@@ -85,24 +85,24 @@ const instagramPosts: InstagramPost[] = [
         </select>
       </div>
 
-      <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <div class="flex overflow-x-auto pb-4 px-[var(--gutter)] gap-[var(--gutter)]">
         {sortedPosts.map(post => {
           const coverImage = getCoverImage(post.data.cover);
           return (
-            <a href={`/blog/${post.slug}`} class="group">
-              <div class="relative overflow-hidden rounded shadow-sm h-44">
-                <div transition:name={`hero-${post.slug}`}>
+            <a href={`/blog/${post.slug}`} class="flex-none w-40 group">
+              <div class="relative h-64 overflow-hidden rounded shadow-sm">
+                <div transition:name={`hero-${post.slug}`} class="w-full h-full">
                   <Image 
                     src={coverImage}
                     alt={post.data.title}
                     widths={[390, 480, 640, 800]}
-                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    sizes="160px"
                     format="webp"
                     quality={80}
-                    class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                    class="object-cover w-full h-full transition-transform duration-base ease-soft group-hover:scale-105"
                   />
                 </div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[var(--overlay-dark)] to-transparent"></div>
                 <div class="absolute bottom-0 p-3">
                   <div 
                     class="mb-1 text-xs tracking-wide uppercase text-white/80"
