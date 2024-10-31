@@ -20,8 +20,8 @@ export default defineConfig({
   ],
   markdown: {
     shikiConfig: {
-      theme: 'github-dark',
-      wrap: true,
+      theme: 'one-dark-pro',
+      wrap: true
     }
   },
   image: {

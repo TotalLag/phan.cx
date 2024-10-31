@@ -3,6 +3,7 @@
 @import './layout.css';
 @import './components.css';
 @import './utilities.css';
+@import './mdx.css';
 
 @tailwind base;
 @tailwind components;

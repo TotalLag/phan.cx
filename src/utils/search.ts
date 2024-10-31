@@ -1,13 +1,46 @@
 import MiniSearch from 'minisearch'
 import type { CollectionEntry } from 'astro:content'
-import type { SearchableDocument, SearchResult } from '../types/search'
+import type { SearchableDocument, SearchResult, TokenPosition } from '../types/search'
 
 let searchIndex: MiniSearch<SearchableDocument>
+
+function cleanText(text: string): string {
+  return text
+    // Remove import statements
+    .replace(/^import\s+.*?from\s+['"].*?['"];?\s*$/gm, '')
+    // Remove image markdown
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    // Remove markdown syntax
+    .replace(/[#*`_~\[\]]/g, '')
+    // Remove empty lines
+    .replace(/\n\s*\n/g, '\n')
+    // Normalize whitespace
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function tokenizeWithPositions(text: string): TokenPosition[] {
+  const tokens: TokenPosition[] = []
+  const regex = /\S+/g
+  let match
+
+  while ((match = regex.exec(text)) !== null) {
+    tokens.push({
+      token: match[0].toLowerCase(),
+      start: match.index,
+      end: match.index + match[0].length
+    })
+  }
+
+  return tokens
+}
 
 export function initializeSearch(documents: SearchableDocument[]) {
   searchIndex = new MiniSearch({
     fields: ['title', 'excerpt', 'content'],
     storeFields: ['title', 'excerpt', 'content', 'url'],
+    tokenize: (text) => text.split(/\s+/).map(t => t.toLowerCase()),
+    processTerm: (term) => term.toLowerCase(),
     searchOptions: {
       boost: { title: 2, excerpt: 1.5, content: 1 },
       fuzzy: 0.2,
@@ -15,17 +48,39 @@ export function initializeSearch(documents: SearchableDocument[]) {
     }
   })
 
-  searchIndex.addAll(documents)
+  // Clean all text before indexing
+  const cleanedDocs = documents.map(doc => ({
+    ...doc,
+    title: cleanText(doc.title),
+    excerpt: cleanText(doc.excerpt),
+    content: cleanText(doc.content)
+  }))
+
+  searchIndex.addAll(cleanedDocs)
 }
 
 export function blogToSearchableDocuments(posts: CollectionEntry<'blog'>[]): SearchableDocument[] {
   return posts.map((post) => ({
     id: post.id,
-    title: post.data.title,
-    excerpt: post.data.excerpt || '',
-    content: post.body, // Use original content without cleaning
+    title: cleanText(post.data.title),
+    excerpt: cleanText(post.data.excerpt || ''),
+    content: cleanText(post.body),
     url: `/blog/${post.slug}`
   }))
+}
+
+function findMatchPositions(text: string, terms: string[]): TokenPosition[] {
+  const tokens = tokenizeWithPositions(text)
+  const positions: TokenPosition[] = []
+
+  tokens.forEach(token => {
+    if (terms.some(term => token.token.includes(term.toLowerCase()))) {
+      positions.push(token)
+    }
+  })
+
+  // Sort by position and limit to top 2 matches
+  return positions.sort((a, b) => a.start - b.start).slice(0, 2)
 }
 
 export function search(query: string): SearchResult[] {
@@ -37,40 +92,49 @@ export function search(query: string): SearchResult[] {
     prefix: true
   })
 
-  return results.map(result => ({
-    id: result.id,
-    title: result.title,
-    excerpt: result.excerpt,
-    content: result.content,
-    url: result.url,
-    score: result.score,
-    terms: result.terms,
-    match: result.match
-  }))
+  return results.map(result => {
+    const cleanedTitle = cleanText(result.title)
+    const cleanedExcerpt = cleanText(result.excerpt)
+    const cleanedContent = cleanText(result.content)
+
+    return {
+      id: result.id,
+      title: cleanedTitle,
+      excerpt: cleanedExcerpt,
+      content: cleanedContent,
+      url: result.url,
+      score: result.score,
+      terms: result.terms,
+      matches: {
+        title: {
+          text: cleanedTitle,
+          positions: findMatchPositions(cleanedTitle, result.terms)
+        },
+        excerpt: {
+          text: cleanedExcerpt,
+          positions: findMatchPositions(cleanedExcerpt, result.terms)
+        },
+        content: {
+          text: cleanedContent,
+          positions: findMatchPositions(cleanedContent, result.terms)
+        }
+      }
+    }
+  })
 }
 
-// Clean text only when displaying
-export function cleanDisplayText(text: string): string {
-  return text
-    .replace(/[#*`_~\[\]]/g, '') // Remove markdown syntax
-    .replace(/\s+/g, ' ') // Normalize whitespace
-    .trim()
-}
-
-// Get snippet with proper context
-export function getSnippet(text: string, term: string, matchStart: number): string {
-  const cleanedText = cleanDisplayText(text)
-  const snippetStart = Math.max(0, matchStart - 30)
-  const snippetEnd = Math.min(cleanedText.length, matchStart + term.length + 30)
+export function getSnippet(text: string, position: TokenPosition, context: number = 30): string {
+  const snippetStart = Math.max(0, position.start - context)
+  const snippetEnd = Math.min(text.length, position.end + context)
   
-  const prefix = snippetStart > 0 ? '... ' : ''
-  const suffix = snippetEnd < cleanedText.length ? ' ...' : ''
+  const prefix = snippetStart > 0 ? '...' : ''
+  const suffix = snippetEnd < text.length ? '...' : ''
   
-  const beforeMatch = cleanedText.slice(snippetStart, matchStart)
-  const matchedText = cleanedText.slice(matchStart, matchStart + term.length)
-  const afterMatch = cleanedText.slice(matchStart + term.length, snippetEnd)
+  const beforeMatch = text.slice(snippetStart, position.start)
+  const matchedText = text.slice(position.start, position.end)
+  const afterMatch = text.slice(position.end, snippetEnd)
   
   return prefix + beforeMatch + 
-    `<mark class="bg-accent/20 text-text-primary rounded-sm px-0.5">${matchedText}</mark>` + 
+    `<mark class="bg-accent/25 light:text-secondary rounded-sm px-0.5">${matchedText}</mark>` + 
     afterMatch + suffix
 }

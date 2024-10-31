@@ -6,6 +6,12 @@ export interface SearchableDocument {
   url: string
 }
 
+export interface TokenPosition {
+  start: number
+  end: number
+  token: string
+}
+
 export interface SearchResult {
   id: string
   title: string
@@ -14,13 +20,10 @@ export interface SearchResult {
   url: string
   score: number
   terms: string[]
-  match: {
-    [field: string]: [number, number][]
+  matches: {
+    [field: string]: {
+      text: string
+      positions: TokenPosition[]
+    }
   }
-}
-
-export interface SearchSuggestion {
-  suggestion: string
-  terms: string[]
-  score: number
 }

@@ -1,0 +1,138 @@
+---
+featured: true
+topic: 'Development'
+title: 'Implementing a Client-Side Search'
+excerpt: "A deep dive into implementing client-side search with MiniSearch, SolidJS, and Astro. Learn about the challenges of text processing, token position tracking, and creating a great search experience."
+keywords: 'client-side search, MiniSearch, text processing, search UI, web development, TypeScript, SolidJS, Astro'
+date: '2024-10-30T13:26:00Z'
+cover: 'https://plus.unsplash.com/premium_photo-1664284792348-c797db81b30a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+caption: "Credit: @victoriaromulo / unsplash.com"
+---
+
+When it came time to add search to my blog, my first instinct was to reach for Meilisearch. It's powerful, has great documentation, and offers an excellent developer experience. But as I dug deeper, I realized it might be overkill for my needs. I wanted something lightweight that wouldn't require setting up and maintaining a server, and preferably without ongoing costs.
+
+That's when I discovered [MiniSearch](https://lucaong.github.io/minisearch/index.html). At just 8KB minified and gzipped, with no external dependencies and completely client-side operation, it seemed perfect for a personal blog. Plus, being free and open source meant I could use it without worrying about usage limits or monthly bills.
+
+Little did I know that choosing the library would be the easiest part of this journey. What followed was a deep dive into text processing, token positions, and the intricacies of search UI design.
+
+## The Initial Approach: Just Add Search!
+
+My first attempt was naive but optimistic. I chose MiniSearch for its small size and client-side capabilities, and quickly had something working:
+
+```typescript
+const searchIndex = new MiniSearch({
+  fields: ['title', 'excerpt', 'content'],
+  storeFields: ['title', 'excerpt', 'url']
+})
+```
+
+The results appeared, but something was off. The highlighting was inconsistent, markdown syntax was showing up in snippets, and import statements were cluttering the results. It was time to dig deeper.
+
+## Lesson 1: Clean Your Text, But When?
+
+My first instinct was to clean the text when displaying results. Wrong move! This led to a crucial realization: **text cleaning must happen before indexing**. Here's why:
+
+When you clean text during display, the character positions from your search index no longer match the displayed text. That `# Heading` that was 9 characters long is now just 7 characters after removing the markdown syntax. Your carefully calculated highlight positions are now off.
+
+The solution? Clean everything upfront:
+
+```typescript
+function cleanText(text: string): string {
+  return text
+    .replace(/^import\s+.*?from\s+['"].*?['"];?\s*$/gm, '') // No more import statements
+    .replace(/!\[.*?\]\(.*?\)/g, '')                        // Goodbye, image markdown
+    .replace(/[#*`_~\[\]]/g, '')                           // So long, markdown syntax
+    .replace(/\s+/g, ' ')                                  // Normalize whitespace
+    .trim()
+}
+```
+
+## Lesson 2: Token Positions Are Not Character Positions
+
+The next challenge came from misunderstanding how search engines work with tokens. When MiniSearch tells you it found a match at position 5, it's talking about the fifth *token*, not the fifth character.
+
+This led to creating a proper token position tracking system:
+
+```typescript
+interface TokenPosition {
+  start: number    // Character position where token starts
+  end: number      // Character position where token ends
+  token: string    // The actual token
+}
+
+function tokenizeWithPositions(text: string): TokenPosition[] {
+  const tokens: TokenPosition[] = []
+  const regex = /\S+/g
+  let match
+
+  while ((match = regex.exec(text)) !== null) {
+    tokens.push({
+      token: match[0].toLowerCase(),
+      start: match.index,
+      end: match.index + match[0].length
+    })
+  }
+
+  return tokens
+}
+```
+
+## Lesson 3: Context Matters
+
+With proper token tracking in place, I could now show snippets of text around matches. But showing every match quickly became overwhelming. The solution? Limit to the top 2 most relevant matches and provide proper context:
+
+```typescript
+function getSnippet(text: string, position: TokenPosition): string {
+  const snippetStart = Math.max(0, position.start - 30)
+  const snippetEnd = Math.min(text.length, position.end + 30)
+  
+  return `... ${text.slice(snippetStart, position.start)}` +
+    `<mark>${text.slice(position.start, position.end)}</mark>` +
+    `${text.slice(position.end, snippetEnd)} ...`
+}
+```
+
+## Lesson 4: Visual Hierarchy Through Design
+
+The final piece of the puzzle was making the search results easy to scan and understand. This meant creating a clear visual hierarchy:
+
+- Titles are prominent and always visible
+- Excerpts provide quick context
+- Content matches are visually distinct with a darker background and smaller text
+- Proper spacing and padding guide the eye
+
+```tsx
+<div class="px-3 py-2 mt-2 -mx-3 space-y-1 text-xs text-muted bg-surface-secondary/50">
+  <For each={result.matches.content.positions}>
+    {(position) => (
+      <div innerHTML={getSnippet(result.content, position)} />
+    )}
+  </For>
+</div>
+```
+
+## The Final Result
+
+After all these iterations, the search functionality now:
+- Properly cleans text before indexing
+- Accurately highlights matched terms
+- Shows relevant snippets with context
+- Presents results in a clear, scannable format
+
+But perhaps more importantly, this journey taught me valuable lessons about:
+- The importance of text processing order
+- The relationship between indexing and display
+- The complexity of position tracking in search
+- The role of design in making search results useful
+
+Next time you use a search feature and see those perfectly highlighted matches, remember: there's probably a developer who learned these same lessons, one highlight position at a time.
+
+## Looking Forward
+
+While the current implementation works well, there's always room for improvement:
+- Caching search results for better performance
+- Adding keyboard navigation
+- Implementing search filters
+- Supporting more advanced search syntax
+
+But those are stories for another day. For now, I'm happy with a search feature that helps readers find what they're looking for, with properly highlighted matches to guide the way.

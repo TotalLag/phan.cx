@@ -8,6 +8,8 @@ export type SearchContextType = {
   setQuery: (query: string) => void
   results: () => SearchResult[]
   isLoading: () => boolean
+  isNavigating: () => boolean
+  setIsNavigating: (value: boolean) => void
 }
 
 const SearchContext = createContext<SearchContextType>()
@@ -16,6 +18,7 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
   const [query, setQuery] = createSignal('')
   const [results, setResults] = createSignal<SearchResult[]>([])
   const [isLoading, setIsLoading] = createSignal(false)
+  const [isNavigating, setIsNavigating] = createSignal(false)
   const [isInitialized, setIsInitialized] = createSignal(false)
 
   // Initialize search
@@ -61,7 +64,9 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
     query,
     setQuery,
     results,
-    isLoading
+    isLoading,
+    isNavigating,
+    setIsNavigating
   }
 
   return (

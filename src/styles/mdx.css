@@ -1,0 +1,37 @@
+@layer components {
+  .prose-custom {
+    @apply prose prose-lg dark:prose-invert max-w-none;
+
+    /* Code blocks - always dark */
+    @apply prose-pre:bg-[#282c34] 
+           prose-pre:border 
+           prose-pre:border-[#353a42]
+           prose-pre:rounded-lg;
+
+    /* Inline code */
+    @apply prose-code:bg-surface-tertiary 
+           prose-code:text-primary 
+           prose-code:dark:text-primary 
+           prose-code:rounded 
+           prose-code:px-1.5 
+           prose-code:py-0.5 
+           prose-code:text-sm;
+
+    /* Images */
+    @apply prose-img:rounded-lg prose-img:my-6;
+
+    /* Blockquotes */
+    @apply prose-blockquote:italic prose-blockquote:border-border prose-blockquote:bg-surface-secondary;
+
+    /* Override code block colors */
+    pre {
+      code {
+        background: transparent !important;
+
+        span {
+          background: none !important;
+        }
+      }
+    }
+  }
+}
