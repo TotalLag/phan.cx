@@ -1,63 +1,140 @@
 ---
 featured: true
 topic: 'Development'
-title: 'Implementing a Client-Side Search'
-excerpt: "A deep dive into implementing client-side search with MiniSearch, SolidJS, and Astro. Learn about the challenges of text processing, token position tracking, and creating a great search experience."
+title: 'How I Added Search to My Static Site'
+excerpt: "My journey implementing client-side search with MiniSearch, including the challenges I faced and practical solutions I discovered along the way."
 keywords: 'client-side search, MiniSearch, text processing, search UI, web development, TypeScript, SolidJS, Astro'
 date: '2024-10-30T13:26:00Z'
 cover: 'https://plus.unsplash.com/premium_photo-1664284792348-c797db81b30a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 caption: "Credit: @victoriaromulo / unsplash.com"
 ---
 
-When it came time to add search to my blog, my first instinct was to reach for Meilisearch. It's powerful, has great documentation, and offers an excellent developer experience. But as I dug deeper, I realized it might be overkill for my needs. I wanted something lightweight that wouldn't require setting up and maintaining a server, and preferably without ongoing costs.
+import Protip from '../../components/Protip.astro';
 
-That's when I discovered [MiniSearch](https://lucaong.github.io/minisearch/index.html). At just 8KB minified and gzipped, with no external dependencies and completely client-side operation, it seemed perfect for a personal blog. Plus, being free and open source meant I could use it without worrying about usage limits or monthly bills.
+Have you ever had one of those moments where you start a "simple" coding task, only to discover layers of complexity you never imagined? That's exactly what happened when I decided to add search to my static site.
 
-Little did I know that choosing the library would be the easiest part of this journey. What followed was a deep dive into text processing, token positions, and the intricacies of search UI design.
+The requirements seemed straightforward: help readers find content quickly, make it work without a server, and keep it lightweight. Easy enough, right? "I'll just use Meilisearch," I thought to myself. I'd used it before on larger projects and loved its powerful features and great documentation. The plan seemed simple: spin up a Meilisearch instance, index my blog posts, and call it a day.
 
-## The Initial Approach: Just Add Search!
+But as I started setting up the server, something felt off. I was configuring API keys, planning server maintenance, and calculating potential costs - all for a personal blog with a handful of posts. It felt like using a sledgehammer to crack a nut.
 
-My first attempt was naive but optimistic. I chose MiniSearch for its small size and client-side capabilities, and quickly had something working:
+That's when I stumbled upon [MiniSearch](https://lucaong.github.io/minisearch/index.html). At just 8KB minified and gzipped, with no external dependencies and completely client-side operation, it seemed too good to be true. I decided to give it a shot. Little did I know this "simple" switch would lead me down a rabbit hole of text processing, token positions, and UI challenges that would reshape how I think about search implementations.
 
-```typescript
-const searchIndex = new MiniSearch({
-  fields: ['title', 'excerpt', 'content'],
-  storeFields: ['title', 'excerpt', 'url']
-})
+Three days, countless Stack Overflow visits, and several "aha!" moments later, I had learned more about search implementation than I ever expected. This is that story - how a "quick feature" turned into a deep dive into search implementation, and how I eventually built a fast, efficient search system using MiniSearch, SolidJS, and some creative problem-solving. Let me take you through the journey.
+
+<Protip>
+The best learning experiences often come from underestimating a problem's complexity. Embrace the challenge - it's where the real growth happens.
+</Protip>
+
+## The Component Dance: Astro Meets SolidJS
+
+My first challenge was integrating search into my Astro site. I wanted the search UI to be fast and responsive, which meant using a reactive framework. I chose SolidJS for its performance and small bundle size. But how do you seamlessly blend a static site generator with a reactive UI library?
+
+The answer was a layered component approach. First, I created a simple Astro component as the static shell:
+
+```astro
+---
+// SearchInput.astro
+import SearchWrapper from './SearchWrapper';
+
+interface Props {
+  placeholder?: string;
+  class?: string;
+}
+
+const { placeholder = "Search", class: className } = Astro.props;
+---
+
+<div class={`relative ${className}`}>
+  <label class="relative block">
+    <span class="sr-only">{placeholder}</span>
+    <SearchWrapper client:only="solid-js" placeholder={placeholder} />
+  </label>
+</div>
 ```
 
-The results appeared, but something was off. The highlighting was inconsistent, markdown syntax was showing up in snippets, and import statements were cluttering the results. It was time to dig deeper.
+<Protip>
+Use Astro's client directives strategically. The `client:only` directive tells Astro to skip server-rendering and only render the component on the client, perfect for purely interactive components.
+</Protip>
 
-## Lesson 1: Clean Your Text, But When?
+## The Brain of the Operation: Search Logic
 
-My first instinct was to clean the text when displaying results. Wrong move! This led to a crucial realization: **text cleaning must happen before indexing**. Here's why:
+The real magic happens in the SearchInputLogic component. This is where user interactions, search state, and result rendering all come together:
 
-When you clean text during display, the character positions from your search index no longer match the displayed text. That `# Heading` that was 9 characters long is now just 7 characters after removing the markdown syntax. Your carefully calculated highlight positions are now off.
+```tsx
+const SearchInputLogic: Component<Props> = (props) => {
+  const store = useSearch()
+  const [isOpen, setIsOpen] = createSignal(false)
+  let searchRef: HTMLDivElement | undefined
 
-The solution? Clean everything upfront:
+  // Handle clicks outside search
+  const handleClickOutside = (event: MouseEvent) => {
+    if (searchRef && !searchRef.contains(event.target as Node)) {
+      setIsOpen(false)
+    }
+  }
+
+  onMount(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('mousedown', handleClickOutside)
+      
+      // Handle Astro view transitions
+      document.addEventListener('astro:after-swap', () => {
+        store.setIsNavigating(false)
+      })
+    }
+  })
+
+  return (
+    <div ref={searchRef} class="w-full">
+      <div class="relative">
+        <input
+          type="search"
+          value={store.query()}
+          onInput={handleInput}
+          placeholder={props.placeholder}
+          class="search-input"
+          role="searchbox"
+          autocomplete="off"
+          spellcheck={false}
+        />
+        <Show 
+          when={store.isNavigating()}
+          fallback={<SearchIcon />}
+        >
+          <LoadingSpinner />
+        </Show>
+      </div>
+
+      <Show when={isOpen() && store.query().trim().length >= 3}>
+        <SearchResults />
+      </Show>
+    </div>
+  )
+}
+```
+
+<Protip>
+Pay attention to the little details - loading states, transitions, and edge cases all contribute to a polished user experience.
+</Protip>
+
+## The Secret Sauce: Text Processing
+
+The most challenging part wasn't the UI - it was making the search results accurate and useful. Here's how I process the text before indexing:
 
 ```typescript
 function cleanText(text: string): string {
   return text
-    .replace(/^import\s+.*?from\s+['"].*?['"];?\s*$/gm, '') // No more import statements
-    .replace(/!\[.*?\]\(.*?\)/g, '')                        // Goodbye, image markdown
-    .replace(/[#*`_~\[\]]/g, '')                           // So long, markdown syntax
-    .replace(/\s+/g, ' ')                                  // Normalize whitespace
+    // Remove import statements
+    .replace(/^import\s+.*?from\s+['"].*?['"];?\s*$/gm, '')
+    // Remove image markdown
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    // Remove markdown syntax
+    .replace(/[#*`_~\[\]]/g, '')
+    // Remove empty lines
+    .replace(/\n\s*\n/g, '\n')
+    // Normalize whitespace
+    .replace(/\s+/g, ' ')
     .trim()
-}
-```
-
-## Lesson 2: Token Positions Are Not Character Positions
-
-The next challenge came from misunderstanding how search engines work with tokens. When MiniSearch tells you it found a match at position 5, it's talking about the fifth *token*, not the fifth character.
-
-This led to creating a proper token position tracking system:
-
-```typescript
-interface TokenPosition {
-  start: number    // Character position where token starts
-  end: number      // Character position where token ends
-  token: string    // The actual token
 }
 
 function tokenizeWithPositions(text: string): TokenPosition[] {
@@ -77,62 +154,141 @@ function tokenizeWithPositions(text: string): TokenPosition[] {
 }
 ```
 
-## Lesson 3: Context Matters
+<Protip>
+Clean your text before indexing, not during display. This ensures your search index and display text stay perfectly aligned.
+</Protip>
 
-With proper token tracking in place, I could now show snippets of text around matches. But showing every match quickly became overwhelming. The solution? Limit to the top 2 most relevant matches and provide proper context:
+To convert our blog posts into searchable documents, I created a helper function:
 
 ```typescript
-function getSnippet(text: string, position: TokenPosition): string {
-  const snippetStart = Math.max(0, position.start - 30)
-  const snippetEnd = Math.min(text.length, position.end + 30)
-  
-  return `... ${text.slice(snippetStart, position.start)}` +
-    `<mark>${text.slice(position.start, position.end)}</mark>` +
-    `${text.slice(position.end, snippetEnd)} ...`
+export function blogToSearchableDocuments(posts: CollectionEntry<'blog'>[]): SearchableDocument[] {
+  return posts.map((post) => ({
+    id: post.id,
+    title: cleanText(post.data.title),
+    excerpt: cleanText(post.data.excerpt || ''),
+    content: cleanText(post.body),
+    url: `/blog/${post.slug}`
+  }))
 }
 ```
 
-## Lesson 4: Visual Hierarchy Through Design
+This ensures all our content is properly cleaned and structured before being added to the search index. The combination of careful text processing and thoughtful indexing configuration helps create a search experience that feels natural and returns relevant results.
 
-The final piece of the puzzle was making the search results easy to scan and understand. This meant creating a clear visual hierarchy:
+## Making Search Results Beautiful and Useful
 
-- Titles are prominent and always visible
-- Excerpts provide quick context
-- Content matches are visually distinct with a darker background and smaller text
-- Proper spacing and padding guide the eye
+The search results needed to be more than just a list of matches. I wanted to show context around matched terms, highlight the matches themselves, and make it all look good:
 
 ```tsx
-<div class="px-3 py-2 mt-2 -mx-3 space-y-1 text-xs text-muted bg-surface-secondary/50">
-  <For each={result.matches.content.positions}>
-    {(position) => (
-      <div innerHTML={getSnippet(result.content, position)} />
-    )}
-  </For>
+<div class="absolute w-full mt-2 border rounded-lg shadow-lg z-modal bg-surface-primary">
+  <Show when={!store.isLoading()}>
+    <Show when={store.results().length > 0}>
+      <div class="divide-y divide-border">
+        <For each={store.results()}>
+          {(result: SearchResult) => (
+            <a
+              href={result.url}
+              onClick={handleResultClick}
+              class="block p-3 transition-colors hover:bg-surface-hover"
+            >
+              {/* Title with highlighting */}
+              <div class="font-medium text-primary">
+                {result.matches.title.positions.length > 0 ? (
+                  <span innerHTML={getSnippet(result.title, result.matches.title.positions[0])} />
+                ) : (
+                  result.title
+                )}
+              </div>
+
+              {/* Excerpt with highlighting */}
+              <div class="mt-1 text-sm text-secondary">
+                {result.matches.excerpt.positions.length > 0 ? (
+                  <span innerHTML={getSnippet(result.excerpt, result.matches.excerpt.positions[0])} />
+                ) : (
+                  result.excerpt
+                )}
+              </div>
+
+              {/* Content matches with context */}
+              <Show when={result.matches.content.positions.length > 0}>
+                <div class="px-3 py-2 mt-2 space-y-1 text-xs text-muted bg-surface-secondary">
+                  <For each={result.matches.content.positions}>
+                    {(position) => (
+                      <div innerHTML={getSnippet(result.content, position)} />
+                    )}
+                  </For>
+                </div>
+              </Show>
+            </a>
+          )}
+        </For>
+      </div>
+    </Show>
+  </Show>
 </div>
 ```
 
-## The Final Result
+<Protip>
+Use visual hierarchy to make search results scannable. Different text sizes, colors, and background shades help users quickly find what they're looking for.
+</Protip>
 
-After all these iterations, the search functionality now:
-- Properly cleans text before indexing
-- Accurately highlights matched terms
-- Shows relevant snippets with context
-- Presents results in a clear, scannable format
+## The Final Piece: Search Store
 
-But perhaps more importantly, this journey taught me valuable lessons about:
-- The importance of text processing order
-- The relationship between indexing and display
-- The complexity of position tracking in search
-- The role of design in making search results useful
+To manage the search state across components, I created a custom store using SolidJS's context:
 
-Next time you use a search feature and see those perfectly highlighted matches, remember: there's probably a developer who learned these same lessons, one highlight position at a time.
+```typescript
+export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
+  const [query, setQuery] = createSignal('')
+  const [results, setResults] = createSignal<SearchResult[]>([])
+  const [isLoading, setIsLoading] = createSignal(false)
+  const [isInitialized, setIsInitialized] = createSignal(false)
 
-## Looking Forward
+  // Initialize search index
+  createEffect(async () => {
+    if (!isInitialized()) {
+      const posts = await getCollection('blog')
+      const searchDocs = blogToSearchableDocuments(posts)
+      initializeSearch(searchDocs)
+      setIsInitialized(true)
+    }
+  })
 
-While the current implementation works well, there's always room for improvement:
-- Caching search results for better performance
-- Adding keyboard navigation
-- Implementing search filters
-- Supporting more advanced search syntax
+  // Handle real-time search
+  createEffect(() => {
+    const searchQuery = query().trim()
+    
+    if (searchQuery.length >= 3 && isInitialized()) {
+      setIsLoading(true)
+      try {
+        const searchResults = search(searchQuery)
+        setResults(searchResults)
+      } finally {
+        setIsLoading(false)
+      }
+    } else {
+      setResults([])
+    }
+  })
 
-But those are stories for another day. For now, I'm happy with a search feature that helps readers find what they're looking for, with properly highlighted matches to guide the way.
+  return (
+    <SearchContext.Provider value={store}>
+      {props.children}
+    </SearchContext.Provider>
+  )
+}
+```
+
+<Protip>
+Keep your search store simple and focused. Use reactive primitives for state management and handle loading states explicitly.
+</Protip>
+
+## Looking Back and Forward
+
+What started as a "simple" feature turned into a deep dive into search implementation details I hadn't even considered at the start. But through each challenge, the solution became clearer and more refined.
+
+I'm already thinking about future improvements:
+- Adding search filters
+- Supporting advanced search syntax
+
+But for now, I'm happy with how it turned out. The search is fast, the results are clean and relevant, and most importantly, it actually helps people find what they're looking for.
+
+The code for this implementation is available in my site's repository. If you're thinking about adding search to your static site, remember: sometimes the simplest solution is the best one. You might not need a powerful search server - a well-implemented client-side solution might be just what you're looking for.

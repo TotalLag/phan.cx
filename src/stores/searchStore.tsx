@@ -26,9 +26,12 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
     if (!isInitialized()) {
       console.log('Initializing search...')
       try {
+        // Get blog posts
         const posts = await getCollection('blog')
         console.log('Got blog posts:', posts.length)
         const searchDocs = blogToSearchableDocuments(posts)
+        
+        // Initialize search with blog posts only
         initializeSearch(searchDocs)
         setIsInitialized(true)
         console.log('Search initialized successfully')

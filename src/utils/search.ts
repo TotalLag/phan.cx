@@ -4,10 +4,14 @@ import type { SearchableDocument, SearchResult, TokenPosition } from '../types/s
 
 let searchIndex: MiniSearch<SearchableDocument>
 
-function cleanText(text: string): string {
+export function cleanText(text: string): string {
   return text
+    // Remove HTML tags
+    .replace(/<[^>]*>/g, ' ')
     // Remove import statements
     .replace(/^import\s+.*?from\s+['"].*?['"];?\s*$/gm, '')
+    // Remove frontmatter
+    .replace(/^---[\s\S]*?---/, '')
     // Remove image markdown
     .replace(/!\[.*?\]\(.*?\)/g, '')
     // Remove markdown syntax

@@ -23,12 +23,22 @@ const SearchInputLogic: Component<Props> = (props) => {
       window.addEventListener('mousedown', handleClickOutside)
       // Reset navigation state on mount
       store.setIsNavigating(false)
+
+      // Handle Astro view transitions
+      document.addEventListener('astro:after-swap', () => {
+        store.setIsNavigating(false)
+      })
+
+      // Fallback for regular navigation
+      window.addEventListener('load', () => store.setIsNavigating(false))
     }
   })
 
   onCleanup(() => {
     if (typeof window !== 'undefined') {
       window.removeEventListener('mousedown', handleClickOutside)
+      window.removeEventListener('load', () => store.setIsNavigating(false))
+      document.removeEventListener('astro:after-swap', () => store.setIsNavigating(false))
     }
   })
 
@@ -114,7 +124,7 @@ const SearchInputLogic: Component<Props> = (props) => {
                       {/* Title */}
                       <div class="font-medium text-primary">
                         {result.matches.title.positions.length > 0 ? (
-                          <span innerHTML={getSnippet(result.title, result.matches.title.positions[0])} />
+                          <span innerHTML={getSnippet(result.title, result.matches.title.positions[0], 100)} />
                         ) : (
                           result.title
                         )}
@@ -123,7 +133,7 @@ const SearchInputLogic: Component<Props> = (props) => {
                       {/* Excerpt */}
                       <div class="text-sm text-secondary mt-1">
                         {result.matches.excerpt.positions.length > 0 ? (
-                          <span innerHTML={getSnippet(result.excerpt, result.matches.excerpt.positions[0])} />
+                          <span innerHTML={getSnippet(result.excerpt, result.matches.excerpt.positions[0], 100)} />
                         ) : (
                           result.excerpt
                         )}
