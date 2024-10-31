@@ -12,6 +12,12 @@ import profileImage from '../../public/me.jpg';
 
 // Get current path for active link highlighting
 const { pathname } = Astro.url;
+
+// Check if we're on a blog post
+const isBlogPost = pathname.startsWith('/blog/') && pathname !== '/blog/';
+
+// Common navigation link class
+const navLinkClass = "flex items-center py-2 text-sm px-container-px hover:bg-surface-hover text-icon border-l-[6px] border-transparent [&[aria-current]]:text-primary [&[aria-current]]:font-medium [&[aria-current]]:border-profile";
 ---
 
 <aside class="flex flex-col h-full">
@@ -57,7 +63,7 @@ const { pathname } = Astro.url;
     <nav class="py-4">
       <a 
         href="/" 
-        class="flex items-center py-2 text-sm px-container-px hover:bg-surface-hover text-icon border-l-[6px] border-transparent [&[aria-current]]:text-primary [&[aria-current]]:font-medium [&[aria-current]]:border-profile"
+        class={navLinkClass}
         aria-current={pathname === "/" ? "page" : undefined}
       >
         <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,9 +71,22 @@ const { pathname } = Astro.url;
         </svg>
         About
       </a>
+
+      {isBlogPost && (
+        <a 
+          href="#" 
+          class={navLinkClass}
+          aria-current="page"
+        >
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          </svg>
+          Blog
+        </a>
+      )}
+
       <a 
         href="/resume" 
-        class="flex items-center py-2 text-sm px-container-px hover:bg-surface-hover text-icon border-l-[6px] border-transparent [&[aria-current]]:text-primary [&[aria-current]]:font-medium [&[aria-current]]:border-profile"
+        class={navLinkClass}
         aria-current={pathname === "/resume" ? "page" : undefined}
       >
         <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,9 +94,10 @@ const { pathname } = Astro.url;
         </svg>
         Resume
       </a>
+
       <a 
         href="/projects" 
-        class="flex items-center py-2 text-sm px-container-px hover:bg-surface-hover text-icon border-l-[6px] border-transparent [&[aria-current]]:text-primary [&[aria-current]]:font-medium [&[aria-current]]:border-profile"
+        class={navLinkClass}
         aria-current={pathname === "/projects" ? "page" : undefined}
       >
         <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,9 +105,10 @@ const { pathname } = Astro.url;
         </svg>
         Projects
       </a>
+
       <a 
         href="/contact" 
-        class="flex items-center py-2 text-sm px-container-px hover:bg-surface-hover text-icon border-l-[6px] border-transparent [&[aria-current]]:text-primary [&[aria-current]]:font-medium [&[aria-current]]:border-profile"
+        class={navLinkClass}
         aria-current={pathname === "/contact" ? "page" : undefined}
       >
         <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
