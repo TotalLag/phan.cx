@@ -1,0 +1,36 @@
+{
+  "totalLines": 12355,
+  "formattedLines": "12.36k",
+  "fileCount": 48,
+  "byExtension": {
+    ".ts": {
+      "files": 13,
+      "lines": 773
+    },
+    ".json": {
+      "files": 8,
+      "lines": 9403
+    },
+    ".md": {
+      "files": 1,
+      "lines": 48
+    },
+    ".tsx": {
+      "files": 6,
+      "lines": 506
+    },
+    ".astro": {
+      "files": 11,
+      "lines": 826
+    },
+    ".mdx": {
+      "files": 5,
+      "lines": 368
+    },
+    ".css": {
+      "files": 4,
+      "lines": 431
+    }
+  },
+  "lastUpdated": "2024-10-31T14:21:49.914Z"
+}
