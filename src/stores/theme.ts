@@ -3,9 +3,6 @@ import { createSignal } from 'solid-js';
 type Theme = 'light' | 'dark';
 const STORAGE_KEY = 'theme';
 
-// Create a signal to track theme state
-const [theme, setTheme] = createSignal<Theme>(getInitialTheme());
-
 // Get initial theme from localStorage or system preference
 function getInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'light';
@@ -16,7 +13,8 @@ function getInitialTheme(): Theme {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-// Toggle theme function
+const [theme, setTheme] = createSignal<Theme>(getInitialTheme());
+
 function toggleTheme(): void {
   const newTheme: Theme = theme() === 'dark' ? 'light' : 'dark';
   setTheme(newTheme);
@@ -24,7 +22,6 @@ function toggleTheme(): void {
   updateDocumentClass(newTheme);
 }
 
-// Update document class
 function updateDocumentClass(newTheme: Theme): void {
   if (typeof document === 'undefined') return;
   
@@ -33,18 +30,13 @@ function updateDocumentClass(newTheme: Theme): void {
   root.classList.add(newTheme);
 }
 
-// Initialize theme on page load and handle view transitions
 function initializeTheme(): void {
-  // Apply theme immediately
   const currentTheme = theme();
   updateDocumentClass(currentTheme);
 
-  if (typeof window === 'undefined') return;
-
-  // Handle system preference changes
+  // Handle system theme changes
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
     const userTheme = localStorage.getItem(STORAGE_KEY);
-    // Only update if user hasn't manually set a theme
     if (!userTheme) {
       const newTheme: Theme = e.matches ? 'dark' : 'light';
       setTheme(newTheme);

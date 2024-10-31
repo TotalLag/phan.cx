@@ -38,7 +38,6 @@ async function getCachedReleases(): Promise<Release[] | null> {
     const lastModified = await getLastModifiedTime();
     const now = new Date().getTime();
     
-    // Return null if cache is older than CACHE_DURATION
     if (now - lastModified > CACHE_DURATION) {
       return null;
     }
@@ -51,8 +50,54 @@ async function getCachedReleases(): Promise<Release[] | null> {
   }
 }
 
+async function fetchGitHubReleases(): Promise<GitHubRelease[]> {
+  const response = await fetch(
+    'https://api.github.com/repos/TotalLag/phan.cx/releases',
+    {
+      headers: {
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'github-releases'
+      }
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`GitHub API responded with ${response.status}: ${await response.text()}`);
+  }
+
+  const releases = await response.json();
+  
+  if (!Array.isArray(releases)) {
+    throw new Error('Invalid response format from GitHub API');
+  }
+
+  return releases;
+}
+
+async function transformAndCacheReleases(releases: GitHubRelease[]): Promise<Release[]> {
+  const transformedReleases = releases
+    .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
+    .map(release => ({
+      id: release.id.toString(),
+      name: release.name || release.tag_name,
+      tag: release.tag_name,
+      date: release.published_at,
+      body: release.body || ''
+    }));
+
+  await writeFile(
+    CACHE_FILE,
+    JSON.stringify(transformedReleases, null, 2),
+    'utf-8'
+  );
+
+  return transformedReleases;
+}
+
 export async function getGitHubReleases(): Promise<Release[]> {
   try {
+    console.log('Checking GitHub releases...');
+    
     // Try to get cached releases first
     const cachedReleases = await getCachedReleases();
     if (cachedReleases) {
@@ -62,18 +107,13 @@ export async function getGitHubReleases(): Promise<Release[]> {
 
     console.log('Fetching fresh releases data from GitHub...');
     
-    const response = await fetch(
-      'https://api.github.com/repos/TotalLag/phan.cx/releases',
-      {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'github-releases'
-        }
-      }
-    );
-
-    if (!response.ok) {
-      if (response.status === 403) {
+    try {
+      const releases = await fetchGitHubReleases();
+      const transformedReleases = await transformAndCacheReleases(releases);
+      console.log('✅ Successfully updated releases data');
+      return transformedReleases;
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('403')) {
         console.warn('⚠️ GitHub API rate limit exceeded');
         // If we have cached data and hit rate limit, use the cached data
         if (cachedReleases) {
@@ -81,35 +121,8 @@ export async function getGitHubReleases(): Promise<Release[]> {
           return cachedReleases;
         }
       }
-      throw new Error(`GitHub API responded with ${response.status}: ${await response.text()}`);
+      throw error;
     }
-
-    const releases: GitHubRelease[] = await response.json();
-    
-    if (!Array.isArray(releases)) {
-      throw new Error('Invalid response format from GitHub API');
-    }
-
-    // Transform the data
-    const transformedReleases: Release[] = releases
-      .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
-      .map(release => ({
-        id: release.id.toString(),
-        name: release.name || release.tag_name,
-        tag: release.tag_name,
-        date: release.published_at,
-        body: release.body || ''
-      }));
-
-    // Write releases data
-    await writeFile(
-      CACHE_FILE,
-      JSON.stringify(transformedReleases, null, 2),
-      'utf-8'
-    );
-
-    console.log('✅ Successfully updated releases data');
-    return transformedReleases;
   } catch (error) {
     console.error('Error handling releases:', error);
     

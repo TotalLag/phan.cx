@@ -2,6 +2,7 @@ import { createSignal, createEffect, Show, For, onMount, onCleanup } from 'solid
 import { Portal } from 'solid-js/web';
 import { hasUnreadReleases, markReleasesAsRead } from '../../stores/notifications';
 import type { Release } from '../../utils/github';
+import CircleButton from './CircleButton';
 import Markdown from './Markdown';
 
 interface Props {
@@ -117,11 +118,10 @@ export default function NotificationsButton(props: Props) {
 
   return (
     <>
-      <button 
+      <CircleButton
         ref={buttonRef}
         onClick={handleOpen}
-        class="relative inline-flex items-center justify-center p-icon-button rounded-button bg-surface-primary hover:bg-surface-hover active:bg-surface-active focus:outline-none focus:ring-2 focus:ring-accent/20"
-        aria-label="Show notifications"
+        label="Show notifications"
         aria-expanded={isOpen()}
         aria-haspopup="dialog"
       >
@@ -145,7 +145,7 @@ export default function NotificationsButton(props: Props) {
             <span class="absolute -inset-1 rounded-pill bg-red-600/40 animate-ping" />
           </span>
         </Show>
-      </button>
+      </CircleButton>
 
       <Show when={isOpen()}>
         <Portal>

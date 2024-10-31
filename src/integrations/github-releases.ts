@@ -6,12 +6,7 @@ export default function githubReleases(): AstroIntegration {
     name: 'github-releases',
     hooks: {
       'astro:build:setup': async () => {
-        try {
-          console.log('Checking GitHub releases...');
-          await getGitHubReleases();
-        } catch (error) {
-          console.error('Error in github-releases integration:', error);
-        }
+        await getGitHubReleases();
       }
     }
   };

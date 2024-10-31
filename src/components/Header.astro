@@ -1,5 +1,5 @@
 ---
-import CircleButton from './ui/CircleButton.astro';
+import CircleButton from './ui/CircleButton';
 import SearchInput from './ui/SearchInput.astro';
 import ThemeToggle from './ui/ThemeToggle';
 import Notifications from './ui/Notifications.astro';
@@ -13,6 +13,7 @@ import Notifications from './ui/Notifications.astro';
           label="Toggle menu" 
           as="label" 
           for="nav-toggle"
+          client:load
         >
           <svg 
             class="w-5 h-5 transition-colors duration-200 text-icon hover:text-icon-hover" 
