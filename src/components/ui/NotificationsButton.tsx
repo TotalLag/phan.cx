@@ -31,7 +31,7 @@ export default function NotificationsButton(props: Props) {
     const isMobile = window.innerWidth < 640;
     
     return {
-      top: rect.bottom + window.scrollY + 8,
+      top: rect.bottom + 8,
       right: isMobile ? 16 : window.innerWidth - rect.right
     };
   };
