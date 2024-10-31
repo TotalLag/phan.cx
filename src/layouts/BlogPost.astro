@@ -1,11 +1,17 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import Layout from './Layout.astro';
+import MDXImage from '../components/ui/MDXImage.astro';
 
 type Props = CollectionEntry<"blog">["data"];
 
 const { title, topic, excerpt, date, updated } = Astro.props;
 const slug = Astro.url.pathname.split('/').pop();
+
+// Define components to be used in MDX
+const components = {
+  img: MDXImage,
+};
 ---
 
 <Layout title={title}>

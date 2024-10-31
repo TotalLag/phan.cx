@@ -9,17 +9,10 @@ export default defineConfig({
   integrations: [
     solid(),
     tailwind({
-      // Explicitly set config path
       config: { path: './tailwind.config.cjs' },
     }),
     mdx({
-      // Enable MDX support
       extendMarkdownConfig: true,
-      // Configure MDX options
-      remarkPlugins: [],
-      rehypePlugins: [],
-      // Enable remark/rehype plugins
-      gfm: true,
     }),
     githubReleases(),
   ],
@@ -27,8 +20,29 @@ export default defineConfig({
     shikiConfig: {
       theme: 'github-dark',
       wrap: true,
+    }
+  },
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+      config: {
+        limitInputPixels: 4758600,
+      },
     },
-    remarkPlugins: [],
-    rehypePlugins: [],
+    domains: ['placehold.co', 'via.placeholder.com', 'images.unsplash.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.unsplash.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co'
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com'
+      }
+    ],
   },
 });

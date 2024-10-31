@@ -2,9 +2,43 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
 const posts = await getCollection('blog');
 const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Get all blog images
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/blog/*', { eager: true });
+
+// Placeholder image
+const placeholderImage = {
+  src: 'https://placehold.co/800x600/222222/ffffff?text=Cover+Image+Not+Found',
+  width: 800,
+  height: 600,
+  format: 'webp'
+} as ImageMetadata;
+
+// Helper function to get image data
+function getCoverImage(cover: string | undefined): ImageMetadata {
+  try {
+    if (cover?.startsWith('/blog/')) {
+      const imageName = cover.replace('/blog/', '');
+      const imagePath = `/src/assets/blog/${imageName}`;
+      return images[imagePath]?.default || placeholderImage;
+    }
+    if (cover?.startsWith('http')) {
+      return {
+        src: cover,
+        width: 800,
+        height: 600,
+        format: 'webp'
+      } as ImageMetadata;
+    }
+  } catch (error) {
+    // Return placeholder for any errors
+  }
+  return placeholderImage;
+}
 
 interface InstagramPost {
   id: string;
@@ -12,9 +46,9 @@ interface InstagramPost {
 }
 
 const instagramPosts: InstagramPost[] = [
-  { id: '1', image: 'https://via.placeholder.com/400x400/2563eb/ffffff' },
-  { id: '2', image: 'https://via.placeholder.com/400x400/1e40af/ffffff' },
-  { id: '3', image: 'https://via.placeholder.com/400x400/1d4ed8/ffffff' },
+  { id: '1', image: 'https://placehold.co/400x400/2563eb/ffffff' },
+  { id: '2', image: 'https://placehold.co/400x400/1e40af/ffffff' },
+  { id: '3', image: 'https://placehold.co/400x400/1d4ed8/ffffff' },
 ];
 ---
 
@@ -52,38 +86,41 @@ const instagramPosts: InstagramPost[] = [
       </div>
 
       <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {sortedPosts.map(post => (
-          <a href={`/blog/${post.slug}`} class="group">
-            <div class="relative overflow-hidden rounded shadow-sm h-44">
-              {post.data.cover && (
+        {sortedPosts.map(post => {
+          const coverImage = getCoverImage(post.data.cover);
+          return (
+            <a href={`/blog/${post.slug}`} class="group">
+              <div class="relative overflow-hidden rounded shadow-sm h-44">
                 <div transition:name={`hero-${post.slug}`}>
                   <Image 
-                    src={post.data.cover} 
+                    src={coverImage}
                     alt={post.data.title}
-                    width={800}
-                    height={400}
+                    widths={[390, 480, 640, 800]}
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    format="webp"
+                    quality={80}
                     class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-              )}
-              <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-              <div class="absolute bottom-0 p-3">
-                <div 
-                  class="mb-1 text-xs tracking-wide uppercase text-white/80"
-                  transition:name={`topic-${post.slug}`}
-                >
-                  {post.data.topic}
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div class="absolute bottom-0 p-3">
+                  <div 
+                    class="mb-1 text-xs tracking-wide uppercase text-white/80"
+                    transition:name={`topic-${post.slug}`}
+                  >
+                    {post.data.topic}
+                  </div>
+                  <h3 
+                    class="text-sm font-medium leading-snug text-white"
+                    transition:name={`title-${post.slug}`}
+                  >
+                    {post.data.title}
+                  </h3>
                 </div>
-                <h3 
-                  class="text-sm font-medium leading-snug text-white"
-                  transition:name={`title-${post.slug}`}
-                >
-                  {post.data.title}
-                </h3>
               </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          );
+        })}
       </div>
     </section>
 
@@ -102,7 +139,12 @@ const instagramPosts: InstagramPost[] = [
         {instagramPosts.map(post => (
           <div class="overflow-hidden rounded shadow-sm aspect-square">
             <Image 
-              src={post.image} 
+              src={{
+                src: post.image,
+                width: 400,
+                height: 400,
+                format: 'webp'
+              } as ImageMetadata}
               alt={`Instagram post ${post.id}`}
               width={400}
               height={400}
