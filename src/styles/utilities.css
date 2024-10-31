@@ -1,0 +1,47 @@
+@layer utilities {
+  /* Layout utilities */
+  .center {
+    @apply mx-auto px-container-px;
+  }
+
+  /* Spacing utilities */
+  .flow > * + * {
+    margin-top: var(--flow-space, 1em);
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--stack-space, var(--gutter));
+  }
+
+  .cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cluster-space, var(--gutter));
+  }
+
+  /* Visual utilities */
+  .surface {
+    @apply bg-surface-primary;
+    color: var(--text-primary);
+  }
+
+  .surface-alt {
+    @apply bg-surface-secondary;
+    color: var(--text-primary);
+  }
+
+  .text-primary {
+    color: var(--text-primary);
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-muted {
+    color: var(--text-muted);
+  }
+}

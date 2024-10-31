@@ -1,4 +1,6 @@
 ---
+import SearchWrapper from './SearchWrapper';
+
 interface Props {
   placeholder?: string;
   class?: string;
@@ -26,66 +28,6 @@ const { placeholder = "Search", class: className } = Astro.props;
       />
     </svg>
 
-    <input 
-      type="search" 
-      placeholder={placeholder}
-      class="search-input"
-      role="searchbox"
-      autocomplete="off"
-      spellcheck="false"
-    />
+    <SearchWrapper client:only="solid-js" placeholder={placeholder} />
   </label>
 </div>
-
-<style>
-  /* Enhanced theme-aware styles */
-  .search-input {
-    transition: all 200ms ease-out;
-    background-color: var(--surface-secondary);
-    color: var(--text-primary);
-    border-color: var(--border);
-  }
-
-  .search-input::placeholder {
-    color: var(--icon-muted);
-    transition: color 200ms ease-out;
-  }
-
-  .search-input:hover {
-    border-color: var(--border-hover);
-  }
-
-  .search-input:focus {
-    border-color: var(--border-focus);
-    box-shadow: 0 0 0 2px var(--accent-muted/0.2);
-    outline: none;
-  }
-
-  /* Remove default search input styles */
-  .search-input::-webkit-search-decoration,
-  .search-input::-webkit-search-cancel-button,
-  .search-input::-webkit-search-results-button,
-  .search-input::-webkit-search-results-decoration {
-    display: none;
-  }
-
-  /* Dark mode adjustments */
-  :root.dark .search-input {
-    background-color: var(--surface-secondary);
-  }
-
-  :root.dark .search-input:focus {
-    box-shadow: 0 0 0 2px var(--accent/0.2);
-  }
-
-  /* High contrast mode support */
-  @media (forced-colors: active) {
-    .search-input {
-      border: 2px solid ButtonText;
-    }
-    .search-input:focus {
-      outline: 2px solid ButtonText;
-      outline-offset: 2px;
-    }
-  }
-</style>

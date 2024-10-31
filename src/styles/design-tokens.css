@@ -1,0 +1,61 @@
+@layer base {
+  :root {
+    /* Color tokens */
+    --surface-primary: #ffffff;
+    --surface-secondary: #f9fafb;
+    --surface-tertiary: #f3f4f6;
+    --surface-hover: #f3f4f6;
+    --surface-active: #e5e7eb;
+    --surface-disabled: #f9fafb;
+
+    --border: #e5e7eb;
+    --border-focus: #9ca3af;
+    --border-hover: #d1d5db;
+    --border-disabled: #e5e7eb;
+    --border-profile: #ee6633;
+
+    --text-primary: #111827;
+    --text-secondary: #374151;
+    --text-muted: #6b7280;
+
+    --icon: #6b7280;
+    --icon-muted: #9ca3af;
+    --icon-hover: #4b5563;
+    --icon-disabled: #d1d5db;
+
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --accent-muted: #60a5fa;
+
+    --overlay-light: rgba(255, 255, 255, 0.8);
+    --overlay-dark: rgba(0, 0, 0, 0.7);
+    --overlay-modal: rgba(0, 0, 0, 0.4);
+
+    /* Spacing tokens */
+    --gutter: clamp(1rem, 3vw, 1.5rem);
+    --flow-space: 1em;
+  }
+
+  :root.dark {
+    --surface-primary: #18181b;
+    --surface-secondary: #27272a;
+    --surface-tertiary: #3f3f46;
+    --surface-hover: #3f3f46;
+    --surface-active: #52525b;
+    --surface-disabled: #27272a;
+
+    --border: #3f3f46;
+    --border-focus: #71717a;
+    --border-hover: #52525b;
+    --border-disabled: #3f3f46;
+
+    --text-primary: #f9fafb;
+    --text-secondary: #e5e7eb;
+    --text-muted: #9ca3af;
+
+    --icon: #a1a1aa;
+    --icon-muted: #71717a;
+    --icon-hover: #d4d4d8;
+    --icon-disabled: #52525b;
+  }
+}

@@ -1,0 +1,46 @@
+@layer components {
+  /* Layout compositions */
+  .flex-layout {
+    @apply flex items-center;
+  }
+
+  .center-layout {
+    @apply w-full mx-auto px-container-px;
+  }
+
+  .grid-layout {
+    display: grid;
+    grid-template-columns: 
+      minmax(0, 1fr)
+      min(65ch, 100%)
+      minmax(0, 1fr);
+    gap: var(--gutter);
+  }
+
+  .grid-layout > * {
+    grid-column: 2;
+  }
+}
+
+/* View transition styles */
+@layer base {
+  ::view-transition-group(header) {
+    z-index: theme('zIndex.sticky');
+  }
+
+  ::view-transition-group(sidebar) {
+    z-index: theme('zIndex.dropdown');
+  }
+
+  ::view-transition-group(footer) {
+    z-index: theme('zIndex.banner');
+  }
+
+  /* Add transitions for theme changes */
+  body, 
+  body *:not(script):not(style) {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 200ms;
+    transition-timing-function: ease-out;
+  }
+}
