@@ -1,8 +1,19 @@
 import MiniSearch from 'minisearch'
 import type { CollectionEntry } from 'astro:content'
-import type { SearchableDocument, SearchResult, TokenPosition } from '../types/search'
+import type { SearchableDocument, SearchResult, TokenPosition, SearchManifest } from '../types/search'
+import { makePersisted } from '@solid-primitives/storage'
+import { createSignal } from 'solid-js'
+import { isServer } from 'solid-js/web'
+import localforage from 'localforage'
 
 let searchIndex: MiniSearch<SearchableDocument>
+let searchManifest: SearchManifest | null = null
+
+// Create persisted storage for chunks with localforage
+const [chunks, setChunks] = makePersisted(createSignal<Record<string, SearchableDocument[]>>({}), {
+  name: 'search-chunks',
+  storage: !isServer ? localforage : undefined
+})
 
 export function cleanText(text: string): string {
   return text
@@ -39,7 +50,9 @@ function tokenizeWithPositions(text: string): TokenPosition[] {
   return tokens
 }
 
-export function initializeSearch(documents: SearchableDocument[]) {
+export async function initializeSearch() {
+  if (isServer) return
+
   searchIndex = new MiniSearch({
     fields: ['title', 'excerpt', 'content'],
     storeFields: ['title', 'excerpt', 'content', 'url'],
@@ -52,15 +65,76 @@ export function initializeSearch(documents: SearchableDocument[]) {
     }
   })
 
-  // Clean all text before indexing
-  const cleanedDocs = documents.map(doc => ({
+  try {
+    // Load manifest
+    const manifestResponse = await fetch('/search/manifest.json')
+    searchManifest = await manifestResponse.json()
+
+    // Load initial chunk
+    const initialResponse = await fetch('/search/initial.json.gz')
+    const initialDocs = await initialResponse.json()
+
+    // Add initial documents to search index
+    const cleanedDocs = initialDocs.map(cleanDocument)
+    searchIndex.addAll(cleanedDocs)
+
+    // Start loading other chunks in the background
+    loadChunksInBackground()
+  } catch (error) {
+    console.error('Failed to initialize search:', error)
+  }
+}
+
+function cleanDocument(doc: SearchableDocument): SearchableDocument {
+  return {
     ...doc,
     title: cleanText(doc.title),
     excerpt: cleanText(doc.excerpt),
     content: cleanText(doc.content)
-  }))
+  }
+}
 
-  searchIndex.addAll(cleanedDocs)
+async function loadChunksInBackground() {
+  if (!searchManifest || isServer) return
+
+  const cachedChunks = chunks()
+  
+  for (const chunk of searchManifest.chunks) {
+    try {
+      if (cachedChunks[chunk.id] && isChunkValid(chunk.id, cachedChunks[chunk.id])) {
+        // Use cached chunk
+        const cleanedDocs = cachedChunks[chunk.id].map(cleanDocument)
+        searchIndex.addAll(cleanedDocs)
+      } else {
+        // Load chunk from network
+        const chunkResponse = await fetch(`/search/${chunk.id}.json.gz`)
+        const chunkData = await chunkResponse.json()
+        const cleanedDocs = chunkData.map(cleanDocument)
+        searchIndex.addAll(cleanedDocs)
+
+        // Cache the chunk
+        setChunks({
+          ...cachedChunks,
+          [chunk.id]: chunkData
+        })
+      }
+    } catch (error) {
+      console.error(`Failed to load chunk ${chunk.id}:`, error)
+    }
+  }
+}
+
+function isChunkValid(chunkId: string, chunk: SearchableDocument[]): boolean {
+  if (!searchManifest) return false
+  
+  // Verify chunk exists in manifest
+  const manifestChunk = searchManifest.chunks.find(c => c.id === chunkId)
+  if (!manifestChunk) return false
+
+  // Verify chunk size matches manifest
+  if (chunk.length !== manifestChunk.size) return false
+
+  return true
 }
 
 export function blogToSearchableDocuments(posts: CollectionEntry<'blog'>[]): SearchableDocument[] {

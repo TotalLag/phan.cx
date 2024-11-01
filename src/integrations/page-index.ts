@@ -1,8 +1,14 @@
 import type { AstroIntegration } from 'astro'
 import { cleanText } from '../utils/search'
-import type { SearchableDocument } from '../types/search'
+import type { SearchableDocument, SearchManifest } from '../types/search'
 import fs from 'fs/promises'
 import path from 'path'
+import zlib from 'zlib'
+import { promisify } from 'util'
+
+const gzip = promisify(zlib.gzip)
+const CHUNK_SIZE = 2 // Number of documents per chunk
+const VERSION = '1.0.0'
 
 export function pageIndexIntegration(): AstroIntegration {
   return {
@@ -75,14 +81,59 @@ export function pageIndexIntegration(): AstroIntegration {
               })
           )
 
-          // Write page index to a file
-          const outputPath = path.join(dir.pathname, '../src/data/page-index.json')
-          await fs.mkdir(path.dirname(outputPath), { recursive: true })
-          await fs.writeFile(outputPath, JSON.stringify(pageDocs, null, 2))
-          console.log(`Generated page index with ${pageDocs.length} pages`)
+          // Create search directory in public
+          const searchDir = path.join(process.cwd(), 'public', 'search')
+          await fs.mkdir(searchDir, { recursive: true })
+
+          // Split documents into chunks
+          const chunks: SearchableDocument[][] = []
+          for (let i = 0; i < pageDocs.length; i += CHUNK_SIZE) {
+            chunks.push(pageDocs.slice(i, i + CHUNK_SIZE))
+          }
+
+          // Create manifest
+          const manifest: SearchManifest = {
+            version: VERSION,
+            totalDocuments: pageDocs.length,
+            chunks: chunks.map((_, index) => ({
+              id: `chunk-${index}`,
+              size: chunks[index].length
+            })),
+            initial: chunks[0]?.[0] ? [chunks[0][0].id] : []
+          }
+
+          // Write manifest
+          await fs.writeFile(
+            path.join(searchDir, 'manifest.json'),
+            JSON.stringify(manifest, null, 2)
+          )
+
+          // Write and compress initial chunk
+          if (chunks[0]) {
+            const initialData = JSON.stringify(chunks[0])
+            const compressedInitial = await gzip(initialData)
+            await fs.writeFile(
+              path.join(searchDir, 'initial.json.gz'),
+              compressedInitial
+            )
+          }
+
+          // Write and compress remaining chunks
+          await Promise.all(
+            chunks.map(async (chunk, index) => {
+              const chunkData = JSON.stringify(chunk)
+              const compressed = await gzip(chunkData)
+              await fs.writeFile(
+                path.join(searchDir, `chunk-${index}.json.gz`),
+                compressed
+              )
+            })
+          )
+
+          console.log(`Generated search index with ${chunks.length} chunks`)
           
         } catch (error) {
-          console.error('Error generating page index:', error)
+          console.error('Error generating search index:', error)
         }
       }
     }

@@ -1,15 +1,9 @@
 import { createContext, useContext, createSignal, createEffect, type Component, type JSX } from 'solid-js'
-import { search, initializeSearch, blogToSearchableDocuments } from '../utils/search'
-import type { SearchResult, SearchableDocument } from '../types/search'
-import { getCollection } from 'astro:content'
-
-// Try to import page index, but don't fail if it doesn't exist
-let pageIndex: SearchableDocument[] = []
-try {
-  pageIndex = (await import('../data/page-index.json')).default
-} catch (e) {
-  console.log('No page index found, falling back to blog collection')
-}
+import { search, initializeSearch } from '../utils/search'
+import type { SearchResult } from '../types/search'
+import { makePersisted } from '@solid-primitives/storage'
+import { isServer } from 'solid-js/web'
+import localforage from 'localforage'
 
 export type SearchContextType = {
   query: () => string
@@ -23,7 +17,12 @@ export type SearchContextType = {
 const SearchContext = createContext<SearchContextType>()
 
 export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
-  const [query, setQuery] = createSignal('')
+  // Persist the search query with localforage
+  const [query, setQuery] = makePersisted(createSignal(''), {
+    name: 'search-query',
+    storage: !isServer ? localforage : undefined
+  })
+
   const [results, setResults] = createSignal<SearchResult[]>([])
   const [isLoading, setIsLoading] = createSignal(false)
   const [isNavigating, setIsNavigating] = createSignal(false)
@@ -34,21 +33,7 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
     if (!isInitialized()) {
       console.log('Initializing search...')
       try {
-        let searchDocs: SearchableDocument[] = []
-
-        if (pageIndex.length > 0) {
-          // Use page index if it exists (already includes blog posts)
-          console.log('Using page index with', pageIndex.length, 'pages')
-          searchDocs = pageIndex
-        } else {
-          // Fall back to blog collection
-          const posts = await getCollection('blog')
-          console.log('Using blog collection with', posts.length, 'posts')
-          searchDocs = blogToSearchableDocuments(posts)
-        }
-        
-        // Initialize search
-        initializeSearch(searchDocs)
+        await initializeSearch()
         setIsInitialized(true)
         console.log('Search initialized successfully')
       } catch (error) {

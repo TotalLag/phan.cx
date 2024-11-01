@@ -27,3 +27,25 @@ export interface SearchResult {
     }
   }
 }
+
+export interface SearchChunk {
+  id: string
+  documents: SearchableDocument[]
+  timestamp: number
+}
+
+export interface SearchManifest {
+  version: string
+  totalDocuments: number
+  chunks: {
+    id: string
+    size: number
+  }[]
+  initial: string[]
+}
+
+export interface CachedChunk {
+  data: SearchableDocument[]
+  timestamp: number
+  version: string
+}
