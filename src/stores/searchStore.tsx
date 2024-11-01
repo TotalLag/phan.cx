@@ -1,7 +1,15 @@
 import { createContext, useContext, createSignal, createEffect, type Component, type JSX } from 'solid-js'
 import { search, initializeSearch, blogToSearchableDocuments } from '../utils/search'
-import type { SearchResult } from '../types/search'
+import type { SearchResult, SearchableDocument } from '../types/search'
 import { getCollection } from 'astro:content'
+
+// Try to import page index, but don't fail if it doesn't exist
+let pageIndex: SearchableDocument[] = []
+try {
+  pageIndex = (await import('../data/page-index.json')).default
+} catch (e) {
+  console.log('No page index found, falling back to blog collection')
+}
 
 export type SearchContextType = {
   query: () => string
@@ -26,12 +34,20 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
     if (!isInitialized()) {
       console.log('Initializing search...')
       try {
-        // Get blog posts
-        const posts = await getCollection('blog')
-        console.log('Got blog posts:', posts.length)
-        const searchDocs = blogToSearchableDocuments(posts)
+        let searchDocs: SearchableDocument[] = []
+
+        if (pageIndex.length > 0) {
+          // Use page index if it exists (already includes blog posts)
+          console.log('Using page index with', pageIndex.length, 'pages')
+          searchDocs = pageIndex
+        } else {
+          // Fall back to blog collection
+          const posts = await getCollection('blog')
+          console.log('Using blog collection with', posts.length, 'posts')
+          searchDocs = blogToSearchableDocuments(posts)
+        }
         
-        // Initialize search with blog posts only
+        // Initialize search
         initializeSearch(searchDocs)
         setIsInitialized(true)
         console.log('Search initialized successfully')

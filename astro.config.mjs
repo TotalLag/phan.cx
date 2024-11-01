@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import solid from '@astrojs/solid-js';
 import githubReleases from './src/integrations/github-releases';
 import codeStats from './src/integrations/code-stats';
+import { pageIndexIntegration } from './src/integrations/page-index';
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,6 +18,7 @@ export default defineConfig({
     }),
     githubReleases(),
     codeStats(),
+    pageIndexIntegration()
   ],
   markdown: {
     shikiConfig: {

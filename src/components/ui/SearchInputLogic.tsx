@@ -47,7 +47,7 @@ const SearchInputLogic: Component<Props> = (props) => {
     setIsOpen(true)
   }
 
-  const handleResultClick = (e: MouseEvent & { currentTarget: HTMLAnchorElement }) => {
+  const handleResultClick = () => {
     store.setIsNavigating(true)
     setIsOpen(false)
   }

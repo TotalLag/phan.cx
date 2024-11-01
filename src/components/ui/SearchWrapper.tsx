@@ -1,7 +1,6 @@
 import { type Component } from 'solid-js'
 import { SearchProvider } from '../../stores/searchStore'
 import SearchInputLogic from './SearchInputLogic'
-import type { SearchContextType } from '../../stores/searchStore'
 
 interface Props {
   placeholder?: string;

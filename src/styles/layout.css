@@ -43,4 +43,8 @@
     transition-duration: 200ms;
     transition-timing-function: ease-out;
   }
+
+  body {
+    @apply flex
+  }
 }
