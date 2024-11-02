@@ -64,10 +64,11 @@ const SearchInputLogic: Component<Props> = (props) => {
           role="searchbox"
           autocomplete="off"
           spellcheck={false}
+          disabled={!store.isInitialized()}
         />
         <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10">
           <Show 
-            when={store.isNavigating()}
+            when={store.isNavigating() || !store.isInitialized()}
             fallback={
               <svg 
                 class="w-5 h-5 text-icon-muted" 
@@ -109,7 +110,7 @@ const SearchInputLogic: Component<Props> = (props) => {
         </div>
       </div>
 
-      <Show when={isOpen() && store.query().trim().length >= 3}>
+      <Show when={isOpen() && store.query().trim().length >= 3 && store.isInitialized()}>
         <div class="absolute z-modal w-full mt-2 border rounded-lg shadow-lg border-border bg-surface-primary max-h-[80vh] overflow-y-auto">
           <Show when={!store.isLoading()}>
             <Show when={store.results().length > 0}>

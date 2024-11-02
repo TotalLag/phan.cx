@@ -22,9 +22,10 @@ const imageSource = await getImageData(src);
   <Image 
     src={imageSource}
     alt={alt}
-    class={`relative z-10 h-full w-full object-cover transition-opacity duration-base ease-soft ${className || ''}`}
-    onload="this.style.opacity = 1; this.parentNode.querySelector('.image-shimmer').classList.add('loaded')"
-    style="opacity: 0"
+    loading="lazy"
+    decoding="async"
+    class={`relative z-10 h-full w-full object-cover opacity-0 transition-opacity duration-base ease-soft ${className || ''}`}
+    onload="try { this.classList.remove('opacity-0'); this.parentNode.querySelector('.image-shimmer').classList.add('loaded') } catch (e) {}"
     {...props}
   />
 </div>

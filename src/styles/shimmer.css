@@ -19,7 +19,8 @@
   }
 
   .image-shimmer.loaded {
-    @apply opacity-0;
+    @apply opacity-0 pointer-events-none;
+    animation: none;
   }
 
   @keyframes shimmer {

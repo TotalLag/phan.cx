@@ -50,8 +50,54 @@ function tokenizeWithPositions(text: string): TokenPosition[] {
   return tokens
 }
 
+async function fetchWithRetry(url: string, retries = 3): Promise<Response> {
+  let lastError: Error | null = null
+  
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(url)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      return response
+    } catch (error) {
+      lastError = error as Error
+      console.warn(`Attempt ${i + 1} failed for ${url}:`, error)
+      // Wait before retrying, with exponential backoff
+      if (i < retries - 1) {
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000))
+      }
+    }
+  }
+  
+  throw lastError
+}
+
+// Keep track of added document IDs to prevent duplicates
+const addedDocuments = new Set<string>()
+
+function addDocumentsToIndex(docs: SearchableDocument[]) {
+  const newDocs = docs.filter(doc => {
+    // Skip documents with no ID or already added
+    if (!doc.id || addedDocuments.has(doc.id)) {
+      console.warn(`Skipping document with ${!doc.id ? 'missing' : 'duplicate'} ID:`, doc.id)
+      return false
+    }
+    addedDocuments.add(doc.id)
+    return true
+  })
+
+  if (newDocs.length > 0) {
+    searchIndex.addAll(newDocs)
+    console.log(`Added ${newDocs.length} new documents to search index`)
+  }
+}
+
 export async function initializeSearch() {
   if (isServer) return
+
+  // Clear the set of added documents when initializing
+  addedDocuments.clear()
 
   searchIndex = new MiniSearch({
     fields: ['title', 'excerpt', 'content'],
@@ -66,28 +112,33 @@ export async function initializeSearch() {
   })
 
   try {
-    // Load manifest
-    const manifestResponse = await fetch('/search/manifest.json')
+    console.log('Loading search manifest...')
+    const manifestResponse = await fetchWithRetry('/search/manifest.json')
     searchManifest = await manifestResponse.json()
+    console.log('Search manifest loaded:', searchManifest)
 
-    // Load initial chunk
-    const initialResponse = await fetch('/search/initial.json.gz')
+    console.log('Loading initial chunk...')
+    const initialResponse = await fetchWithRetry('/search/initial.json.gz')
     const initialDocs = await initialResponse.json()
+    console.log('Initial chunk loaded, documents:', initialDocs.length)
 
-    // Add initial documents to search index
     const cleanedDocs = initialDocs.map(cleanDocument)
-    searchIndex.addAll(cleanedDocs)
+    addDocumentsToIndex(cleanedDocs)
 
     // Start loading other chunks in the background
     loadChunksInBackground()
+    
+    return true
   } catch (error) {
     console.error('Failed to initialize search:', error)
+    throw error
   }
 }
 
 function cleanDocument(doc: SearchableDocument): SearchableDocument {
   return {
     ...doc,
+    id: doc.id || doc.url, // Use URL as fallback ID if ID is missing
     title: cleanText(doc.title),
     excerpt: cleanText(doc.excerpt),
     content: cleanText(doc.content)
@@ -101,18 +152,21 @@ async function loadChunksInBackground() {
   
   for (const chunk of searchManifest.chunks) {
     try {
+      console.log(`Processing chunk ${chunk.id}...`)
+      
       if (cachedChunks[chunk.id] && isChunkValid(chunk.id, cachedChunks[chunk.id])) {
-        // Use cached chunk
+        console.log(`Using cached chunk ${chunk.id}`)
         const cleanedDocs = cachedChunks[chunk.id].map(cleanDocument)
-        searchIndex.addAll(cleanedDocs)
+        addDocumentsToIndex(cleanedDocs)
       } else {
-        // Load chunk from network
-        const chunkResponse = await fetch(`/search/${chunk.id}.json.gz`)
+        console.log(`Loading chunk ${chunk.id} from network...`)
+        const chunkResponse = await fetchWithRetry(`/search/${chunk.id}.json.gz`)
         const chunkData = await chunkResponse.json()
+        console.log(`Chunk ${chunk.id} loaded, documents:`, chunkData.length)
+        
         const cleanedDocs = chunkData.map(cleanDocument)
-        searchIndex.addAll(cleanedDocs)
+        addDocumentsToIndex(cleanedDocs)
 
-        // Cache the chunk
         setChunks({
           ...cachedChunks,
           [chunk.id]: chunkData
@@ -120,6 +174,7 @@ async function loadChunksInBackground() {
       }
     } catch (error) {
       console.error(`Failed to load chunk ${chunk.id}:`, error)
+      // Continue with other chunks even if one fails
     }
   }
 }
@@ -127,12 +182,16 @@ async function loadChunksInBackground() {
 function isChunkValid(chunkId: string, chunk: SearchableDocument[]): boolean {
   if (!searchManifest) return false
   
-  // Verify chunk exists in manifest
   const manifestChunk = searchManifest.chunks.find(c => c.id === chunkId)
-  if (!manifestChunk) return false
+  if (!manifestChunk) {
+    console.warn(`Chunk ${chunkId} not found in manifest`)
+    return false
+  }
 
-  // Verify chunk size matches manifest
-  if (chunk.length !== manifestChunk.size) return false
+  if (chunk.length !== manifestChunk.size) {
+    console.warn(`Chunk ${chunkId} size mismatch: ${chunk.length} vs ${manifestChunk.size}`)
+    return false
+  }
 
   return true
 }
@@ -157,7 +216,6 @@ function findMatchPositions(text: string, terms: string[]): TokenPosition[] {
     }
   })
 
-  // Sort by position and limit to top 2 matches
   return positions.sort((a, b) => a.start - b.start).slice(0, 2)
 }
 

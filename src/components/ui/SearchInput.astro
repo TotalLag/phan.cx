@@ -12,6 +12,6 @@ const { placeholder = "Search", class: className } = Astro.props;
 <div class={`relative ${className}`}>
   <label class="relative block">
     <span class="sr-only">{placeholder}</span>
-    <SearchWrapper client:only="solid-js" placeholder={placeholder} />
+    <SearchWrapper client:load placeholder={placeholder} />
   </label>
 </div>

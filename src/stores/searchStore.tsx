@@ -1,4 +1,4 @@
-import { createContext, useContext, createSignal, createEffect, type Component, type JSX } from 'solid-js'
+import { createContext, useContext, createSignal, createEffect, type Component, type JSX, Show } from 'solid-js'
 import { search, initializeSearch } from '../utils/search'
 import type { SearchResult } from '../types/search'
 import { makePersisted } from '@solid-primitives/storage'
@@ -12,6 +12,7 @@ export type SearchContextType = {
   isLoading: () => boolean
   isNavigating: () => boolean
   setIsNavigating: (value: boolean) => void
+  isInitialized: () => boolean
 }
 
 const SearchContext = createContext<SearchContextType>()
@@ -30,7 +31,7 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
 
   // Initialize search
   createEffect(async () => {
-    if (!isInitialized()) {
+    if (!isInitialized() && !isServer) {
       console.log('Initializing search...')
       try {
         await initializeSearch()
@@ -38,6 +39,7 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
         console.log('Search initialized successfully')
       } catch (error) {
         console.error('Failed to initialize search:', error)
+        // Don't set initialized on error to allow retrying
       }
     }
   })
@@ -70,12 +72,15 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
     results,
     isLoading,
     isNavigating,
-    setIsNavigating
+    setIsNavigating,
+    isInitialized
   }
 
   return (
     <SearchContext.Provider value={store}>
-      {props.children}
+      <Show when={!isServer}>
+        {props.children}
+      </Show>
     </SearchContext.Provider>
   )
 }
