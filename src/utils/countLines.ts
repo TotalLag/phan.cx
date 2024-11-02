@@ -43,10 +43,10 @@ const CACHE_DURATION = 360000; // 6mins in milliseconds
 
 function formatNumber(num: number): string {
   if (num >= 1000000) {
-    return (num / 1000000).toFixed(2) + 'm';
+    return (num / 1000000).toFixed(1) + 'm';
   }
   if (num >= 1000) {
-    return (num / 1000).toFixed(2) + 'k';
+    return (num / 1000).toFixed(1) + 'k';
   }
   return num.toString();
 }
