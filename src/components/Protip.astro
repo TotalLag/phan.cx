@@ -1,24 +1,9 @@
 ---
 ---
-<div class="p-6 my-6 border-l-4 rounded-r shadow-sm protip-container">
-  <div class="mb-2 text-lg font-bold protip-title">Protip</div>
-  <div class="prose prose-base prose-unrestricted">
+<div class="protip-container">
+  <div class="protip-icon">💡</div>
+  <div class="protip-title">Protip</div>
+  <div class="protip-content">
     <slot />
   </div>
 </div>
-
-<style>
-  .protip-container {
-    border-color: var(--accent);
-    background-color: var(--surface-secondary);
-  }
-
-  .protip-title {
-    color: var(--accent);
-  }
-
-  /* Dark mode adjustments */
-  :root.dark .protip-container {
-    background-color: var(--surface-tertiary);
-  }
-</style>
