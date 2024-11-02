@@ -1,7 +1,7 @@
 ---
 import '../styles/glitch.css';
 import CoffeeCounter from './CoffeeCounter';
-import { Image } from 'astro:assets';
+import MDXImage from '../components/ui/MDXImage.astro';
 import profileImage from '../../public/me.jpg';
 import codeStats from '../data/code-stats.json';
 
@@ -32,7 +32,7 @@ const navLinkClass = "flex items-center py-2 text-sm px-container-px hover:bg-su
     <div class="flex flex-col items-center pt-8 pb-6">
       <div class="relative mb-3 w-profile h-profile">
         <div class="w-full h-full overflow-hidden border-4 border-profile rounded-profile shadow-card">
-          <Image 
+          <MDXImage 
             src={profileImage} 
             alt="Profile" 
             class="object-cover w-full h-full" 

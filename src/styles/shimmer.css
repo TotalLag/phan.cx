@@ -1,0 +1,30 @@
+@layer components {
+  /* Image loading animation */
+  .image-shimmer {
+    @apply absolute inset-0 overflow-hidden transition-opacity opacity-100 bg-surface-tertiary duration-base ease-soft;
+  }
+
+  .image-shimmer::before {
+    @apply absolute inset-0 -translate-x-full;
+    background: linear-gradient(
+      90deg, 
+      transparent 0%,
+      var(--surface-hover) 20%,
+      var(--surface-active) 60%,
+      transparent 100%
+    );
+    content: '';
+    animation: shimmer 1.5s infinite;
+    will-change: transform;
+  }
+
+  .image-shimmer.loaded {
+    @apply opacity-0;
+  }
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}

@@ -4,6 +4,7 @@
 @import './components.css';
 @import './utilities.css';
 @import './mdx.css';
+@import './shimmer.css';
 
 @tailwind base;
 @tailwind components;
