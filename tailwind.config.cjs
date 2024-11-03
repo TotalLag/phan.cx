@@ -66,18 +66,20 @@ module.exports = {
         'input-py': 'clamp(0.2rem, 1vw, 0.25rem)',
         'icon-button': 'clamp(0.4rem, 1.5vw, 0.5rem)',
         'dropdown-item': 'clamp(0.4rem, 1.5vw, 0.5rem)',
-        'section': 'clamp(1.5rem, 5vw, 2rem)',
+        section: 'clamp(1.5rem, 5vw, 2rem)',
         'container-px': 'clamp(1rem, 3vw, 1.5rem)',
-        'stack': 'clamp(1rem, 3vw, 1.5rem)',
-        'inline': 'clamp(0.5rem, 2vw, 0.75rem)',
-        'sidebar': 'clamp(220px, 20vw, 260px)',
-        'profile': 'clamp(5rem, 10vw, 6rem)',
+        stack: 'clamp(1rem, 3vw, 1.5rem)',
+        inline: 'clamp(0.5rem, 2vw, 0.75rem)',
+        sidebar: 'clamp(220px, 20vw, 260px)',
+        profile: 'clamp(5rem, 10vw, 6rem)',
       },
       boxShadow: {
         button: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
-        dropdown: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+        dropdown:
+          '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
         card: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
-        modal: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+        modal:
+          '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
       },
       zIndex: {
         dropdown: '1000',
@@ -128,7 +130,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [require('@tailwindcss/typography')],
 };

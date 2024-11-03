@@ -27,3 +27,4 @@ pnpm-debug.log*
 
 # vscode settings
 .vscode/
+.aider*

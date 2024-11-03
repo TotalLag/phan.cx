@@ -7,7 +7,7 @@ export default function codeStats(): AstroIntegration {
     hooks: {
       'astro:build:setup': async () => {
         await getCodeStats();
-      }
-    }
+      },
+    },
   };
 }

@@ -1,56 +1,65 @@
-import { createSignal, onMount, onCleanup, Show, For, type Component } from 'solid-js'
-import { useSearch } from '../../stores/searchStore'
-import { getSnippet } from '../../utils/search'
-import type { SearchResult } from '../../types/search'
+import {
+  createSignal,
+  onMount,
+  onCleanup,
+  Show,
+  For,
+  type Component,
+} from 'solid-js';
+import { useSearch } from '../../stores/searchStore';
+import { getSnippet } from '../../utils/search';
+import type { SearchResult } from '../../types/search';
 
 interface Props {
   placeholder?: string;
 }
 
 const SearchInputLogic: Component<Props> = (props) => {
-  const store = useSearch()
-  const [isOpen, setIsOpen] = createSignal(false)
-  let searchRef: HTMLDivElement | undefined
+  const store = useSearch();
+  const [isOpen, setIsOpen] = createSignal(false);
+  let searchRef: HTMLDivElement | undefined;
 
   const handleClickOutside = (event: MouseEvent) => {
     if (searchRef && !searchRef.contains(event.target as Node)) {
-      setIsOpen(false)
+      setIsOpen(false);
     }
-  }
+  };
 
   onMount(() => {
     if (typeof window !== 'undefined') {
-      window.addEventListener('mousedown', handleClickOutside)
+      window.addEventListener('mousedown', handleClickOutside);
       // Reset navigation state on mount
-      store.setIsNavigating(false)
+      store.setIsNavigating(false);
 
       // Handle Astro view transitions
       document.addEventListener('astro:after-swap', () => {
-        store.setIsNavigating(false)
-      })
+        store.setIsNavigating(false);
+      });
 
       // Fallback for regular navigation
-      window.addEventListener('load', () => store.setIsNavigating(false))
+      window.addEventListener('load', () => store.setIsNavigating(false));
     }
-  })
+  });
 
   onCleanup(() => {
     if (typeof window !== 'undefined') {
-      window.removeEventListener('mousedown', handleClickOutside)
-      window.removeEventListener('load', () => store.setIsNavigating(false))
-      document.removeEventListener('astro:after-swap', () => store.setIsNavigating(false))
+      window.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('load', () => store.setIsNavigating(false));
+      document.removeEventListener('astro:after-swap', () =>
+        store.setIsNavigating(false)
+      );
     }
-  })
+  });
 
   const handleInput = (e: InputEvent & { currentTarget: HTMLInputElement }) => {
-    store.setQuery(e.currentTarget.value)
-    setIsOpen(true)
-  }
+    store.setQuery(e.currentTarget.value);
+    setIsOpen(true);
+  };
 
   const handleResultClick = () => {
-    store.setIsNavigating(true)
-    setIsOpen(false)
-  }
+    store.setIsNavigating(true);
+    setIsOpen(false);
+  };
 
   return (
     <div ref={searchRef} class="w-full">
@@ -66,28 +75,28 @@ const SearchInputLogic: Component<Props> = (props) => {
           spellcheck={false}
           disabled={!store.isInitialized()}
         />
-        <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10">
-          <Show 
+        <div class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2">
+          <Show
             when={store.isNavigating() || !store.isInitialized()}
             fallback={
-              <svg 
-                class="w-5 h-5 text-icon-muted" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                class="h-5 w-5 text-icon-muted"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
                 aria-hidden="true"
               >
-                <path 
-                  stroke-linecap="round" 
-                  stroke-linejoin="round" 
-                  stroke-width="2" 
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                 />
               </svg>
             }
           >
             <svg
-              class="w-5 h-5 animate-spin text-icon-muted"
+              class="h-5 w-5 animate-spin text-icon-muted"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -110,8 +119,12 @@ const SearchInputLogic: Component<Props> = (props) => {
         </div>
       </div>
 
-      <Show when={isOpen() && store.query().trim().length >= 3 && store.isInitialized()}>
-        <div class="absolute z-modal w-full mt-2 border rounded-lg shadow-lg border-border bg-surface-primary max-h-[80vh] overflow-y-auto">
+      <Show
+        when={
+          isOpen() && store.query().trim().length >= 3 && store.isInitialized()
+        }
+      >
+        <div class="absolute z-modal mt-2 max-h-[80vh] w-full overflow-y-auto rounded-lg border border-border bg-surface-primary shadow-lg">
           <Show when={!store.isLoading()}>
             <Show when={store.results().length > 0}>
               <div class="divide-y divide-border">
@@ -120,21 +133,33 @@ const SearchInputLogic: Component<Props> = (props) => {
                     <a
                       href={result.url}
                       onClick={handleResultClick}
-                      class="block p-3 hover:bg-surface-hover transition-colors duration-base ease-soft"
+                      class="block p-3 transition-colors duration-base ease-soft hover:bg-surface-hover"
                     >
                       {/* Title */}
-                      <div class="font-medium text-primary">
+                      <div class="text-primary font-medium">
                         {result.matches.title.positions.length > 0 ? (
-                          <span innerHTML={getSnippet(result.title, result.matches.title.positions[0], 100)} />
+                          <span
+                            innerHTML={getSnippet(
+                              result.title,
+                              result.matches.title.positions[0],
+                              100
+                            )}
+                          />
                         ) : (
                           result.title
                         )}
                       </div>
 
                       {/* Excerpt */}
-                      <div class="text-sm text-secondary mt-1">
+                      <div class="text-secondary mt-1 text-sm">
                         {result.matches.excerpt.positions.length > 0 ? (
-                          <span innerHTML={getSnippet(result.excerpt, result.matches.excerpt.positions[0], 100)} />
+                          <span
+                            innerHTML={getSnippet(
+                              result.excerpt,
+                              result.matches.excerpt.positions[0],
+                              100
+                            )}
+                          />
                         ) : (
                           result.excerpt
                         )}
@@ -142,11 +167,16 @@ const SearchInputLogic: Component<Props> = (props) => {
 
                       {/* Content matches - limited to top 2 */}
                       <Show when={result.matches.content.positions.length > 0}>
-                        <div class="px-3 py-2 mt-2 -mx-3 space-y-1 text-xs text-muted">
-                          <div class="px-3 bg-surface-secondary rounded">
+                        <div class="text-muted -mx-3 mt-2 space-y-1 px-3 py-2 text-xs">
+                          <div class="rounded bg-surface-secondary px-3">
                             <For each={result.matches.content.positions}>
                               {(position) => (
-                                <div innerHTML={getSnippet(result.content, position)} />
+                                <div
+                                  innerHTML={getSnippet(
+                                    result.content,
+                                    position
+                                  )}
+                                />
                               )}
                             </For>
                           </div>
@@ -159,21 +189,17 @@ const SearchInputLogic: Component<Props> = (props) => {
             </Show>
 
             <Show when={store.results().length === 0}>
-              <div class="p-4 text-center text-muted">
-                No results found
-              </div>
+              <div class="text-muted p-4 text-center">No results found</div>
             </Show>
           </Show>
 
           <Show when={store.isLoading()}>
-            <div class="p-4 text-center text-muted">
-              Searching...
-            </div>
+            <div class="text-muted p-4 text-center">Searching...</div>
           </Show>
         </div>
       </Show>
     </div>
-  )
-}
+  );
+};
 
-export default SearchInputLogic
+export default SearchInputLogic;

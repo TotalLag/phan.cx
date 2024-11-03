@@ -37,7 +37,7 @@ async function getCachedReleases(): Promise<Release[] | null> {
     }
     const lastModified = await getLastModifiedTime();
     const now = new Date().getTime();
-    
+
     if (now - lastModified > CACHE_DURATION) {
       return null;
     }
@@ -55,18 +55,20 @@ async function fetchGitHubReleases(): Promise<GitHubRelease[]> {
     'https://api.github.com/repos/TotalLag/phan.cx/releases',
     {
       headers: {
-        'Accept': 'application/vnd.github.v3+json',
-        'User-Agent': 'github-releases'
-      }
+        Accept: 'application/vnd.github.v3+json',
+        'User-Agent': 'github-releases',
+      },
     }
   );
 
   if (!response.ok) {
-    throw new Error(`GitHub API responded with ${response.status}: ${await response.text()}`);
+    throw new Error(
+      `GitHub API responded with ${response.status}: ${await response.text()}`
+    );
   }
 
   const releases = await response.json();
-  
+
   if (!Array.isArray(releases)) {
     throw new Error('Invalid response format from GitHub API');
   }
@@ -74,15 +76,20 @@ async function fetchGitHubReleases(): Promise<GitHubRelease[]> {
   return releases;
 }
 
-async function transformAndCacheReleases(releases: GitHubRelease[]): Promise<Release[]> {
+async function transformAndCacheReleases(
+  releases: GitHubRelease[]
+): Promise<Release[]> {
   const transformedReleases = releases
-    .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
-    .map(release => ({
+    .sort(
+      (a, b) =>
+        new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
+    )
+    .map((release) => ({
       id: release.id.toString(),
       name: release.name || release.tag_name,
       tag: release.tag_name,
       date: release.published_at,
-      body: release.body || ''
+      body: release.body || '',
     }));
 
   await writeFile(
@@ -97,7 +104,7 @@ async function transformAndCacheReleases(releases: GitHubRelease[]): Promise<Rel
 export async function getGitHubReleases(): Promise<Release[]> {
   try {
     console.log('Checking GitHub releases...');
-    
+
     // Try to get cached releases first
     const cachedReleases = await getCachedReleases();
     if (cachedReleases) {
@@ -106,7 +113,7 @@ export async function getGitHubReleases(): Promise<Release[]> {
     }
 
     console.log('Fetching fresh releases data from GitHub...');
-    
+
     try {
       const releases = await fetchGitHubReleases();
       const transformedReleases = await transformAndCacheReleases(releases);
@@ -125,29 +132,27 @@ export async function getGitHubReleases(): Promise<Release[]> {
     }
   } catch (error) {
     console.error('Error handling releases:', error);
-    
+
     // If we have cached data and encounter an error, use the cached data
     const cachedReleases = await getCachedReleases();
     if (cachedReleases) {
       console.log('✅ Using cached releases data due to error');
       return cachedReleases;
     }
-    
-    // Return fallback data only if we don't have cached data
-    const fallbackData: Release[] = [{
-      id: "1",
-      name: "Initial Release",
-      tag: "v1.0.0",
-      date: new Date().toISOString(),
-      body: "First release"
-    }];
 
-    await writeFile(
-      CACHE_FILE,
-      JSON.stringify(fallbackData, null, 2),
-      'utf-8'
-    );
-    
+    // Return fallback data only if we don't have cached data
+    const fallbackData: Release[] = [
+      {
+        id: '1',
+        name: 'Initial Release',
+        tag: 'v1.0.0',
+        date: new Date().toISOString(),
+        body: 'First release',
+      },
+    ];
+
+    await writeFile(CACHE_FILE, JSON.stringify(fallbackData, null, 2), 'utf-8');
+
     console.log('✅ Using fallback release data');
     return fallbackData;
   }

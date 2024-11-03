@@ -1,13 +1,13 @@
 @layer components {
   /* Image loading animation */
   .image-shimmer {
-    @apply absolute inset-0 overflow-hidden transition-opacity opacity-100 bg-surface-tertiary duration-base ease-soft;
+    @apply absolute inset-0 overflow-hidden bg-surface-tertiary opacity-100 transition-opacity duration-base ease-soft;
   }
 
   .image-shimmer::before {
     @apply absolute inset-0 -translate-x-full;
     background: linear-gradient(
-      90deg, 
+      90deg,
       transparent 0%,
       var(--surface-hover) 20%,
       var(--surface-active) 60%,
@@ -19,7 +19,7 @@
   }
 
   .image-shimmer.loaded {
-    @apply opacity-0 pointer-events-none;
+    @apply pointer-events-none opacity-0;
     animation: none;
   }
 

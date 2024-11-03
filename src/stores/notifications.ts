@@ -14,7 +14,8 @@ function getInitialState(): string[] {
   return [];
 }
 
-const [readReleaseIds, setReadReleaseIds] = createSignal<string[]>(getInitialState());
+const [readReleaseIds, setReadReleaseIds] =
+  createSignal<string[]>(getInitialState());
 
 // Persist changes to localStorage
 createEffect(() => {
@@ -27,12 +28,14 @@ createEffect(() => {
 export function hasUnreadReleases(releases: { id: string }[]): boolean {
   if (!releases?.length) return false;
   const readIds = readReleaseIds();
-  return releases.some(release => !readIds.includes(release.id));
+  return releases.some((release) => !readIds.includes(release.id));
 }
 
 export function markReleasesAsRead(releases: { id: string }[]) {
   if (!releases?.length) return;
-  const newReadIds = [...new Set([...readReleaseIds(), ...releases.map(r => r.id)])];
+  const newReadIds = [
+    ...new Set([...readReleaseIds(), ...releases.map((r) => r.id)]),
+  ];
   setReadReleaseIds(newReadIds);
 }
 

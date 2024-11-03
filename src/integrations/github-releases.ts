@@ -7,7 +7,7 @@ export default function githubReleases(): AstroIntegration {
     hooks: {
       'astro:build:setup': async () => {
         await getGitHubReleases();
-      }
-    }
+      },
+    },
   };
 }

@@ -18,13 +18,13 @@ export default defineConfig({
     }),
     githubReleases(),
     codeStats(),
-    pageIndexIntegration()
+    pageIndexIntegration(),
   ],
   markdown: {
     shikiConfig: {
       theme: 'one-dark-pro',
-      wrap: true
-    }
+      wrap: true,
+    },
   },
   image: {
     service: {
@@ -37,16 +37,16 @@ export default defineConfig({
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '*.unsplash.com'
+        hostname: '*.unsplash.com',
       },
       {
         protocol: 'https',
-        hostname: 'placehold.co'
+        hostname: 'placehold.co',
       },
       {
         protocol: 'https',
-        hostname: 'via.placeholder.com'
-      }
+        hostname: 'via.placeholder.com',
+      },
     ],
   },
 });

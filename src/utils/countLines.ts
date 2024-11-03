@@ -6,15 +6,26 @@ import { fileURLToPath } from 'url';
 // File extensions to count
 const CODE_EXTENSIONS = new Set([
   // JavaScript/TypeScript
-  '.js', '.jsx', '.ts', '.tsx',
+  '.js',
+  '.jsx',
+  '.ts',
+  '.tsx',
   // Web
-  '.html', '.css', '.scss', '.sass',
+  '.html',
+  '.css',
+  '.scss',
+  '.sass',
   // Template files
-  '.astro', '.svelte', '.vue',
+  '.astro',
+  '.svelte',
+  '.vue',
   // Config files
-  '.json', '.yml', '.yaml',
+  '.json',
+  '.yml',
+  '.yaml',
   // Documentation
-  '.md', '.mdx'
+  '.md',
+  '.mdx',
 ]);
 
 // Directories to ignore
@@ -27,7 +38,7 @@ const IGNORE_DIRS = new Set([
   'public',
   'data',
   '.astro',
-  '.vscode'
+  '.vscode',
 ]);
 
 export interface CodeStats {
@@ -67,7 +78,7 @@ async function getCachedStats(): Promise<CodeStats | null> {
     }
     const lastModified = await getLastModifiedTime();
     const now = new Date().getTime();
-    
+
     if (now - lastModified > CACHE_DURATION) {
       return null;
     }
@@ -80,7 +91,9 @@ async function getCachedStats(): Promise<CodeStats | null> {
   }
 }
 
-async function processFile(filePath: string): Promise<{ lines: number; ext: string } | null> {
+async function processFile(
+  filePath: string
+): Promise<{ lines: number; ext: string } | null> {
   const ext = path.extname(filePath).toLowerCase();
   if (!CODE_EXTENSIONS.has(ext)) return null;
 
@@ -94,16 +107,18 @@ async function processFile(filePath: string): Promise<{ lines: number; ext: stri
   }
 }
 
-async function scanDirectory(dir: string): Promise<Map<string, { files: number; lines: number }>> {
+async function scanDirectory(
+  dir: string
+): Promise<Map<string, { files: number; lines: number }>> {
   const stats = new Map<string, { files: number; lines: number }>();
-  
+
   async function scan(currentDir: string) {
     try {
       const entries = await fs.readdir(currentDir, { withFileTypes: true });
 
       for (const entry of entries) {
         const fullPath = path.join(currentDir, entry.name);
-        
+
         if (entry.isDirectory()) {
           if (!IGNORE_DIRS.has(entry.name)) {
             await scan(fullPath);
@@ -114,7 +129,7 @@ async function scanDirectory(dir: string): Promise<Map<string, { files: number; 
             const current = stats.get(result.ext) || { files: 0, lines: 0 };
             stats.set(result.ext, {
               files: current.files + 1,
-              lines: current.lines + result.lines
+              lines: current.lines + result.lines,
             });
           }
         }
@@ -135,7 +150,7 @@ async function generateStats(): Promise<CodeStats> {
   const rootDir = path.resolve(__dirname, '../..');
 
   const statsByExt = await scanDirectory(rootDir);
-  
+
   // Calculate totals
   let totalLines = 0;
   let totalFiles = 0;
@@ -152,14 +167,14 @@ async function generateStats(): Promise<CodeStats> {
     formattedLines: formatNumber(totalLines),
     fileCount: totalFiles,
     byExtension,
-    lastUpdated: new Date().toISOString()
+    lastUpdated: new Date().toISOString(),
   };
 }
 
 export async function getCodeStats(): Promise<CodeStats> {
   try {
     console.log('Checking code stats...');
-    
+
     // Try to get cached stats first
     const cachedStats = await getCachedStats();
     if (cachedStats) {
@@ -169,33 +184,29 @@ export async function getCodeStats(): Promise<CodeStats> {
 
     console.log('Generating fresh code stats...');
     const stats = await generateStats();
-    
+
     // Cache the results
-    await fs.writeFile(
-      CACHE_FILE,
-      JSON.stringify(stats, null, 2),
-      'utf-8'
-    );
-    
+    await fs.writeFile(CACHE_FILE, JSON.stringify(stats, null, 2), 'utf-8');
+
     console.log('✅ Successfully generated code stats');
     return stats;
   } catch (error) {
     console.error('Error handling code stats:', error);
-    
+
     // If we have cached stats and encounter an error, use the cached stats
     const cachedStats = await getCachedStats();
     if (cachedStats) {
       console.log('✅ Using cached code stats due to error');
       return cachedStats;
     }
-    
+
     // Return fallback data if we don't have cached stats
     const fallbackData: CodeStats = {
       totalLines: 0,
       formattedLines: '0',
       fileCount: 0,
       byExtension: {},
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
     };
 
     await fs.writeFile(
@@ -203,7 +214,7 @@ export async function getCodeStats(): Promise<CodeStats> {
       JSON.stringify(fallbackData, null, 2),
       'utf-8'
     );
-    
+
     console.log('✅ Using fallback code stats');
     return fallbackData;
   }

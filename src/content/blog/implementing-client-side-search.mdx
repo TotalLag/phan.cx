@@ -2,11 +2,11 @@
 featured: true
 topic: 'Development'
 title: 'How I Added Search to My Static Site'
-excerpt: "My journey implementing client-side search with MiniSearch, including the challenges I faced and practical solutions I discovered along the way."
+excerpt: 'My journey implementing client-side search with MiniSearch, including the challenges I faced and practical solutions I discovered along the way.'
 keywords: 'client-side search, MiniSearch, text processing, search UI, web development, TypeScript, SolidJS, Astro'
 date: '2024-10-30T13:26:00Z'
 cover: 'https://plus.unsplash.com/premium_photo-1664284792348-c797db81b30a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-caption: "Credit: @victoriaromulo / unsplash.com"
+caption: 'Credit: @victoriaromulo / unsplash.com'
 ---
 
 import Protip from '../../components/Protip.astro';
@@ -22,7 +22,8 @@ That's when I stumbled upon [MiniSearch](https://lucaong.github.io/minisearch/in
 Three days, countless Stack Overflow visits, and several "aha!" moments later, I had learned more about search implementation than I ever expected. This is that story - how a "quick feature" turned into a deep dive into search implementation, and how I eventually built a fast, efficient search system using MiniSearch, SolidJS, and some creative problem-solving. Let me take you through the journey.
 
 <Protip>
-The best learning experiences often come from underestimating a problem's complexity. Embrace the challenge - it's where the real growth happens.
+  The best learning experiences often come from underestimating a problem's
+  complexity. Embrace the challenge - it's where the real growth happens.
 </Protip>
 
 ## The Component Dance: Astro Meets SolidJS
@@ -53,7 +54,9 @@ const { placeholder = "Search", class: className } = Astro.props;
 ```
 
 <Protip>
-Use Astro's client directives strategically. The `client:only` directive tells Astro to skip server-rendering and only render the component on the client, perfect for purely interactive components.
+  Use Astro's client directives strategically. The `client:only` directive tells
+  Astro to skip server-rendering and only render the component on the client,
+  perfect for purely interactive components.
 </Protip>
 
 ## The Brain of the Operation: Search Logic
@@ -62,27 +65,27 @@ The real magic happens in the SearchInputLogic component. This is where user int
 
 ```tsx
 const SearchInputLogic: Component<Props> = (props) => {
-  const store = useSearch()
-  const [isOpen, setIsOpen] = createSignal(false)
-  let searchRef: HTMLDivElement | undefined
+  const store = useSearch();
+  const [isOpen, setIsOpen] = createSignal(false);
+  let searchRef: HTMLDivElement | undefined;
 
   // Handle clicks outside search
   const handleClickOutside = (event: MouseEvent) => {
     if (searchRef && !searchRef.contains(event.target as Node)) {
-      setIsOpen(false)
+      setIsOpen(false);
     }
-  }
+  };
 
   onMount(() => {
     if (typeof window !== 'undefined') {
-      window.addEventListener('mousedown', handleClickOutside)
-      
+      window.addEventListener('mousedown', handleClickOutside);
+
       // Handle Astro view transitions
       document.addEventListener('astro:after-swap', () => {
-        store.setIsNavigating(false)
-      })
+        store.setIsNavigating(false);
+      });
     }
-  })
+  });
 
   return (
     <div ref={searchRef} class="w-full">
@@ -97,10 +100,7 @@ const SearchInputLogic: Component<Props> = (props) => {
           autocomplete="off"
           spellcheck={false}
         />
-        <Show 
-          when={store.isNavigating()}
-          fallback={<SearchIcon />}
-        >
+        <Show when={store.isNavigating()} fallback={<SearchIcon />}>
           <LoadingSpinner />
         </Show>
       </div>
@@ -109,12 +109,13 @@ const SearchInputLogic: Component<Props> = (props) => {
         <SearchResults />
       </Show>
     </div>
-  )
-}
+  );
+};
 ```
 
 <Protip>
-Pay attention to the little details - loading states, transitions, and edge cases all contribute to a polished user experience.
+  Pay attention to the little details - loading states, transitions, and edge
+  cases all contribute to a polished user experience.
 </Protip>
 
 ## The Secret Sauce: Text Processing
@@ -123,52 +124,57 @@ The most challenging part wasn't the UI - it was making the search results accur
 
 ```typescript
 function cleanText(text: string): string {
-  return text
-    // Remove import statements
-    .replace(/^import\s+.*?from\s+['"].*?['"];?\s*$/gm, '')
-    // Remove image markdown
-    .replace(/!\[.*?\]\(.*?\)/g, '')
-    // Remove markdown syntax
-    .replace(/[#*`_~\[\]]/g, '')
-    // Remove empty lines
-    .replace(/\n\s*\n/g, '\n')
-    // Normalize whitespace
-    .replace(/\s+/g, ' ')
-    .trim()
+  return (
+    text
+      // Remove import statements
+      .replace(/^import\s+.*?from\s+['"].*?['"];?\s*$/gm, '')
+      // Remove image markdown
+      .replace(/!\[.*?\]\(.*?\)/g, '')
+      // Remove markdown syntax
+      .replace(/[#*`_~\[\]]/g, '')
+      // Remove empty lines
+      .replace(/\n\s*\n/g, '\n')
+      // Normalize whitespace
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
 }
 
 function tokenizeWithPositions(text: string): TokenPosition[] {
-  const tokens: TokenPosition[] = []
-  const regex = /\S+/g
-  let match
+  const tokens: TokenPosition[] = [];
+  const regex = /\S+/g;
+  let match;
 
   while ((match = regex.exec(text)) !== null) {
     tokens.push({
       token: match[0].toLowerCase(),
       start: match.index,
-      end: match.index + match[0].length
-    })
+      end: match.index + match[0].length,
+    });
   }
 
-  return tokens
+  return tokens;
 }
 ```
 
 <Protip>
-Clean your text before indexing, not during display. This ensures your search index and display text stay perfectly aligned.
+  Clean your text before indexing, not during display. This ensures your search
+  index and display text stay perfectly aligned.
 </Protip>
 
 To convert our blog posts into searchable documents, I created a helper function:
 
 ```typescript
-export function blogToSearchableDocuments(posts: CollectionEntry<'blog'>[]): SearchableDocument[] {
+export function blogToSearchableDocuments(
+  posts: CollectionEntry<'blog'>[]
+): SearchableDocument[] {
   return posts.map((post) => ({
     id: post.id,
     title: cleanText(post.data.title),
     excerpt: cleanText(post.data.excerpt || ''),
     content: cleanText(post.body),
-    url: `/blog/${post.slug}`
-  }))
+    url: `/blog/${post.slug}`,
+  }));
 }
 ```
 
@@ -179,7 +185,7 @@ This ensures all our content is properly cleaned and structured before being add
 The search results needed to be more than just a list of matches. I wanted to show context around matched terms, highlight the matches themselves, and make it all look good:
 
 ```tsx
-<div class="absolute w-full mt-2 border rounded-lg shadow-lg z-modal bg-surface-primary">
+<div class="absolute z-modal mt-2 w-full rounded-lg border bg-surface-primary shadow-lg">
   <Show when={!store.isLoading()}>
     <Show when={store.results().length > 0}>
       <div class="divide-y divide-border">
@@ -191,18 +197,28 @@ The search results needed to be more than just a list of matches. I wanted to sh
               class="block p-3 transition-colors hover:bg-surface-hover"
             >
               {/* Title with highlighting */}
-              <div class="font-medium text-primary">
+              <div class="text-primary font-medium">
                 {result.matches.title.positions.length > 0 ? (
-                  <span innerHTML={getSnippet(result.title, result.matches.title.positions[0])} />
+                  <span
+                    innerHTML={getSnippet(
+                      result.title,
+                      result.matches.title.positions[0]
+                    )}
+                  />
                 ) : (
                   result.title
                 )}
               </div>
 
               {/* Excerpt with highlighting */}
-              <div class="mt-1 text-sm text-secondary">
+              <div class="text-secondary mt-1 text-sm">
                 {result.matches.excerpt.positions.length > 0 ? (
-                  <span innerHTML={getSnippet(result.excerpt, result.matches.excerpt.positions[0])} />
+                  <span
+                    innerHTML={getSnippet(
+                      result.excerpt,
+                      result.matches.excerpt.positions[0]
+                    )}
+                  />
                 ) : (
                   result.excerpt
                 )}
@@ -210,7 +226,7 @@ The search results needed to be more than just a list of matches. I wanted to sh
 
               {/* Content matches with context */}
               <Show when={result.matches.content.positions.length > 0}>
-                <div class="px-3 py-2 mt-2 space-y-1 text-xs text-muted bg-surface-secondary">
+                <div class="text-muted mt-2 space-y-1 bg-surface-secondary px-3 py-2 text-xs">
                   <For each={result.matches.content.positions}>
                     {(position) => (
                       <div innerHTML={getSnippet(result.content, position)} />
@@ -228,7 +244,9 @@ The search results needed to be more than just a list of matches. I wanted to sh
 ```
 
 <Protip>
-Use visual hierarchy to make search results scannable. Different text sizes, colors, and background shades help users quickly find what they're looking for.
+  Use visual hierarchy to make search results scannable. Different text sizes,
+  colors, and background shades help users quickly find what they're looking
+  for.
 </Protip>
 
 ## The Final Piece: Search Store
@@ -255,7 +273,7 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
   // Handle real-time search
   createEffect(() => {
     const searchQuery = query().trim()
-    
+
     if (searchQuery.length >= 3 && isInitialized()) {
       setIsLoading(true)
       try {
@@ -278,7 +296,8 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
 ```
 
 <Protip>
-Keep your search store simple and focused. Use reactive primitives for state management and handle loading states explicitly.
+  Keep your search store simple and focused. Use reactive primitives for state
+  management and handle loading states explicitly.
 </Protip>
 
 ## Looking Back and Forward
@@ -286,6 +305,7 @@ Keep your search store simple and focused. Use reactive primitives for state man
 What started as a "simple" feature turned into a deep dive into search implementation details I hadn't even considered at the start. But through each challenge, the solution became clearer and more refined.
 
 I'm already thinking about future improvements:
+
 - Adding search filters
 - Supporting advanced search syntax
 

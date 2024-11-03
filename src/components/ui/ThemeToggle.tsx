@@ -5,7 +5,7 @@ import { toggleTheme, theme } from '../../stores/theme';
 
 const ThemeToggle: Component = () => {
   const [isReady, setReady] = createSignal(false);
-  
+
   onMount(() => {
     // Wait for next tick to ensure theme is initialized
     setTimeout(() => setReady(true), 0);
@@ -13,13 +13,15 @@ const ThemeToggle: Component = () => {
 
   return (
     <CircleButton
-      label={theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+      label={
+        theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+      }
       onClick={toggleTheme}
     >
       <Switch>
         <Match when={!isReady()}>
           <svg
-            class="w-5 h-5 text-icon animate-spin"
+            class="h-5 w-5 animate-spin text-icon"
             fill="none"
             viewBox="0 0 24 24"
           >
@@ -40,7 +42,7 @@ const ThemeToggle: Component = () => {
         </Match>
         <Match when={theme() === 'dark'}>
           <svg
-            class="w-5 h-5 text-icon hover:text-icon-hover"
+            class="h-5 w-5 text-icon hover:text-icon-hover"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -55,7 +57,7 @@ const ThemeToggle: Component = () => {
         </Match>
         <Match when={true}>
           <svg
-            class="w-5 h-5 text-icon hover:text-icon-hover"
+            class="h-5 w-5 text-icon hover:text-icon-hover"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

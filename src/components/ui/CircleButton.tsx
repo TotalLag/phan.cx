@@ -6,16 +6,18 @@ type BaseProps = {
   class?: string;
   children: JSX.Element;
   as?: 'button' | 'label';
-}
+};
 
-type ButtonProps = BaseProps & JSX.ButtonHTMLAttributes<HTMLButtonElement> & {
-  as?: 'button';
-}
+type ButtonProps = BaseProps &
+  JSX.ButtonHTMLAttributes<HTMLButtonElement> & {
+    as?: 'button';
+  };
 
-type LabelProps = BaseProps & JSX.LabelHTMLAttributes<HTMLLabelElement> & {
-  as: 'label';
-  for: string;
-}
+type LabelProps = BaseProps &
+  JSX.LabelHTMLAttributes<HTMLLabelElement> & {
+    as: 'label';
+    for: string;
+  };
 
 type Props = ButtonProps | LabelProps;
 
@@ -39,19 +41,16 @@ const CircleButton: Component<Props> = (props) => {
     'focus:ring-accent/20',
     'transition-all',
     'duration-base',
-    'ease-soft'
+    'ease-soft',
   ];
 
-  const classes = [
-    ...baseClasses,
-    local.class
-  ].filter(Boolean).join(' ');
+  const classes = [...baseClasses, local.class].filter(Boolean).join(' ');
 
   return (
     <Switch>
       <Match when={local.as === 'label'}>
-        <label 
-          {...rest as JSX.LabelHTMLAttributes<HTMLLabelElement>}
+        <label
+          {...(rest as JSX.LabelHTMLAttributes<HTMLLabelElement>)}
           class={classes}
           aria-label={local.label}
         >
@@ -60,10 +59,13 @@ const CircleButton: Component<Props> = (props) => {
       </Match>
       <Match when={true}>
         <button
-          {...rest as JSX.ButtonHTMLAttributes<HTMLButtonElement>}
+          {...(rest as JSX.ButtonHTMLAttributes<HTMLButtonElement>)}
           class={classes}
           aria-label={local.label}
-          type={(rest as JSX.ButtonHTMLAttributes<HTMLButtonElement>).type || 'button'}
+          type={
+            (rest as JSX.ButtonHTMLAttributes<HTMLButtonElement>).type ||
+            'button'
+          }
         >
           <span class="flex-layout">{local.children}</span>
         </button>

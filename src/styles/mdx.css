@@ -1,17 +1,14 @@
 @layer components {
   .prose-custom {
-    @apply prose prose-lg dark:prose-invert max-w-none;
+    @apply prose prose-lg max-w-none dark:prose-invert;
 
     /* Code blocks - always dark */
-    @apply prose-pre:bg-[#282c34] 
-           prose-pre:border 
-           prose-pre:border-[#353a42]
-           prose-pre:rounded-lg;
+    @apply prose-pre:rounded-lg prose-pre:border prose-pre:border-[#353a42] prose-pre:bg-[#282c34];
 
     /* Add horizontal scrolling for code blocks */
     pre {
       @apply overflow-x-auto;
-      
+
       code {
         @apply block min-w-full;
         background: transparent !important;
@@ -23,19 +20,13 @@
     }
 
     /* Inline code */
-    @apply prose-code:bg-surface-tertiary 
-           prose-code:text-primary 
-           prose-code:dark:text-primary 
-           prose-code:rounded 
-           prose-code:px-1.5 
-           prose-code:py-0.5 
-           prose-code:text-sm;
+    @apply prose-code:text-primary prose-code:dark:text-primary prose-code:rounded prose-code:bg-surface-tertiary prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm;
 
     /* Images */
-    @apply prose-img:rounded-lg prose-img:my-6;
+    @apply prose-img:my-6 prose-img:rounded-lg;
 
     /* Blockquotes */
-    @apply prose-blockquote:italic prose-blockquote:border-border prose-blockquote:bg-surface-secondary;
+    @apply prose-blockquote:border-border prose-blockquote:bg-surface-secondary prose-blockquote:italic;
 
     /* Ensure content doesn't overflow on mobile */
     @apply break-words sm:px-0;

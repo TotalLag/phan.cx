@@ -1,7 +1,7 @@
 @layer components {
   /* Base component styles */
   .search-input {
-    @apply w-full h-12 text-sm border rounded-input border-border bg-surface-secondary;
+    @apply h-12 w-full rounded-input border border-border bg-surface-secondary text-sm;
     @apply pl-10 pr-4;
     @apply placeholder:text-icon-muted;
     @apply hover:border-border-hover;
@@ -11,11 +11,13 @@
   }
 
   .site-header {
-    @apply sticky top-0 border-b z-sticky border-border bg-surface-primary;
+    @apply sticky top-0 z-sticky border-b border-border bg-surface-primary;
     @apply flex items-center;
     height: 5rem;
     view-transition-name: header;
-    transition: background-color 200ms ease-out, border-color 200ms ease-out;
+    transition:
+      background-color 200ms ease-out,
+      border-color 200ms ease-out;
   }
 
   /* High contrast mode support */
@@ -26,25 +28,25 @@
   }
 
   .site-sidebar {
-    @apply fixed inset-y-0 left-0 hidden border-r lg:block w-sidebar border-border bg-surface-primary;
+    @apply fixed inset-y-0 left-0 hidden w-sidebar border-r border-border bg-surface-primary lg:block;
     view-transition-name: sidebar;
   }
 
   .site-sidebar-mobile {
-    @apply fixed inset-y-0 left-0 w-sidebar bg-surface-primary z-modal;
-    @apply transform -translate-x-full;
+    @apply fixed inset-y-0 left-0 z-modal w-sidebar bg-surface-primary;
+    @apply -translate-x-full transform;
     @apply peer-checked:translate-x-0 peer-checked:shadow-modal;
     @apply transition-transform duration-modal ease-soft;
     view-transition-name: sidebar-mobile;
   }
 
   .site-footer {
-    @apply fixed inset-x-0 bottom-0 h-16 border-t bg-surface-primary border-border;
+    @apply fixed inset-x-0 bottom-0 h-16 border-t border-border bg-surface-primary;
     view-transition-name: footer;
   }
 
   .main-content {
-    @apply pb-32 px-container-px py-section;
+    @apply px-container-px py-section pb-32;
     min-height: calc(
       100vh - theme('spacing.14') - theme('spacing.16')
     ); /* 100vh - header - footer */
@@ -52,13 +54,13 @@
 
   /* Protip component */
   .protip-container {
-    @apply relative p-6 my-6 border-l-4 rounded-r shadow-sm;
+    @apply relative my-6 rounded-r border-l-4 p-6 shadow-sm;
     border-color: var(--accent);
     background-color: var(--surface-tertiary);
   }
 
   .protip-icon {
-    @apply absolute flex items-center justify-center w-6 h-6 text-xs font-bold rounded-full -top-3 -left-3;
+    @apply absolute -left-3 -top-3 flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold;
     background-color: var(--accent);
     color: white;
   }

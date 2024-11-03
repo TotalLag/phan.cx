@@ -1,19 +1,33 @@
 import { defineCollection, z } from 'astro:content';
 
-const blog = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    date: z.coerce.date(),
-    updated: z.coerce.date().optional(),
-    topic: z.string(),
-    excerpt: z.string().optional(),
-    cover: z.string().optional(),
-    caption: z.string().optional(),
-    draft: z.boolean().optional().default(false),
-  })
+// Define schemas
+const blogSchema = z.object({
+  title: z.string(),
+  date: z.coerce.date(),
+  topic: z.string(),
+  cover: z.string().optional(),
 });
 
+const instagramSchema = z.object({
+  id: z.string(),
+  username: z.string(),
+  image: z.string(),
+  date: z.coerce.date(),
+  caption: z.string().optional(),
+});
+
+// Define collections
 export const collections = {
-  blog
+  blog: defineCollection({
+    type: 'content',
+    schema: blogSchema,
+  }),
+  instagram: defineCollection({
+    type: 'data',
+    schema: instagramSchema,
+  }),
 };
+
+// Export schema types
+export type BlogCollection = z.infer<typeof blogSchema>;
+export type InstagramCollection = z.infer<typeof instagramSchema>;

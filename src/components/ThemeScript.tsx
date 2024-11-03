@@ -23,12 +23,18 @@ export default function ThemeScript() {
     };
 
     // Add event listeners
-    document.addEventListener('astro:before-preparation', handleBeforePreparation);
+    document.addEventListener(
+      'astro:before-preparation',
+      handleBeforePreparation
+    );
     document.addEventListener('astro:before-swap', handleBeforeSwap);
 
     // Cleanup
     onCleanup(() => {
-      document.removeEventListener('astro:before-preparation', handleBeforePreparation);
+      document.removeEventListener(
+        'astro:before-preparation',
+        handleBeforePreparation
+      );
       document.removeEventListener('astro:before-swap', handleBeforeSwap);
     });
   });

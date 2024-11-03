@@ -1,51 +1,51 @@
 export interface SearchableDocument {
-  id: string
-  title: string
-  excerpt: string
-  content: string
-  url: string
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  url: string;
 }
 
 export interface TokenPosition {
-  start: number
-  end: number
-  token: string
+  start: number;
+  end: number;
+  token: string;
 }
 
 export interface SearchResult {
-  id: string
-  title: string
-  excerpt: string
-  content: string
-  url: string
-  score: number
-  terms: string[]
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  url: string;
+  score: number;
+  terms: string[];
   matches: {
     [field: string]: {
-      text: string
-      positions: TokenPosition[]
-    }
-  }
+      text: string;
+      positions: TokenPosition[];
+    };
+  };
 }
 
 export interface SearchChunk {
-  id: string
-  documents: SearchableDocument[]
-  timestamp: number
+  id: string;
+  documents: SearchableDocument[];
+  timestamp: number;
 }
 
 export interface SearchManifest {
-  version: string
-  totalDocuments: number
+  version: string;
+  totalDocuments: number;
   chunks: {
-    id: string
-    size: number
-  }[]
-  initial: string[]
+    id: string;
+    size: number;
+  }[];
+  initial: string[];
 }
 
 export interface CachedChunk {
-  data: SearchableDocument[]
-  timestamp: number
-  version: string
+  data: SearchableDocument[];
+  timestamp: number;
+  version: string;
 }

@@ -4,7 +4,9 @@
 }
 
 .counter-value {
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
 
 .stats-counter.is-animating .counter-value {
