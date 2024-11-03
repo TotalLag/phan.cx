@@ -1,47 +1,158 @@
-# Astro Starter Kit: Minimal
+# Personal Website & Blog
 
-```sh
-npm create astro@latest -- --template minimal
+A modern, performant personal website and blog built with Astro, SolidJS, and TypeScript.
+
+## 🏗 Architecture
+
+### Tech Stack
+- **Framework**: [Astro](https://astro.build) for static site generation
+- **UI Library**: [SolidJS](https://www.solidjs.com) for interactive components
+- **Styling**: Tailwind CSS with custom design tokens
+- **Content**: MDX for blog posts
+- **Search**: Client-side search implementation
+- **Type Safety**: TypeScript throughout
+
+### Key Patterns
+
+#### Component Architecture
+- Strong TypeScript interfaces for component props
+- Consistent error handling and loading states
+- Animation patterns using CSS transitions
+- Reusable UI components in `src/components/ui/`
+
+Example from CircleButton.tsx:
+```typescript
+type BaseProps = {
+  label: string;           // Required
+  class?: string;         // Optional
+  children: JSX.Element;  // Required
+};
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+#### State Management
+- SolidJS stores for global state
+- Context providers for feature-specific state
+- Persisted state using localStorage/IndexedDB
+- Reactive patterns with signals and effects
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+#### Data Handling
+- Build-time data generation
+- Caching pattern for external data
+- GitHub integration for releases
+- Code statistics generation
 
-## 🚀 Project Structure
+#### Content & Search
+- MDX-based blog posts
+- Client-side search implementation
+- Chunked search data loading
+- Type-safe search results
 
-Inside of your Astro project, you'll see the following folders and files:
+## 🚀 Development
 
-```text
+### Getting Started
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Start the development server:
+```bash
+npm run dev
+```
+
+3. Build for production:
+```bash
+npm run build
+```
+
+### Project Structure
+
+```
 /
-├── public/
+├── public/              # Static assets
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/      # UI components
+│   │   └── ui/         # Reusable UI components
+│   ├── content/        # MDX blog posts
+│   ├── data/          # Generated data
+│   ├── integrations/  # Astro integrations
+│   ├── layouts/       # Page layouts
+│   ├── pages/         # Route pages
+│   ├── stores/        # State management
+│   ├── styles/        # CSS styles
+│   ├── types/         # TypeScript types
+│   └── utils/         # Utility functions
+└── scripts/           # Build scripts
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+### Key Features
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+#### Blog System
+- MDX for rich content
+- Frontmatter for metadata
+- Image optimization
+- Code syntax highlighting
 
-Any static assets, like images, can be placed in the `public/` directory.
+#### Search Implementation
+- Client-side full-text search
+- Chunked data loading
+- Debounced search
+- Highlighted results
+
+#### Theme System
+- Dark/light mode
+- Persisted preferences
+- CSS custom properties
+- Tailwind integration
+
+#### Performance
+- Static site generation
+- Optimized assets
+- Lazy-loaded components
+- Cached external data
 
 ## 🧞 Commands
 
-All commands are run from the root of the project, from a terminal:
-
 | Command                   | Action                                           |
 | :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+| `npm install`             | Install dependencies                            |
+| `npm run dev`             | Start dev server at `localhost:4321`            |
+| `npm run build`           | Build production site                           |
+| `npm run preview`         | Preview production build                        |
+| `npm run astro ...`       | Run Astro CLI commands                          |
 
-## 👀 Want to learn more?
+## 🔧 Configuration
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Key configuration files:
+- `astro.config.mjs` - Astro configuration
+- `tailwind.config.cjs` - Tailwind CSS configuration
+- `tsconfig.json` - TypeScript configuration
+- `package.json` - Project dependencies and scripts
+
+## 📚 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
+
+## 🐛 Common Issues
+
+### Search Not Working
+- Check browser console for errors
+- Verify search index is generated
+- Clear browser cache
+
+### Build Failures
+- Update dependencies
+- Clear build cache
+- Check TypeScript errors
+
+## 📖 Resources
+
+- [Astro Documentation](https://docs.astro.build)
+- [SolidJS Documentation](https://www.solidjs.com/docs)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
