@@ -101,3 +101,147 @@ const { info, summary, qualifications, experience, education } = data;
     </article>
   </main>
 </Layout>
+---
+import type { ResumeData } from '../types/resume';
+
+interface Props {
+  resume: ResumeData;
+  type: 'strategic' | 'technical';
+}
+
+const { resume, type } = Astro.props;
+---
+
+<div class="print:hidden">
+  <ul class="flex justify-center my-4 text-sm font-medium">
+    <a href="/resume">
+      <li class={`px-4 py-2 ${type !== 'technical' ? 'selected' : ''}`}>Strategic</li>
+    </a>
+    <a href="/resume/technical">
+      <li class={`px-4 py-2 ${type === 'technical' ? 'selected' : ''}`}>Technical</li>
+    </a>
+  </ul>
+</div>
+
+<div class="flex flex-col p-6 mx-auto align-middle border-8 print:-mt-2 print:border-0 print:max-w-[49rem] md:w-4/5">
+  <article class="border-0 border-b border-black">
+    <div class="flex flex-col pb-2 border-0 border-b-2 border-black">
+      <div class="flex mx-auto">
+        <h1>{resume.info.name}</h1>
+      </div>
+    </div>
+
+    <div class="flex p-1 border-0 border-b-2 border-black">
+      <div class="flex mx-auto">
+        <span>{resume.info.address} | {resume.info.phone} | <a href={`mailto:${resume.info.email}`}>{resume.info.email}</a></span>
+      </div>
+    </div>
+
+    <div class="flex p-4">
+      <div class="mx-auto">
+        <h2 class="summary">{resume.summary.join(' ◆ ')}</h2>
+      </div>
+    </div>
+  </article>
+
+  <article>
+    <div class="flex pb-1 mb-3 border-0 border-b border-gray-200">
+      <div class="flex flex-col">
+        <h2>Summary of Qualifications</h2>
+      </div>
+    </div>
+
+    <div class="flex pb-2 border-0 border-b border-black">
+      <ul>
+        {resume.qualifications.map((line) => <li>{line.item}</li>)}
+      </ul>
+    </div>
+  </article>
+
+  <article class="mb-1 border-0 border-b border-black">
+    <div class="flex pb-1 mb-3 border-0 border-b border-gray-200">
+      <div class="flex flex-col">
+        <h2>Work Experience</h2>
+      </div>
+    </div>
+
+    {resume.experience.map((job) => (
+      <>
+        <div class="flex justify-between">
+          <h3>{job.title} | {job.company} <span class="font-light">| {job.location}</span></h3>
+          <span> {job.dateFrom} &mdash; {job.dateTo} </span>
+        </div>
+        <div class="flex mb-3">
+          <ul>
+            {job.work.map((line) => <li>{line.item}</li>)}
+          </ul>
+        </div>
+      </>
+    ))}
+  </article>
+
+  {resume.education && (
+    <article>
+      <div class="flex pb-1 mb-3 border-0 border-b border-gray-200">
+        <div class="flex flex-col">
+          <h2>Education</h2>
+        </div>
+      </div>
+
+      {resume.education.map((school) => (
+        <div class="flex justify-between mb-4">
+          <h3>{school.degree} | {school.name} <span class="font-light">| {school.location}</span></h3>
+          <span> {school.dateFrom} &mdash; {school.dateTo} </span>
+        </div>
+      ))}
+    </article>
+  )}
+</div>
+
+<style>
+  .selected {
+    @apply font-bold text-gray-800 dark:text-gray-100;
+    @apply border-b-2 border-gray-700 dark:border-gray-300;
+  }
+
+  article {
+    @apply font-sans text-sm leading-normal tracking-wide;
+    @apply text-gray-900 dark:text-gray-100;
+    @apply bg-white dark:bg-gray-800;
+    @apply p-4;
+  }
+
+  @media print {
+    article {
+      @apply text-[10px] leading-tight;
+      @apply border-0 shadow-none p-2;
+    }
+  }
+
+  h1 {
+    @apply text-3xl font-bold uppercase mb-2 tracking-wider;
+    @apply print:text-2xl;
+  }
+
+  h2 {
+    @apply text-lg font-bold uppercase mb-2 tracking-widest;
+    @apply print:text-base;
+  }
+
+  h3 {
+    @apply text-base font-semibold mb-1 tracking-wide;
+    @apply print:text-sm;
+  }
+
+  ul {
+    @apply list-disc pl-6 mb-4;
+  }
+
+  a {
+    @apply text-current no-underline;
+  }
+
+  .summary {
+    @apply print:tracking-wide;
+  }
+</style>
