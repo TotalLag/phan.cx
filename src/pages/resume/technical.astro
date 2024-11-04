@@ -1,7 +1,37 @@
 ---
-import strategicResume from '../../../src/content/resume/strategic.json';
-import technicalResume from '../../../src/content/resume/technical.json';
+import strategicJson from '../../../src/content/resume/strategic.json';
+import technicalJson from '../../../src/content/resume/technical.json';
 
+// Legacy JSON structure type
+interface LegacyResumeData {
+  resume: {
+    info: {
+      name: string;
+      address: string;
+      phone: string;
+      email: string;
+    };
+    summary: { item: string }[];
+    qualifications: { item: string }[];
+    experience: {
+      title: string;
+      company: string;
+      location: string;
+      dateFrom: string;
+      dateTo: string;
+      work: { item: string }[];
+    }[];
+    education?: {
+      degree: string;
+      name: string;
+      location: string;
+      dateFrom: string;
+      dateTo: string;
+    }[];
+  };
+}
+
+// Target schema type
 interface ResumeData {
   type: 'strategic' | 'technical';
   info: {
@@ -28,6 +58,20 @@ interface ResumeData {
     dateTo: string;
   }[];
 }
+
+const strategicLegacy = strategicJson as LegacyResumeData;
+const technicalLegacy = technicalJson as LegacyResumeData;
+
+// Transform to target schema
+const strategicResume: ResumeData = {
+  ...strategicLegacy.resume,
+  type: 'strategic'
+};
+
+const technicalResume: ResumeData = {
+  ...technicalLegacy.resume,
+  type: 'technical'
+};
 
 const { type } = Astro.params;
 const resume: ResumeData = type === 'technical' ? technicalResume : strategicResume;
