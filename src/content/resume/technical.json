@@ -1,12 +1,11 @@
 {
-  "resume": {
-    "info": {
-      "name": "Christopher Phan",
-      "address": "Austin, TX 78754",
-      "phone": "(651) 252-1490",
-      "email": "chris@phan.cx"
-    },
-    "summary": [
+  "info": {
+    "name": "Christopher Phan",
+    "address": "Austin, TX 78754",
+    "phone": "(651) 252-1490",
+    "email": "chris@phan.cx"
+  },
+  "summary": [
       {
         "item": "Technologist"
       },
@@ -168,6 +167,6 @@
         "dateFrom": "2007",
         "dateTo": "2010"
       }
-    ]
-  }
+    ],
+  "type": "technical"
 }
