@@ -1,10 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import type { ResumeData } from '../types/resume';
 import strategicJson from '../content/resume/strategic.json';
 import technicalJson from '../content/resume/technical.json';
 
-const { type = 'strategic' } = Astro.params;
-const resume = type === 'technical' ? technicalJson : strategicJson;
+const type = Astro.url.searchParams.get('type') || 'strategic';
+const resume = (type === 'technical' ? technicalJson : strategicJson) as ResumeData;
 ---
 
 <Layout title={`${resume.info.name} - Resume`}>
@@ -18,13 +19,51 @@ const resume = type === 'technical' ? technicalJson : strategicJson;
         Strategic
       </li>
     </a>
-    <a href="/resume/technical">
+    <a href="/resume?type=technical">
       <li class={type === 'technical' ? 'selected' : ''}>
         Technical
       </li>
     </a>
   </ul>
 </div>
+
+<style>
+  .selected {
+    @apply font-bold text-gray-800 dark:text-gray-100;
+    @apply border-b-2 border-gray-700 dark:border-gray-300;
+  }
+
+  article {
+    @apply font-sans text-sm leading-normal tracking-wide;
+    @apply text-gray-900 dark:text-gray-100;
+    @apply bg-white dark:bg-gray-800;
+    @apply p-6 border border-gray-200 dark:border-gray-700;
+    @apply rounded shadow-sm;
+  }
+
+  @media print {
+    article {
+      @apply text-xs leading-snug;
+      @apply border-0 shadow-none;
+    }
+  }
+
+  h1 {
+    @apply text-2xl font-bold uppercase mb-2;
+  }
+
+  h2 {
+    @apply text-xl font-bold uppercase mb-2;
+  }
+
+  h3 {
+    @apply text-base font-bold mb-1;
+  }
+
+  ul {
+    @apply list-disc pl-6 mb-4;
+  }
+</style>
 
 <div class="flex flex-col p-6 mx-auto align-middle border-8 print:-mt-2 print:border-0 print:max-w-[49rem] md:w-4/5">
   <article class="border-0 border-b border-black">
@@ -42,7 +81,7 @@ const resume = type === 'technical' ? technicalJson : strategicJson;
 
     <div class="flex p-4">
       <div class="mx-auto">
-        <h2 class="summary">{resume.summary.join(' ◆ ')}</h2>
+        <h2 class="summary">{resume.summary.map(s => s.item).join(' ◆ ')}</h2>
       </div>
     </div>
   </article>
