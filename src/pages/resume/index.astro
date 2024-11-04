@@ -4,7 +4,10 @@ import ResumeLayout from '../../layouts/ResumeLayout.astro';
 import type { ResumeData } from '../../types/resume';
 import strategicJson from '../../content/resume/strategic.json';
 
-const resume = strategicJson as ResumeData;
+const resume: ResumeData = {
+  ...strategicJson,
+  type: 'strategic'
+};
 ---
 
 <Layout title={`${resume.info.name} - Resume`}>
