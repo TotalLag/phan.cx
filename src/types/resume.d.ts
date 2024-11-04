@@ -1,32 +1,42 @@
 export type ResumeType = 'strategic' | 'technical';
 
+export interface Metadata {
+  [key: string]: unknown;
+}
+
 export interface BaseItem {
   item: string;
-  metadata?: Record<string, unknown>;
+  metadata?: Metadata;
 }
 
 export interface DateRange {
   dateFrom: string;
-  dateTo: string;
+  dateTo: string | 'Present';
 }
 
 export interface Location {
   location: string;
+  remote?: boolean;
 }
 
-export interface ResumeItem extends BaseItem {}
+export interface ResumeItem extends BaseItem {
+  highlights?: string[];
+}
 
 export interface ResumeJob extends DateRange, Location {
   title: string;
   company: string;
   work: ResumeItem[];
-  metadata?: Record<string, unknown>;
+  technologies?: string[];
+  metadata?: Metadata;
 }
 
 export interface ResumeEducation extends DateRange, Location {
   degree: string;
   name: string;
-  metadata?: Record<string, unknown>;
+  major?: string;
+  gpa?: number;
+  metadata?: Metadata;
 }
 
 export interface ResumeInfo {
@@ -34,7 +44,10 @@ export interface ResumeInfo {
   address: string;
   phone: string;
   email: string;
-  metadata?: Record<string, unknown>;
+  website?: string;
+  linkedin?: string;
+  github?: string;
+  metadata?: Metadata;
 }
 
 export interface ResumeData {
@@ -44,7 +57,7 @@ export interface ResumeData {
   experience: ResumeJob[];
   education?: ResumeEducation[];
   type?: ResumeType;
-  metadata?: Record<string, unknown>;
+  metadata?: Metadata;
 }
 
 export interface ResumeProps {
