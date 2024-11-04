@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import type { ResumeData } from '../../types/resume';
 import { obfuscateEmail } from '../../utils/email';
 import strategicJson from '../../content/resume/strategic.json';
+import BackToHomeLink from '../../components/BackToHomeLink.astro';
 
 const resume = strategicJson as ResumeData;
 const emailHtml = obfuscateEmail(resume.info.email);
@@ -135,3 +136,5 @@ const emailHtml = obfuscateEmail(resume.info.email);
     </article>
   )}
 </div>
+
+<BackToHomeLink />
