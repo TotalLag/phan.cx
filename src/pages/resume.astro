@@ -1,11 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import type { ResumeData } from '../types/resume';
+import { obfuscateEmail } from '../utils/email';
 import strategicJson from '../content/resume/strategic.json';
 import technicalJson from '../content/resume/technical.json';
 
 const type = Astro.url.searchParams.get('type') || 'strategic';
 const resume = (type === 'technical' ? technicalJson : strategicJson) as ResumeData;
+const obfuscatedEmail = obfuscateEmail(resume.info.email);
 ---
 
 <Layout title={`${resume.info.name} - Resume`}>
@@ -75,13 +77,13 @@ const resume = (type === 'technical' ? technicalJson : strategicJson) as ResumeD
 
     <div class="flex p-1 border-0 border-b-2 border-black">
       <div class="flex mx-auto">
-        <span> {resume.info.address} | {resume.info.phone} | {@html resume.info.email} </span>
+        <span> {resume.info.address} | {resume.info.phone} | {@html obfuscatedEmail} </span>
       </div>
     </div>
 
     <div class="flex p-4">
       <div class="mx-auto">
-        <h2 class="summary">{resume.summary.map(s => s.item).join(' ◆ ')}</h2>
+        <h2 class="summary">{resume.summary.map(item => item.item).join(' ◆ ')}</h2>
       </div>
     </div>
   </article>
