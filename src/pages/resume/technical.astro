@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import ResumeLayout from '../../layouts/ResumeLayout.astro';
+import type { ResumeCollection } from '../../content/config';
 
 const resumes = await getCollection('resume');
 const technicalResume = resumes.find(r => r.id === 'technical.json');
@@ -12,4 +13,13 @@ if (!technicalResume) {
 const resume = technicalResume.data;
 ---
 
-<ResumeLayout data={resume} type="technical" />
+{
+  resume ? (
+    <ResumeLayout data={resume} type="technical" />
+  ) : (
+    <div class="p-6 text-center">
+      <h1 class="text-xl font-bold">Error</h1>
+      <p>Technical resume data could not be loaded.</p>
+    </div>
+  )
+}

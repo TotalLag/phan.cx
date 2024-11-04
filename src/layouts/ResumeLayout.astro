@@ -12,6 +12,26 @@ const { info, summary, qualifications, experience, education } = data;
 ---
 
 <Layout title={`${info.name} - ${type.charAt(0).toUpperCase() + type.slice(1)} Resume`}>
+  <nav class="max-w-4xl mx-auto p-4 flex justify-end gap-4 print:hidden">
+    <a 
+      href="/resume" 
+      class:list={[
+        "px-3 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800",
+        { "font-bold": type === "strategic" }
+      ]}
+    >
+      Strategic
+    </a>
+    <a 
+      href="/resume/technical"
+      class:list={[
+        "px-3 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800",
+        { "font-bold": type === "technical" }
+      ]}
+    >
+      Technical
+    </a>
+  </nav>
   <main class="max-w-4xl mx-auto p-6 print:p-0">
     <article class="space-y-6">
       <!-- Header -->
