@@ -1,37 +1,24 @@
 ---
-import Layout from './Layout.astro';
-import type { ResumeCollection } from '../content/config';
+import type { ResumeData } from '../types/resume';
 
 interface Props {
-  data: ResumeCollection;
+  resume: ResumeData;
+  type: 'strategic' | 'technical';
 }
 
-const { data } = Astro.props;
-const type = data.type;
-const { info, summary, qualifications, experience, education } = data;
+const { resume, type } = Astro.props;
 ---
 
-<Layout title={`${info.name} - ${type.charAt(0).toUpperCase() + type.slice(1)} Resume`}>
-  <nav class="max-w-4xl mx-auto p-4 flex justify-end gap-4 print:hidden">
-    <a 
-      href="/resume" 
-      class:list={[
-        "px-3 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800",
-        { "font-bold": type === "strategic" }
-      ]}
-    >
-      Strategic
+<div class="print:hidden">
+  <ul class="flex justify-center my-4 text-sm font-medium">
+    <a href="/resume">
+      <li class={`px-4 py-2 ${type !== 'technical' ? 'selected' : ''}`}>Strategic</li>
     </a>
-    <a 
-      href="/resume/technical"
-      class:list={[
-        "px-3 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800",
-        { "font-bold": type === "technical" }
-      ]}
-    >
-      Technical
+    <a href="/resume/technical">
+      <li class={`px-4 py-2 ${type === 'technical' ? 'selected' : ''}`}>Technical</li>
     </a>
-  </nav>
+  </ul>
+</div>
   <main class="max-w-4xl mx-auto p-6 print:p-0">
     <article class="space-y-6">
       <!-- Header -->
