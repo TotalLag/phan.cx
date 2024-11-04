@@ -1,6 +1,9 @@
 ---
-import strategicResume from '../../../src/content/resume/strategic.json';
-import technicalResume from '../../../src/content/resume/technical.json';
+import * as strategicJson from '../../../src/content/resume/strategic.json';
+import * as technicalJson from '../../../src/content/resume/technical.json';
+
+const strategicResume = strategicJson.default;
+const technicalResume = technicalJson.default;
 
 interface ResumeData {
   type: 'strategic' | 'technical';

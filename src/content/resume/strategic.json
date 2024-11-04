@@ -1,5 +1,4 @@
 {
-  "type": "strategic",
   "info": {
     "name": "Christopher Phan",
     "address": "Austin, TX 78754",
@@ -137,6 +136,23 @@
           }
         ]
       },
+      {
+        "title": "Web Developer / Tech Support",
+        "company": "University of Minnesota",
+        "location": "Minneapolis, MN",
+        "dateFrom": "May 2008",
+        "dateTo": "September 2010",
+        "work": [
+          {
+            "item": "Developed new business portals around MVC approach."
+          },
+          {
+            "item": "Performed code reviews, software upgrades and implementations, and database admin tasks."
+          }
+        ]
+      }
+    ],
+  "experience": [
       {
         "title": "Web Developer / Tech Support",
         "company": "University of Minnesota",
