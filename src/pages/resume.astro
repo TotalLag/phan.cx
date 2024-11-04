@@ -1,13 +1,11 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import type { ResumeData } from '../types/resume';
-import { obfuscateEmail } from '../utils/email';
-import strategicJson from '../content/resume/strategic.json';
-import technicalJson from '../content/resume/technical.json';
+import Layout from '../../layouts/Layout.astro';
+import type { ResumeData } from '../../types/resume';
+import { obfuscateEmail } from '../../utils/email';
+import strategicJson from '../../content/resume/strategic.json';
 
-const type = Astro.url.searchParams.get('type') || 'strategic';
-const resume = (type === 'technical' ? technicalJson : strategicJson) as ResumeData;
-const obfuscatedEmail = obfuscateEmail(resume.info.email);
+const resume = strategicJson as ResumeData;
+const emailHtml = obfuscateEmail(resume.info.email);
 ---
 
 <Layout title={`${resume.info.name} - Resume`}>
@@ -17,14 +15,10 @@ const obfuscatedEmail = obfuscateEmail(resume.info.email);
   <div class="p-4 justify-self-start whitespace-nowrap">🖨️-friendly 😉</div>
   <ul class="flex my-4 text-sm font-medium flex-nowrap sm:justify-self-center justify-self-between">
     <a href="/resume">
-      <li class={type !== 'technical' ? 'selected' : ''}>
-        Strategic
-      </li>
+      <li class="selected">Strategic</li>
     </a>
-    <a href="/resume?type=technical">
-      <li class={type === 'technical' ? 'selected' : ''}>
-        Technical
-      </li>
+    <a href="/resume/technical">
+      <li>Technical</li>
     </a>
   </ul>
 </div>
@@ -77,7 +71,7 @@ const obfuscatedEmail = obfuscateEmail(resume.info.email);
 
     <div class="flex p-1 border-0 border-b-2 border-black">
       <div class="flex mx-auto">
-        <span> {resume.info.address} | {resume.info.phone} | {obfuscatedEmail} </span>
+        <span>{resume.info.address} | {resume.info.phone} | <Fragment set:html={emailHtml} /></span>
       </div>
     </div>
 

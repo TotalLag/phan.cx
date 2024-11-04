@@ -1,0 +1,29 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import type { ResumeData } from '../../types/resume';
+import { obfuscateEmail } from '../../utils/email';
+import technicalJson from '../../content/resume/technical.json';
+
+const resume = technicalJson as ResumeData;
+const emailHtml = obfuscateEmail(resume.info.email);
+---
+
+<Layout title={`${resume.info.name} - Resume`}>
+  <meta name="robots" content="noindex, nofollow, noarchive" slot="head" />
+  
+  <div class="grid items-center grid-cols-3 justify-self-stretch print:hidden">
+    <div class="p-4 justify-self-start whitespace-nowrap">🖨️-friendly 😉</div>
+    <ul class="flex my-4 text-sm font-medium flex-nowrap sm:justify-self-center justify-self-between">
+      <a href="/resume">
+        <li>Strategic</li>
+      </a>
+      <a href="/resume/technical">
+        <li class="selected">Technical</li>
+      </a>
+    </ul>
+  </div>
+
+  <div class="flex flex-col p-6 mx-auto align-middle border-8 print:-mt-2 print:border-0 print:max-w-[49rem] md:w-4/5">
+    <!-- Same content as index.astro but with technical resume data -->
+  </div>
+</Layout>
