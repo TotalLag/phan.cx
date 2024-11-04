@@ -1,0 +1,38 @@
+{
+  "info": {
+    "name": "Your Name",
+    "address": "Your Address",
+    "phone": "Your Phone",
+    "email": "your.email@example.com"
+  },
+  "summary": [
+    {"item": "Strategic leadership experience"},
+    {"item": "Project management expertise"}
+  ],
+  "qualifications": [
+    {"item": "Strategic planning"},
+    {"item": "Team leadership"}
+  ],
+  "experience": [
+    {
+      "title": "Strategic Director",
+      "company": "Example Corp",
+      "location": "City, State",
+      "dateFrom": "2020",
+      "dateTo": "Present",
+      "work": [
+        {"item": "Led strategic initiatives"},
+        {"item": "Managed key projects"}
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "MBA",
+      "name": "Business School",
+      "location": "City, State",
+      "dateFrom": "2018",
+      "dateTo": "2020"
+    }
+  ]
+}

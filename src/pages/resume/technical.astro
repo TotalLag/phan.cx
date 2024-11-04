@@ -1,8 +1,15 @@
 ---
-import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import ResumeLayout from '../../layouts/ResumeLayout.astro';
 
-const resume = await getEntry('resume', 'resume-tech');
+const resumes = await getCollection('resume');
+const technicalResume = resumes.find(r => r.id === 'technical.json');
+
+if (!technicalResume) {
+  throw new Error('Technical resume not found');
+}
+
+const resume = technicalResume.data;
 ---
 
-<ResumeLayout data={resume.data} type="technical" />
+<ResumeLayout data={resume} type="technical" />

@@ -1,0 +1,38 @@
+{
+  "info": {
+    "name": "Your Name",
+    "address": "Your Address",
+    "phone": "Your Phone",
+    "email": "your.email@example.com"
+  },
+  "summary": [
+    {"item": "Technical leadership experience"},
+    {"item": "Software architecture expertise"}
+  ],
+  "qualifications": [
+    {"item": "Full-stack development"},
+    {"item": "System design"}
+  ],
+  "experience": [
+    {
+      "title": "Technical Lead",
+      "company": "Tech Corp",
+      "location": "City, State",
+      "dateFrom": "2020",
+      "dateTo": "Present",
+      "work": [
+        {"item": "Led technical initiatives"},
+        {"item": "Architected solutions"}
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "BS Computer Science",
+      "name": "University",
+      "location": "City, State",
+      "dateFrom": "2016",
+      "dateTo": "2020"
+    }
+  ]
+}
