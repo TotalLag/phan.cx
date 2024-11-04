@@ -1,6 +1,6 @@
 ---
-import { resume as strategicResume } from '../../../src/content/resume/strategic.json';
-import { resume as technicalResume } from '../../../src/content/resume/technical.json';
+import strategicResume from '../../../src/content/resume/strategic.json';
+import technicalResume from '../../../src/content/resume/technical.json';
 
 interface ResumeData {
   type: 'strategic' | 'technical';
@@ -36,14 +36,22 @@ const resume: ResumeData = type === 'technical' ? technicalResume : strategicRes
 <style>
   article {
     font-family: system-ui, -apple-system, sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: var(--resume-text-base);
+    line-height: var(--resume-leading-normal);
+    letter-spacing: var(--resume-tracking-base);
     color: var(--paper-text);
     background-color: var(--paper-bg);
     padding: var(--gutter);
     border: 1px solid var(--paper-border);
     border-radius: 4px;
     box-shadow: 0 2px 4px var(--paper-shadow);
+  }
+
+  @media print {
+    article {
+      font-size: var(--resume-text-print);
+      line-height: var(--resume-leading-print);
+    }
   }
 
   h1 {
@@ -142,10 +150,17 @@ const resume: ResumeData = type === 'technical' ? technicalResume : strategicRes
     </div>
 
     {resume.experience.map((job) => (
-      <div class="flex justify-between">
-        <h3>{job.title} | {job.company} <span class="font-light">| {job.location}</span></h3>
-        <span> {job.dateFrom} &mdash; {job.dateTo} </span>
-      </div>
+      <>
+        <div class="flex justify-between">
+          <h3>{job.title} | {job.company} <span class="font-light">| {job.location}</span></h3>
+          <span> {job.dateFrom} &mdash; {job.dateTo} </span>
+        </div>
+        <div class="flex mb-3">
+          <ul>
+            {job.work.map((line) => <li>{line.item}</li>)}
+          </ul>
+        </div>
+      </>
     ))}
   </article>
 
