@@ -1,0 +1,83 @@
+---
+import Layout from './Layout.astro';
+import type { ResumeCollection } from '../content/config';
+
+interface Props {
+  data: ResumeCollection;
+  type?: 'strategic' | 'technical';
+}
+
+const { data, type = 'strategic' } = Astro.props;
+const { info, summary, qualifications, experience, education } = data;
+---
+
+<Layout title={`${info.name} - ${type.charAt(0).toUpperCase() + type.slice(1)} Resume`}>
+  <main class="max-w-4xl mx-auto p-6 print:p-0">
+    <article class="space-y-6">
+      <!-- Header -->
+      <header class="text-center space-y-2">
+        <h1 class="text-3xl font-bold">{info.name}</h1>
+        <p class="text-sm">{info.address}</p>
+        <p class="text-sm">
+          <a href={`tel:${info.phone}`} class="hover:underline">{info.phone}</a> |
+          <a href={`mailto:${info.email}`} class="hover:underline">{info.email}</a>
+        </p>
+      </header>
+
+      <!-- Summary -->
+      <section>
+        <h2 class="text-xl font-semibold mb-2">Professional Summary</h2>
+        <ul class="list-disc pl-6 space-y-1">
+          {summary.map(({ item }) => <li>{item}</li>)}
+        </ul>
+      </section>
+
+      <!-- Qualifications -->
+      <section>
+        <h2 class="text-xl font-semibold mb-2">Key Qualifications</h2>
+        <ul class="list-disc pl-6 space-y-1">
+          {qualifications.map(({ item }) => <li>{item}</li>)}
+        </ul>
+      </section>
+
+      <!-- Experience -->
+      <section>
+        <h2 class="text-xl font-semibold mb-2">Professional Experience</h2>
+        <div class="space-y-4">
+          {
+            experience.map(({ title, company, location, dateFrom, dateTo, work }) => (
+              <div>
+                <h3 class="font-semibold">{title}</h3>
+                <p class="text-sm">
+                  {company} | {location} | {dateFrom} - {dateTo}
+                </p>
+                <ul class="list-disc pl-6 mt-2 space-y-1">
+                  {work.map(({ item }) => <li>{item}</li>)}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Education -->
+      {
+        education && (
+          <section>
+            <h2 class="text-xl font-semibold mb-2">Education</h2>
+            <div class="space-y-2">
+              {education.map(({ degree, name, location, dateFrom, dateTo }) => (
+                <div>
+                  <h3 class="font-semibold">{degree}</h3>
+                  <p class="text-sm">
+                    {name} | {location} | {dateFrom} - {dateTo}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )
+      }
+    </article>
+  </main>
+</Layout>

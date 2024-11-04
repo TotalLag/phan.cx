@@ -1,0 +1,8 @@
+---
+import { getEntry } from 'astro:content';
+import ResumeLayout from '../../layouts/ResumeLayout.astro';
+
+const resume = await getEntry('resume', 'resume');
+---
+
+<ResumeLayout data={resume.data} type="strategic" />

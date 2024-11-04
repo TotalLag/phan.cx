@@ -16,6 +16,38 @@ const instagramSchema = z.object({
   caption: z.string().optional(),
 });
 
+const resumeSchema = z.object({
+  info: z.object({
+    name: z.string(),
+    address: z.string(),
+    phone: z.string(),
+    email: z.string()
+  }),
+  summary: z.array(z.object({
+    item: z.string()
+  })),
+  qualifications: z.array(z.object({
+    item: z.string()
+  })),
+  experience: z.array(z.object({
+    title: z.string(),
+    company: z.string(),
+    location: z.string(),
+    dateFrom: z.string(),
+    dateTo: z.string(),
+    work: z.array(z.object({
+      item: z.string()
+    }))
+  })),
+  education: z.array(z.object({
+    degree: z.string(),
+    name: z.string(),
+    location: z.string(),
+    dateFrom: z.string(),
+    dateTo: z.string()
+  })).optional()
+});
+
 // Define collections
 export const collections = {
   blog: defineCollection({
@@ -26,8 +58,13 @@ export const collections = {
     type: 'data',
     schema: instagramSchema,
   }),
+  resume: defineCollection({
+    type: 'data',
+    schema: resumeSchema,
+  }),
 };
 
 // Export schema types
 export type BlogCollection = z.infer<typeof blogSchema>;
 export type InstagramCollection = z.infer<typeof instagramSchema>;
+export type ResumeCollection = z.infer<typeof resumeSchema>;
