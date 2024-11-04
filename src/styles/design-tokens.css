@@ -31,12 +31,23 @@
     --overlay-dark: rgba(0, 0, 0, 0.7);
     --overlay-modal: rgba(0, 0, 0, 0.4);
 
+    /* Paper tokens */
+    --paper-bg: #ffffff;
+    --paper-text: #333333;
+    --paper-border: #e5e7eb;
+    --paper-shadow: rgba(0, 0, 0, 0.1);
+
     /* Spacing tokens */
     --gutter: clamp(1rem, 3vw, 1.5rem);
     --flow-space: 1em;
   }
 
   :root.dark {
+    --paper-bg: #27272a;
+    --paper-text: #f9fafb;
+    --paper-border: #3f3f46;
+    --paper-shadow: rgba(0, 0, 0, 0.25);
+    
     --surface-primary: #18181b;
     --surface-secondary: #27272a;
     --surface-tertiary: #3f3f46;

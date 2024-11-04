@@ -34,26 +34,16 @@ const resume: ResumeData = type === 'technical' ? technicalResume : strategicRes
 ---
 
 <style>
-  :root {
-    --paper-color: #f5f5f5;
-    --text-color: #333;
-    --border-color: #ccc;
-    --font-family: 'Helvetica Neue', Arial, sans-serif;
-    --font-size: 14px;
-    --line-height: 1.5;
-    --padding: 1rem;
-  }
-
   article {
-    font-family: var(--font-family);
-    font-size: var(--font-size);
-    line-height: var(--line-height);
-    color: var(--text-color);
-    background-color: var(--paper-color);
-    padding: var(--padding);
-    border: 1px solid var(--border-color);
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--paper-text);
+    background-color: var(--paper-bg);
+    padding: var(--gutter);
+    border: 1px solid var(--paper-border);
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--paper-shadow);
   }
 
   h1 {
@@ -97,12 +87,12 @@ const resume: ResumeData = type === 'technical' ? technicalResume : strategicRes
   <div class="p-4 justify-self-start whitespace-nowrap">🖨️-friendly 😉</div>
   <ul class="flex my-4 text-sm font-medium flex-nowrap sm:justify-self-center justify-self-between">
     <a href="/resume">
-      <li class:selected={type !== 'technical'}>
+      <li class={type !== 'technical' ? 'selected' : ''}>
         Strategic
       </li>
     </a>
     <a href="/resume/technical">
-      <li class:selected={type === 'technical'}>
+      <li class={type === 'technical' ? 'selected' : ''}>
         Tactical
       </li>
     </a>
