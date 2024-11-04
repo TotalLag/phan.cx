@@ -45,7 +45,8 @@ const resumeSchema = z.object({
     location: z.string(),
     dateFrom: z.string(),
     dateTo: z.string()
-  })).optional()
+  })).optional(),
+  type: z.enum(['strategic', 'technical'])
 });
 
 // Define collections

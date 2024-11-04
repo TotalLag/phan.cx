@@ -4,10 +4,10 @@ import type { ResumeCollection } from '../content/config';
 
 interface Props {
   data: ResumeCollection;
-  type?: 'strategic' | 'technical';
 }
 
-const { data, type = 'strategic' } = Astro.props;
+const { data } = Astro.props;
+const type = data.type;
 const { info, summary, qualifications, experience, education } = data;
 ---
 

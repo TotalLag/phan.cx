@@ -4,7 +4,7 @@ import ResumeLayout from '../../layouts/ResumeLayout.astro';
 import type { ResumeCollection } from '../../content/config';
 
 const resumes = await getCollection('resume');
-const strategicResume = resumes.find(r => r.id === 'strategic.json');
+const strategicResume = resumes.find(r => r.data.type === 'strategic');
 
 if (!strategicResume) {
   throw new Error('Strategic resume not found');
