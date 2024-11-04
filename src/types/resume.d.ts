@@ -31,12 +31,12 @@ export interface ResumeInfo {
 }
 
 export interface ResumeData {
-  type: 'strategic' | 'technical';
   info: ResumeInfo;
-  summary: ResumeItem[];
+  summary: string[];
   qualifications: ResumeItem[];
   experience: ResumeJob[];
   education?: ResumeEducation[];
+  type?: 'strategic' | 'technical';
   [key: string]: unknown;
 }
 
