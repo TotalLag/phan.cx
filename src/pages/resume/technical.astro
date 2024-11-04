@@ -1,9 +1,6 @@
 ---
-import * as strategicJson from '../../../src/content/resume/strategic.json';
-import * as technicalJson from '../../../src/content/resume/technical.json';
-
-const strategicResume = strategicJson.default;
-const technicalResume = technicalJson.default;
+import strategicResume from '../../../src/content/resume/strategic.json';
+import technicalResume from '../../../src/content/resume/technical.json';
 
 interface ResumeData {
   type: 'strategic' | 'technical';
@@ -45,7 +42,7 @@ const resume: ResumeData = type === 'technical' ? technicalResume : strategicRes
     color: var(--paper-text);
     background-color: var(--paper-bg);
     padding: var(--gutter);
-    border: 1px solid var(--paper-border);
+    border: 1px solid var(--resume-border-light);
     border-radius: 4px;
     box-shadow: 0 2px 4px var(--paper-shadow);
   }
