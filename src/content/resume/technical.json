@@ -6,19 +6,11 @@
     "email": "chris@phan.cx"
   },
   "summary": [
-      {
-        "item": "Technologist"
-      },
-      {
-        "item": "Quality Advocate"
-      },
-      {
-        "item": "Systems Engineer"
-      },
-      {
-        "item": "Developer Advocate"
-      }
-    ],
+    "Technologist",
+    "Quality Advocate", 
+    "Systems Engineer",
+    "Developer Advocate"
+  ],
     "qualifications": [
       {
         "item": "Extensive real-world customer experiences in enterprise architecture and global infrastructures."
