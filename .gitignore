@@ -28,3 +28,6 @@ pnpm-debug.log*
 # vscode settings
 .vscode/
 .aider*
+
+fix_instructions.txt
+

@@ -7,16 +7,17 @@ import ThemeScript from '../components/ThemeScript';
 
 interface Props {
   title: string;
+  description?: string;
 }
 
-const { title } = Astro.props;
+const { title, description = "Personal website and blog" } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en" class="antialiased">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Personal website and blog" />
+    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -24,6 +25,7 @@ const { title } = Astro.props;
     <title>{title}</title>
     <ViewTransitions />
     <ThemeScript client:load />
+    <slot name="head" />
   </head>
   <body class="min-h-screen bg-surface-primary">
     <!-- Mobile Menu Container -->

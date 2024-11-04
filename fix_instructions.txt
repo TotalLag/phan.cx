@@ -1,264 +1,83 @@
 Code Fix Instructions
 2024-01-09
-/next/src/pages/resume/, /next/src/layouts/, /next/src/types/
 
-Identified Issues and Fixes
+Overview:
+The resume feature needs proper Astro template syntax and TypeScript integration.
 
-Issue #1: Type Definitions and Template Syntax
-Location: ResumeLayout component
-Explanation: 
-- Props interface not properly defined
-- Missing type annotations in map functions
-- Template syntax errors
-Recommendation: Fix types and template syntax
+Key Areas to Address:
 
-Implementation Steps:
+1. Astro Template Syntax
+- Class Bindings:
+  * Use class:list for conditional classes
+  * Avoid Vue/Svelte style bindings
+  * Follow Astro's template syntax rules
+  * Handle dynamic classes properly
 
-1. Create /next/src/types/resume.ts:
-```typescript
-export interface ResumeItem {
-  item: string;
-}
+- Template Structure:
+  * Use proper Astro component syntax
+  * Handle conditional rendering correctly
+  * Manage dynamic content appropriately
+  * Follow Astro's frontmatter rules
 
-export interface ResumeJob {
-  title: string;
-  company: string;
-  location: string;
-  dateFrom: string;
-  dateTo: string;
-  work: ResumeItem[];
-}
+2. Type System Design
+- Data Structure:
+  * Match JSON format exactly
+  * Handle item arrays consistently
+  * Support optional fields
+  * Allow additional properties
 
-export interface ResumeEducation {
-  degree: string;
-  name: string;
-  location: string;
-  dateFrom: string;
-  dateTo: string;
-}
+3. Component Architecture
+- Layout:
+  * Clean, reusable design
+  * Printer-friendly output
+  * Dark mode support
+  * Proper spacing
 
-export interface ResumeData {
-  info: {
-    name: string;
-    address: string;
-    phone: string;
-    email: string;
-  };
-  summary: string[];
-  qualifications: ResumeItem[];
-  experience: ResumeJob[];
-  education?: ResumeEducation[];
-}
-```
+4. Data Processing
+- Content Handling:
+  * Process item arrays consistently
+  * Handle dates and locations
+  * Manage optional fields
+  * Support metadata
 
-2. Create /next/src/layouts/ResumeLayout.astro:
-```astro
----
-import type { ResumeData } from '../types/resume';
+Implementation Guidelines:
 
-interface Props {
-  resume: ResumeData;
-  type: 'strategic' | 'technical';
-}
+1. Astro Components
+- Use proper template syntax
+- Follow class binding rules
+- Handle conditional rendering
+- Maintain clean structure
 
-const { resume, type } = Astro.props;
----
+2. Type Definitions
+- Match JSON structure
+- Handle arrays properly
+- Support optional fields
+- Allow extensibility
 
-<div class="print:hidden">
-  <ul class="flex justify-center my-4 text-sm font-medium">
-    <a href="/resume">
-      <li class={`px-4 py-2 ${type !== 'technical' ? 'selected' : ''}`}>Strategic</li>
-    </a>
-    <a href="/resume/technical">
-      <li class={`px-4 py-2 ${type === 'technical' ? 'selected' : ''}`}>Technical</li>
-    </a>
-  </ul>
-</div>
-
-<div class="flex flex-col p-6 mx-auto align-middle border-8 print:-mt-2 print:border-0 print:max-w-[49rem] md:w-4/5">
-  <article class="border-0 border-b border-black">
-    <div class="flex flex-col pb-2 border-0 border-b-2 border-black">
-      <div class="flex mx-auto">
-        <h1>{resume.info.name}</h1>
-      </div>
-    </div>
-
-    <div class="flex p-1 border-0 border-b-2 border-black">
-      <div class="flex mx-auto">
-        <span>{resume.info.address} | {resume.info.phone} | <a href={`mailto:${resume.info.email}`}>{resume.info.email}</a></span>
-      </div>
-    </div>
-
-    <div class="flex p-4">
-      <div class="mx-auto">
-        <h2 class="summary">{resume.summary.join(' ◆ ')}</h2>
-      </div>
-    </div>
-  </article>
-
-  <article>
-    <div class="flex pb-1 mb-3 border-0 border-b border-gray-200">
-      <div class="flex flex-col">
-        <h2>Summary of Qualifications</h2>
-      </div>
-    </div>
-
-    <div class="flex pb-2 border-0 border-b border-black">
-      <ul>
-        {resume.qualifications.map((qual: ResumeItem) => (
-          <li>{qual.item}</li>
-        ))}
-      </ul>
-    </div>
-  </article>
-
-  <article class="mb-1 border-0 border-b border-black">
-    <div class="flex pb-1 mb-3 border-0 border-b border-gray-200">
-      <div class="flex flex-col">
-        <h2>Work Experience</h2>
-      </div>
-    </div>
-
-    {resume.experience.map((job: ResumeJob) => (
-      <div class="mb-3">
-        <div class="flex justify-between">
-          <h3>{job.title} | {job.company} <span class="font-light">| {job.location}</span></h3>
-          <span>{job.dateFrom} &mdash; {job.dateTo}</span>
-        </div>
-        <div class="flex">
-          <ul>
-            {job.work.map((item: ResumeItem) => (
-              <li>{item.item}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    ))}
-  </article>
-
-  {resume.education && (
-    <article>
-      <div class="flex pb-1 mb-3 border-0 border-b border-gray-200">
-        <div class="flex flex-col">
-          <h2>Education</h2>
-        </div>
-      </div>
-
-      {resume.education.map((school: ResumeEducation) => (
-        <div class="flex justify-between mb-4">
-          <h3>{school.degree} | {school.name} <span class="font-light">| {school.location}</span></h3>
-          <span>{school.dateFrom} &mdash; {school.dateTo}</span>
-        </div>
-      ))}
-    </article>
-  )}
-</div>
-
-<style>
-  .selected {
-    @apply font-bold text-gray-800 dark:text-gray-100;
-    @apply border-b-2 border-gray-700 dark:border-gray-300;
-  }
-
-  article {
-    @apply font-sans text-sm leading-normal tracking-wide;
-    @apply text-gray-900 dark:text-gray-100;
-    @apply bg-white dark:bg-gray-800;
-    @apply p-4;
-  }
-
-  @media print {
-    article {
-      @apply text-[10px] leading-tight;
-      @apply border-0 shadow-none p-2;
-    }
-  }
-
-  h1 {
-    @apply text-3xl font-bold uppercase mb-2 tracking-wider;
-    @apply print:text-2xl;
-  }
-
-  h2 {
-    @apply text-lg font-bold uppercase mb-2 tracking-widest;
-    @apply print:text-base;
-  }
-
-  h3 {
-    @apply text-base font-semibold mb-1 tracking-wide;
-    @apply print:text-sm;
-  }
-
-  ul {
-    @apply list-disc pl-6 mb-4;
-  }
-
-  a {
-    @apply text-current no-underline;
-  }
-
-  .summary {
-    @apply print:tracking-wide;
-  }
-</style>
-```
-
-3. Update /next/src/pages/resume/index.astro:
-```astro
----
-import Layout from '../../layouts/Layout.astro';
-import ResumeLayout from '../../layouts/ResumeLayout.astro';
-import type { ResumeData } from '../../types/resume';
-import strategicJson from '../../content/resume/strategic.json';
-
-const resume = strategicJson as ResumeData;
----
-
-<Layout title={`${resume.info.name} - Resume`}>
-  <meta name="robots" content="noindex, nofollow, noarchive" slot="head" />
-  <ResumeLayout resume={resume} type="strategic" />
-</Layout>
-```
-
-4. Update /next/src/pages/resume/technical.astro:
-```astro
----
-import Layout from '../../layouts/Layout.astro';
-import ResumeLayout from '../../layouts/ResumeLayout.astro';
-import type { ResumeData } from '../../types/resume';
-import technicalJson from '../../content/resume/technical.json';
-
-const resume = technicalJson as ResumeData;
----
-
-<Layout title={`${resume.info.name} - Resume`}>
-  <meta name="robots" content="noindex, nofollow, noarchive" slot="head" />
-  <ResumeLayout resume={resume} type="technical" />
-</Layout>
-```
-
-Implementation Order:
-
-1. Create resume types
-2. Create ResumeLayout with proper Props interface
-3. Update route files
-4. Test functionality
+3. Print Optimization
+- Manage font sizes
+- Handle spacing
+- Support dark mode
+- Ensure readability
 
 Verification Steps:
 
-1. Type Safety:
-   - Verify no TypeScript errors
-   - Check all map functions have proper types
-   - Test with both resume types
+1. Template Syntax
+- Check class bindings
+- Verify conditional rendering
+- Test dynamic content
+- Validate Astro syntax
 
-2. Routes:
-   - Verify /resume loads strategic resume
-   - Verify /resume/technical loads technical resume
-   - Test navigation between versions
+2. Type Safety
+- Verify data structure
+- Check array handling
+- Test optional fields
+- Confirm type inference
 
-3. Print Preview:
-   - Check font sizes are appropriate
-   - Verify margins and spacing
-   - Test in different browsers
+3. Functionality
+- Test navigation
+- Check print output
+- Verify dark mode
+- Validate layout
 
-Note: This update fixes all type errors by properly defining the Props interface and adding type annotations to map functions. The template syntax has also been corrected to work with Astro.
+Note: Pay special attention to Astro's template syntax requirements, particularly around class bindings and conditional rendering. Ensure proper type safety while maintaining clean component structure.

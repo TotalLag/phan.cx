@@ -5,7 +5,7 @@
   }
 
   .center-layout {
-    @apply mx-auto w-full px-container-px;
+    @apply w-full mx-auto px-container-px;
   }
 
   .grid-layout {
@@ -40,7 +40,7 @@
   body,
   body *:not(script):not(style) {
     transition-property: background-color, border-color, color, fill, stroke;
-    transition-duration: 200ms;
+    transition-duration: 50ms;
     transition-timing-function: ease-out;
   }
 }

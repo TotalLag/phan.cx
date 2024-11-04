@@ -1,5 +1,6 @@
 ---
 import type { ResumeData } from '../types/resume';
+import '../styles/resume.css';
 
 interface Props {
   resume: ResumeData;
@@ -7,228 +8,111 @@ interface Props {
 }
 
 const { resume, type } = Astro.props;
+const { info, summary, qualifications, experience, education } = resume;
+
+const formatSummary = (summary: ResumeData['summary']) => {
+  if (type === 'technical') {
+    return (summary as string[]).join(' ◆ ');
+  }
+  return (summary as Array<{ item: string }>).map(s => s.item).join(' ◆ ');
+};
+
+const obfuscateEmail = (email: string) => {
+  return email.replace('@', ' [at] ').replace(/\./g, ' [dot] ');
+};
 ---
 
-<div class="print:hidden">
-  <ul class="flex justify-center my-4 text-sm font-medium">
-    <a href="/resume">
-      <li class:list={["px-4 py-2", { selected: type !== 'technical' }]}>Strategic</li>
+<div class="resume-nav">
+  <div class="resume-nav-tabs">
+    <a 
+      href="/resume" 
+      class:list={[
+        "resume-nav-tab",
+        type !== 'technical' ? 'resume-nav-tab-active' : 'resume-nav-tab-inactive'
+      ]}
+    >
+      Strategic
     </a>
-    <a href="/resume/technical">
-      <li class:list={["px-4 py-2", { selected: type === 'technical' }]}>Technical</li>
+    <a 
+      href="/resume/technical" 
+      class:list={[
+        "resume-nav-tab",
+        type === 'technical' ? 'resume-nav-tab-active' : 'resume-nav-tab-inactive'
+      ]}
+    >
+      Tactical
     </a>
-  </ul>
-</div>
-  <main class="max-w-4xl mx-auto p-6 print:p-0">
-    <article class="space-y-6">
-      <!-- Header -->
-      <header class="text-center space-y-2">
-        <h1 class="text-3xl font-bold">{info.name}</h1>
-        <p class="text-sm">{info.address}</p>
-        <p class="text-sm">
-          <a href={`tel:${info.phone}`} class="hover:underline">{info.phone}</a> |
-          <a href={`mailto:${info.email}`} class="hover:underline">{info.email}</a>
-        </p>
-      </header>
-
-      <!-- Summary -->
-      <section>
-        <h2 class="text-xl font-semibold mb-2">Professional Summary</h2>
-        <ul class="list-disc pl-6 space-y-1">
-          {summary.map(({ item }) => <li>{item}</li>)}
-        </ul>
-      </section>
-
-      <!-- Qualifications -->
-      <section>
-        <h2 class="text-xl font-semibold mb-2">Key Qualifications</h2>
-        <ul class="list-disc pl-6 space-y-1">
-          {qualifications.map(({ item }) => <li>{item}</li>)}
-        </ul>
-      </section>
-
-      <!-- Experience -->
-      <section>
-        <h2 class="text-xl font-semibold mb-2">Professional Experience</h2>
-        <div class="space-y-4">
-          {
-            experience.map(({ title, company, location, dateFrom, dateTo, work }) => (
-              <div>
-                <h3 class="font-semibold">{title}</h3>
-                <p class="text-sm">
-                  {company} | {location} | {dateFrom} - {dateTo}
-                </p>
-                <ul class="list-disc pl-6 mt-2 space-y-1">
-                  {work.map(({ item }) => <li>{item}</li>)}
-                </ul>
-              </div>
-            ))
-          }
-        </div>
-      </section>
-
-      <!-- Education -->
-      {
-        education && (
-          <section>
-            <h2 class="text-xl font-semibold mb-2">Education</h2>
-            <div class="space-y-2">
-              {education.map(({ degree, name, location, dateFrom, dateTo }) => (
-                <div>
-                  <h3 class="font-semibold">{degree}</h3>
-                  <p class="text-sm">
-                    {name} | {location} | {dateFrom} - {dateTo}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )
-      }
-    </article>
-  </main>
-</Layout>
----
-import type { ResumeData } from '../types/resume';
-
-interface Props {
-  resume: ResumeData;
-  type: 'strategic' | 'technical';
-}
-
-const { resume, type } = Astro.props;
----
-
-<div class="print:hidden">
-  <ul class="flex justify-center my-4 text-sm font-medium">
-    <a href="/resume">
-      <li class={`px-4 py-2 ${type !== 'technical' ? 'selected' : ''}`}>Strategic</li>
-    </a>
-    <a href="/resume/technical">
-      <li class={`px-4 py-2 ${type === 'technical' ? 'selected' : ''}`}>Technical</li>
-    </a>
-  </ul>
+  </div>
 </div>
 
-<div class="flex flex-col p-6 mx-auto align-middle border-8 print:-mt-2 print:border-0 print:max-w-[49rem] md:w-4/5">
-  <article class="border-0 border-b border-black">
-    <div class="flex flex-col pb-2 border-0 border-b-2 border-black">
-      <div class="flex mx-auto">
-        <h1>{resume.info.name}</h1>
-      </div>
+<div class="resume-container">
+  <div class="resume-header">
+    <h1 class="resume-name">{info.name}</h1>
+    <div class="resume-contact">
+      {info.address} | <span class="select-all">{obfuscateEmail(info.email)}</span>
     </div>
-
-    <div class="flex p-1 border-0 border-b-2 border-black">
-      <div class="flex mx-auto">
-        <span>{resume.info.address} | {resume.info.phone} | <a href={`mailto:${resume.info.email}`}>{resume.info.email}</a></span>
-      </div>
+    <div class="resume-summary">
+      {formatSummary(summary)}
     </div>
+  </div>
 
-    <div class="flex p-4">
-      <div class="mx-auto">
-        <h2 class="summary">{resume.summary.map(s => s.item).join(' ◆ ')}</h2>
-      </div>
-    </div>
-  </article>
+  <section class="resume-section">
+    <h2 class="resume-section-title">Summary of Qualifications</h2>
+    <ul class="resume-list">
+      {qualifications.map(qual => <li>{qual.item}</li>)}
+    </ul>
+  </section>
 
-  <article>
-    <div class="flex pb-1 mb-3 border-0 border-b border-gray-200">
-      <div class="flex flex-col">
-        <h2>Summary of Qualifications</h2>
-      </div>
-    </div>
-
-    <div class="flex pb-2 border-0 border-b border-black">
-      <ul>
-        {resume.qualifications.map(qual => <li>{qual.item}</li>)}
-      </ul>
-    </div>
-  </article>
-
-  <article class="mb-1 border-0 border-b border-black">
-    <div class="flex pb-1 mb-3 border-0 border-b border-gray-200">
-      <div class="flex flex-col">
-        <h2>Work Experience</h2>
-      </div>
-    </div>
-
-    {resume.experience.map(job => (
-      <div class="mb-3">
-        <div class="flex justify-between">
-          <h3>{job.title} | {job.company} <span class="font-light">| {job.location}</span></h3>
-          <span> {job.dateFrom} &mdash; {job.dateTo} </span>
+  <section class="resume-section">
+    <h2 class="resume-section-title">Work Experience</h2>
+    {experience.map(job => (
+      <div class="resume-item">
+        <div class="resume-item-header">
+          <h3 class="resume-item-title">{job.title} | {job.company} | <span class="font-light">{job.location}</span></h3>
+          <span class="resume-item-date">{job.dateFrom} &mdash; {job.dateTo}</span>
         </div>
-        <div class="flex mb-3">
-          <ul>
-            {job.work.map(item => <li>{item.item}</li>)}
-          </ul>
-        </div>
-      </>
+        <ul class="resume-list">
+          {job.work.map(item => <li>{item.item}</li>)}
+        </ul>
+      </div>
     ))}
-  </article>
+  </section>
 
-  {resume.education && (
-    <article>
-      <div class="flex pb-1 mb-3 border-0 border-b border-gray-200">
-        <div class="flex flex-col">
-          <h2>Education</h2>
-        </div>
-      </div>
-
-      {resume.education.map((school) => (
-        <div class="flex justify-between mb-4">
-          <h3>{school.degree} | {school.name} <span class="font-light">| {school.location}</span></h3>
-          <span> {school.dateFrom} &mdash; {school.dateTo} </span>
+  {education && (
+    <section class="resume-section">
+      <h2 class="resume-section-title">Education</h2>
+      {education.map((school) => (
+        <div class="resume-item">
+          <div class="resume-item-header">
+            <h3 class="resume-item-title">{school.degree} | {school.name} <span class="font-light">| {school.location}</span></h3>
+            <span class="resume-item-date">{school.dateFrom} &mdash; {school.dateTo}</span>
+          </div>
         </div>
       ))}
-    </article>
+    </section>
   )}
 </div>
 
 <style>
-  .selected {
-    @apply font-bold text-gray-800 dark:text-gray-100;
-    @apply border-b-2 border-gray-700 dark:border-gray-300;
-  }
-
-  article {
-    @apply font-sans text-sm leading-normal tracking-wide;
-    @apply text-gray-900 dark:text-gray-100;
-    @apply bg-white dark:bg-gray-800;
-    @apply p-4;
-  }
-
   @media print {
-    article {
-      @apply text-[10px] leading-tight;
-      @apply border-0 shadow-none p-2;
+    :global(header),
+    :global(footer),
+    :global(.site-sidebar),
+    :global(.site-sidebar-mobile) {
+      display: none !important;
     }
-  }
 
-  h1 {
-    @apply text-3xl font-bold uppercase mb-2 tracking-wider;
-    @apply print:text-2xl;
-  }
+    :global(body) {
+      margin: 0 !important;
+      padding: 0 !important;
+      background: white !important;
+    }
 
-  h2 {
-    @apply text-lg font-bold uppercase mb-2 tracking-widest;
-    @apply print:text-base;
-  }
-
-  h3 {
-    @apply text-base font-semibold mb-1 tracking-wide;
-    @apply print:text-sm;
-  }
-
-  ul {
-    @apply list-disc pl-6 mb-4;
-  }
-
-  a {
-    @apply text-current no-underline;
-  }
-
-  .summary {
-    @apply print:tracking-wide;
+    :global(main) {
+      padding: 0 !important;
+      margin: 0 !important;
+      width: 100% !important;
+      max-width: none !important;
+    }
   }
 </style>

@@ -1,0 +1,157 @@
+:root {
+  /* Resume Colors */
+  --resume-text-nav: #9ca3af;  /* text-gray-400 */
+  --resume-text-nav-selected: #1f2937;  /* text-gray-800 */
+  --resume-border-nav-selected: #374151;  /* border-gray-700 */
+  --resume-border-light: #e5e7eb;  /* border-gray-200 */
+  --resume-border-dark: #000000;  /* border-black */
+  --resume-bg-inactive: #f3f4f6;  /* bg-gray-100 */
+}
+
+:root.dark {
+  --resume-text-nav: #d1d5db;  /* gray-300 */
+  --resume-text-nav-selected: #f9fafb;  /* gray-50 */
+  --resume-border-nav-selected: #374151;  /* gray-700 */
+  --resume-bg-inactive: #111827;  /* gray-900 */
+}
+
+.resume-container {
+  @apply flex flex-col p-8 mx-auto align-middle bg-white rounded-lg dark:bg-gray-800 md:w-4/5;
+  border: 8px solid var(--resume-border-light);
+  @apply dark:border-gray-700;
+  @apply print:w-full print:p-4 print:m-0 print:border-0 print:rounded-none print:bg-white;
+  transition: background-color 100ms ease-out, border-color 100ms ease-out;
+}
+
+.resume-nav {
+  @apply flex justify-center mt-4 print:hidden;
+}
+
+.resume-nav-tabs {
+  @apply inline-flex overflow-hidden rounded-t-lg;
+  border: 1px solid var(--resume-border-light);
+  @apply dark:border-gray-700;
+}
+
+.resume-nav-tab {
+  @apply px-6 py-2 text-sm font-medium transition-colors duration-200;
+}
+
+.resume-nav-tab-active {
+  background-color: var(--resume-border-light);
+  @apply dark:bg-gray-700;
+  color: var(--resume-text-nav-selected);
+  transition: background-color 100ms ease-out, color 100ms ease-out;
+}
+
+.resume-nav-tab-inactive {
+  background-color: var(--resume-bg-inactive);
+  color: var(--resume-text-nav);
+  transition: background-color 100ms ease-out, color 100ms ease-out;
+}
+
+.resume-header {
+  @apply mb-8 print:mb-4;
+}
+
+.resume-name {
+  @apply text-[2.5rem] font-black uppercase tracking-wider text-center text-black dark:text-white;
+  @apply print:text-lg print:tracking-widest print:text-black;
+  border-bottom: 3px solid black;
+  @apply dark:border-white print:border-black;
+  @apply pb-3 mb-3 print:pb-1 print:mb-1;
+  transition: border-color 100ms ease-out, color 100ms ease-out;
+}
+
+.resume-contact {
+  @apply text-base text-center text-black dark:text-white;
+  border-bottom: 3px solid black;
+  @apply dark:border-white print:border-black;
+  @apply py-2 mb-6 print:py-0.5 print:mb-1 print:text-xs print:text-black;
+  transition: border-color 100ms ease-out, color 100ms ease-out;
+}
+
+.resume-summary {
+  @apply text-center text-black uppercase dark:text-white;
+  border-bottom: 1px solid black;
+  @apply dark:border-white print:border-black;
+  @apply py-4 print:py-1 print:text-xs print:text-black;
+  /* letter-spacing: 0.02em; */
+  transition: border-color 100ms ease-out, color 100ms ease-out;
+}
+
+.resume-section {
+  @apply mb-6 print:mb-3;
+}
+
+.resume-section-title {
+  @apply text-base font-bold tracking-wider text-black uppercase dark:text-white;
+  @apply print:text-xs print:font-extrabold print:text-black;
+  border-bottom: 0.5px solid black;
+  @apply dark:border-white print:border-black;
+  @apply pb-2 mb-4 print:pb-1 print:mb-2;
+  transition: border-color 100ms ease-out, color 100ms ease-out;
+}
+
+.resume-item {
+  @apply mb-5 print:mb-2;
+}
+
+.resume-item-header {
+  @apply flex items-baseline justify-between mb-2 print:mb-1;
+}
+
+.resume-item-title {
+  @apply text-base font-bold tracking-wide text-black dark:text-white;
+  @apply print:text-xs print:font-bold print:text-black;  /* Back to original size */
+  transition: color 100ms ease-out;
+}
+
+.resume-item-date {
+  @apply text-sm font-medium text-gray-600 dark:text-gray-300;
+  @apply print:text-[0.625rem] print:font-medium print:text-gray-600;  /* Back to original size */
+  transition: color 100ms ease-out;
+}
+
+.resume-list {
+  @apply list-disc pl-8 space-y-1.5;
+  @apply print:pl-5 print:space-y-0.5;
+}
+
+.resume-list li {
+  @apply text-base font-medium leading-relaxed text-black dark:text-white;
+  @apply print:text-[0.75rem] print:leading-snug print:text-black;  /* Increased body text */
+  padding-left: 0.25rem;
+  transition: color 100ms ease-out;
+}
+
+/* Print optimizations */
+@media print {
+  :root {
+    color-scheme: light;
+  }
+
+  /* Force light theme colors */
+  .resume-container {
+    background-color: white !important;
+  }
+
+  .resume-name,
+  .resume-contact,
+  .resume-summary,
+  .resume-section-title,
+  .resume-item-title,
+  .resume-list li {
+    color: black !important;
+    border-color: black !important;
+  }
+
+  .resume-item-date {
+    color: #6b7280 !important;
+  }
+
+  /* Ensure proper page margins */
+  @page {
+    margin: 0.5in;
+  }
+}

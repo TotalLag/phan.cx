@@ -1,17 +1,16 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ResumeLayout from '../../layouts/ResumeLayout.astro';
-import type { ResumeData } from '../../types/resume';
+import type { ResumeData, TechnicalResumeData } from '../../types/resume';
 import technicalJson from '../../content/resume/technical.json';
 
 const resume: ResumeData = {
   ...technicalJson,
-  type: 'technical',
+  type: 'technical' as const,
   metadata: {
-    ...technicalJson.metadata,
     lastUpdated: new Date().toISOString()
   }
-};
+} satisfies TechnicalResumeData;
 
 const title = `${resume.info.name} - Technical Resume`;
 const description = `Technical resume for ${resume.info.name}`;
@@ -20,7 +19,7 @@ const description = `Technical resume for ${resume.info.name}`;
 <Layout {title} {description}>
   <meta name="robots" content="noindex, nofollow, noarchive" slot="head" />
   <meta name="author" content={resume.info.name} slot="head" />
-  <meta name="date" content={resume.metadata?.lastUpdated} slot="head" />
+  <meta name="date" content={resume.metadata.lastUpdated} slot="head" />
   
   <ResumeLayout resume={resume} type="technical" />
 </Layout>
