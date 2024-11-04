@@ -12,10 +12,10 @@ const { resume, type } = Astro.props;
 <div class="print:hidden">
   <ul class="flex justify-center my-4 text-sm font-medium">
     <a href="/resume">
-      <li class={`px-4 py-2 ${type !== 'technical' ? 'selected' : ''}`}>Strategic</li>
+      <li class:list={["px-4 py-2", { selected: type !== 'technical' }]}>Strategic</li>
     </a>
     <a href="/resume/technical">
-      <li class={`px-4 py-2 ${type === 'technical' ? 'selected' : ''}`}>Technical</li>
+      <li class:list={["px-4 py-2", { selected: type === 'technical' }]}>Technical</li>
     </a>
   </ul>
 </div>
@@ -126,7 +126,7 @@ const { resume, type } = Astro.props;
 
     <div class="flex p-4">
       <div class="mx-auto">
-        <h2 class="summary">{resume.summary.join(' ◆ ')}</h2>
+        <h2 class="summary">{resume.summary.map(s => s.item).join(' ◆ ')}</h2>
       </div>
     </div>
   </article>
@@ -140,7 +140,7 @@ const { resume, type } = Astro.props;
 
     <div class="flex pb-2 border-0 border-b border-black">
       <ul>
-        {resume.qualifications.map((line) => <li>{line.item}</li>)}
+        {resume.qualifications.map(qual => <li>{qual.item}</li>)}
       </ul>
     </div>
   </article>
@@ -152,15 +152,15 @@ const { resume, type } = Astro.props;
       </div>
     </div>
 
-    {resume.experience.map((job) => (
-      <>
+    {resume.experience.map(job => (
+      <div class="mb-3">
         <div class="flex justify-between">
           <h3>{job.title} | {job.company} <span class="font-light">| {job.location}</span></h3>
           <span> {job.dateFrom} &mdash; {job.dateTo} </span>
         </div>
         <div class="flex mb-3">
           <ul>
-            {job.work.map((line) => <li>{line.item}</li>)}
+            {job.work.map(item => <li>{item.item}</li>)}
           </ul>
         </div>
       </>
