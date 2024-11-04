@@ -42,7 +42,7 @@ const resume = type === 'technical' ? technicalJson : strategicJson;
 
     <div class="flex p-4">
       <div class="mx-auto">
-        <h2 class="summary">{resume.summary.map((i) => i.item).join(' ◆ ')}</h2>
+        <h2 class="summary">{resume.summary.join(' ◆ ')}</h2>
       </div>
     </div>
   </article>
