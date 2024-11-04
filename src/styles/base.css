@@ -1,6 +1,6 @@
 @import './typography.css';
 @import './design-tokens.css';
-@import './resume-tokens.css';  /* Resume-specific design tokens */
+@import './resume-tokens.css';
 @import './layout.css';
 @import './components.css';
 @import './utilities.css';
