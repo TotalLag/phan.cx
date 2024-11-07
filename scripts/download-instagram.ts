@@ -11,7 +11,7 @@ const CONFIG = {
   outputDir: path.join(process.cwd(), 'src', 'assets', 'instagram'),
   targetUsername: process.env.INSTAGRAM_USERNAME || '',
   rateLimitPerMinute: 20,
-  maxPosts: 10,
+  maxPosts: 21,
 };
 
 async function main() {

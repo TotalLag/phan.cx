@@ -10,11 +10,8 @@ interface Props {
 const { resume, type } = Astro.props;
 const { info, summary, qualifications, experience, education } = resume;
 
-const formatSummary = (summary: ResumeData['summary']) => {
-  if (type === 'technical') {
-    return (summary as string[]).join(' ◆ ');
-  }
-  return (summary as Array<{ item: string }>).map(s => s.item).join(' ◆ ');
+const formatSummary = (summary: string[]) => {
+  return summary.join(' ◆ ');
 };
 
 const obfuscateEmail = (email: string) => {

@@ -38,7 +38,7 @@ export interface TechnicalResumeData extends BaseResumeData {
 
 export interface StrategicResumeData extends BaseResumeData {
   type: 'strategic';
-  summary: Array<{ item: string }>;
+  summary: string[];
 }
 
 export type ResumeData = TechnicalResumeData | StrategicResumeData;

@@ -4,19 +4,12 @@
     "address": "Austin, TX 78754",
     "email": "chris@phan.cx"
   },
+  "type": "strategic",
   "summary": [
-    {
-      "item": "Competitive Intelligence"
-    },
-    {
-      "item": "Solutions Engineering"
-    },
-    {
-      "item": "Systems Management"
-    },
-    {
-      "item": "Customer Success"
-    }
+    "Competitive Intelligence",
+    "Solutions Engineering",
+    "Systems Management",
+    "Customer Success"
   ],
   "qualifications": [
     {
@@ -166,6 +159,5 @@
       "dateFrom": "2007",
       "dateTo": "2010"
     }
-  ],
-  "type": "strategic"
+  ]
 }

@@ -23,12 +23,10 @@ const resumeSchema = z.object({
   info: z.object({
     name: z.string(),
     address: z.string(),
-    phone: z.string(),
+    phone: z.string().optional(),
     email: z.string()
   }),
-  summary: z.array(z.object({
-    item: z.string()
-  })),
+  summary: z.array(z.string()),
   qualifications: z.array(z.object({
     item: z.string()
   })),
