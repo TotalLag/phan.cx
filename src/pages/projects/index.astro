@@ -1,13 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import type { Project } from '../../types/projects';
+import type { ProjectCollection } from '../../content/config';
 
 const projectsEntries = await getCollection('projects');
 const projectsData = projectsEntries[0];
 if (!projectsData) throw new Error('Projects data not found');
 
-const { projects } = projectsData.data;
+const { projects } = projectsData.data as ProjectCollection;
 ---
 
 <Layout title="Projects">
@@ -24,7 +24,7 @@ const { projects } = projectsData.data;
             </tr>
           </thead>
           <tbody class="text-sm">
-            {projects.map((project: Project) => (
+            {projects.map((project) => (
               <tr class="border-t hover:bg-surface-hover border-divider">
                 <td class="px-4 py-3 text-center">
                   <div class="flex items-center justify-center">
