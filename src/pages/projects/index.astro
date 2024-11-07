@@ -1,62 +1,50 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-import type { ProjectCollection } from '../../content/config';
+import type { ProjectData } from '../../types/projects';
+import projectsJson from '../../content/projects/projects.json';
 
-const projectsEntries = await getCollection('projects');
-const projectsData = projectsEntries[0];
-if (!projectsData) throw new Error('Projects data not found');
-
-const { projects } = projectsData.data as ProjectCollection;
+const { projects } = projectsJson as ProjectData;
 ---
 
 <Layout title="Projects">
-  <div class="px-container-px py-container-py">
-    <div class="mx-auto">
-      <div class="my-6 rounded-lg shadow-sm bg-surface-secondary">
-        <table class="w-full">
-          <thead>
-            <tr class="text-center uppercase rounded-t-lg bg-surface-tertiary">
-              <th class="px-4 py-3 font-medium">Project</th>
-              <th class="px-4 py-3 font-medium">What</th>
-              <th class="px-4 py-3 font-medium min-w-[24rem]">Why</th>
-              <th class="px-4 py-3 font-medium">Skills</th>
+  <div class="center-layout py-container-py">
+    <div class="overflow-hidden rounded-lg shadow-sm">
+      <table class="w-full">
+        <thead>
+          <tr class="bg-surface-tertiary">
+            <th class="px-[var(--gutter)] py-3 text-left text-sm font-medium text-text-secondary">Project</th>
+            <th class="px-[var(--gutter)] py-3 text-left text-sm font-medium text-text-secondary">What</th>
+            <th class="px-[var(--gutter)] py-3 text-left text-sm font-medium text-text-secondary">Why</th>
+            <th class="px-[var(--gutter)] py-3 text-right text-sm font-medium text-text-secondary">Skills</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-border bg-surface-primary">
+          {projects.map((project, i) => (
+            <tr class={i % 2 === 0 ? 'bg-surface-primary' : 'bg-surface-secondary'}>
+              <td class="px-[var(--gutter)] py-4 whitespace-nowrap">
+                <a href={project.link} class="text-accent hover:text-accent-hover">
+                  {project.name}
+                </a>
+              </td>
+              <td class="px-[var(--gutter)] py-4">
+                <p class="text-sm text-text-primary">{project.what}</p>
+              </td>
+              <td class="px-[var(--gutter)] py-4">
+                <p class="text-sm text-text-primary">{project.why}</p>
+              </td>
+              <td class="px-[var(--gutter)] py-4">
+                <div class="flex flex-wrap justify-end gap-1">
+                  {project.tech.map((tech) => (
+                    <span class="px-2 py-0.5 text-xs rounded-full bg-surface-secondary text-text-muted">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </td>
             </tr>
-          </thead>
-          <tbody class="text-sm">
-            {projects.map((project) => (
-              <tr class="border-t hover:bg-surface-hover border-divider">
-                <td class="px-4 py-3 text-center">
-                  <div class="flex items-center justify-center">
-                    <a href={project.link} class="text-link hover:text-link-hover">
-                      <span class="font-medium">{project.name}</span>
-                    </a>
-                  </div>
-                </td>
-                <td class="px-4 py-3">
-                  <div class="flex items-center">
-                    <span>{project.what}</span>
-                  </div>
-                </td>
-                <td class="px-4 py-3">
-                  <div class="flex items-center">
-                    <span>{project.why}</span>
-                  </div>
-                </td>
-                <td class="px-4 py-3">
-                  <div class="flex flex-wrap items-start justify-end gap-1">
-                    {project.tech.map((tech: string) => (
-                      <span class="px-2 py-0.5 text-xs rounded-full bg-surface-tertiary text-text-secondary whitespace-nowrap">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   </div>
 </Layout>

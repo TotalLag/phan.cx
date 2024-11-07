@@ -50,6 +50,16 @@ const resumeSchema = z.object({
   type: z.enum(['strategic', 'technical'])
 });
 
+const projectSchema = z.object({
+  projects: z.array(z.object({
+    link: z.string(),
+    name: z.string(),
+    what: z.string(),
+    why: z.string(),
+    tech: z.array(z.string())
+  }))
+});
+
 // Define collections
 export const collections = {
   blog: defineCollection({
@@ -64,9 +74,14 @@ export const collections = {
     type: 'data',
     schema: resumeSchema,
   }),
+  projects: defineCollection({
+    type: 'data',
+    schema: projectSchema,
+  })
 };
 
 // Export schema types
 export type BlogCollection = z.infer<typeof blogSchema>;
 export type InstagramCollection = z.infer<typeof instagramSchema>;
 export type ResumeCollection = z.infer<typeof resumeSchema>;
+export type ProjectCollection = z.infer<typeof projectSchema>;
