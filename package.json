@@ -2,7 +2,7 @@
   "name": "phan.cx",
   "type": "module",
   "version": "2.0.1",
-  "description": "Personal website built with Astro",
+  "description": "Personal website built with Astro, featuring a portfolio, blog, and search",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TotalLag/phan.cx.git"
@@ -47,6 +47,19 @@
     "tailwindcss": "^3.4.14",
     "tsx": "^4.19.2"
   },
+  "keywords": [
+    "astro",
+    "portfolio",
+    "blog",
+    "documentation",
+    "ssr",
+    "static",
+    "site",
+    "generator",
+    "seo",
+    "ssg",
+    "search"
+  ],
   "author": "TotalLag",
   "license": "MIT",
   "bugs": {

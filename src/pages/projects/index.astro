@@ -4,9 +4,13 @@ import type { ProjectData } from '../../types/projects';
 import projectsJson from '../../content/projects/projects.json';
 
 const { projects } = projectsJson as ProjectData;
+const description = "Explore my portfolio of software development projects, featuring various technologies and solutions I've built.";
 ---
 
-<Layout title="Projects">
+<Layout 
+  title="Projects"
+  description={description}
+>
   <div class="center-layout py-container-py">
     <div class="overflow-hidden rounded-lg shadow-sm">
       <table class="w-full">

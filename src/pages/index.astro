@@ -17,9 +17,14 @@ const sortedInstagramPosts = instagramPosts.sort(
     return b.data.date.getTime() - a.data.date.getTime();
   }
 );
+
+const description = "Welcome to my personal website showcasing my portfolio, blog posts, and Instagram feed. Explore my latest projects, technical writings, and photography.";
 ---
 
-<Layout title="Home">
+<Layout 
+  title="Home"
+  description={description}
+>
   <div>
     <section class="mb-16" transition:animate="slide">
       <h1 class="mb-6 text-2xl font-bold leading-tight text-primary">
@@ -36,7 +41,7 @@ const sortedInstagramPosts = instagramPosts.sort(
         </p>
         
         <p>
-          Source available <a href="#" class="transition-colors text-accent hover:text-accent-hover hover:underline">here</a>.
+          Source available <a href="https://github.com/TotalLag/phan.cx" class="transition-colors text-accent hover:text-accent-hover hover:underline">here</a>.
         </p>
       </div>
     </section>

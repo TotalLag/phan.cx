@@ -8,21 +8,43 @@ import ThemeScript from '../components/ThemeScript';
 interface Props {
   title: string;
   description?: string;
+  keywords?: string;
 }
 
-const { title, description = "Personal website and blog" } = Astro.props;
+const { 
+  title, 
+  description = "Personal website featuring portfolio, blog, and search functionality", 
+  keywords 
+} = Astro.props;
+
+const siteUrl = 'https://phan.cx';
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const formattedTitle = `${title} - phan.cx`;
 ---
 
 <!doctype html>
 <html lang="en" class="antialiased">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
+    {keywords && <meta name="keywords" content={keywords} />}
+    <meta name="author" content="chris@phan.cx" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
+
+    <title>{formattedTitle}</title>
     <ViewTransitions />
     <ThemeScript client:load />
     <slot name="head" />
