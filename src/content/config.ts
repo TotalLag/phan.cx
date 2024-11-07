@@ -6,6 +6,9 @@ const blogSchema = z.object({
   date: z.coerce.date(),
   topic: z.string(),
   cover: z.string().optional(),
+  excerpt: z.string().optional(),
+  caption: z.string().optional(),
+  updated: z.coerce.date().optional(),
 });
 
 const instagramSchema = z.object({
