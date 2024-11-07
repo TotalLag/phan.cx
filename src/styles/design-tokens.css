@@ -69,4 +69,38 @@
     --icon-hover: #d4d4d8;
     --icon-disabled: #52525b;
   }
+
+  /* Scrollbar styles */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-hover) var(--surface-tertiary);
+  }
+
+  /* Webkit scrollbar styles */
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--surface-tertiary);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--border-hover);
+    border-radius: 4px;
+  }
+
+  /* Dark mode scrollbar */
+  :root.dark * {
+    scrollbar-color: var(--surface-tertiary) var(--surface-secondary);
+  }
+
+  :root.dark *::-webkit-scrollbar-track {
+    background: var(--surface-secondary);
+  }
+
+  :root.dark *::-webkit-scrollbar-thumb {
+    background-color: var(--surface-tertiary);
+  }
 }
