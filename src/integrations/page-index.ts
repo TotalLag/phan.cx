@@ -100,7 +100,7 @@ export function pageIndexIntegration(): AstroIntegration {
           )).filter((doc): doc is SearchableDocument => doc !== null);
 
           // Create search directory in public
-          const searchDir = path.join(process.cwd(), 'public', 'search');
+          const searchDir = path.join(process.cwd(), 'dist', 'search');
           await fs.mkdir(searchDir, { recursive: true });
 
           // Split documents into chunks
