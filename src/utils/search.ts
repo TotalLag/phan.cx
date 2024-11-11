@@ -14,7 +14,7 @@ import localforage from 'localforage';
 let searchIndex: MiniSearch<SearchableDocument>;
 let searchManifest: SearchManifest | null = null;
 
-// Create persisted storage for chunks with localforage
+// Create persisted storage for chunks and version
 const [chunks, setChunks] = makePersisted(
   createSignal<Record<string, SearchableDocument[]>>({}),
   {
@@ -23,9 +23,33 @@ const [chunks, setChunks] = makePersisted(
   }
 );
 
+const [cachedVersion, setCachedVersion] = makePersisted(
+  createSignal<string>(''),
+  {
+    name: 'search-version',
+    storage: !isServer ? localforage : undefined,
+  }
+);
+
+// Function to decode HTML entities that works in both browser and Node.js
+function decodeHtml(text: string): string {
+  const entities: { [key: string]: string } = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#39;': "'",
+    '&apos;': "'",
+  };
+  return text.replace(/&[#\w]+;/g, entity => entities[entity] || entity);
+}
+
 export function cleanText(text: string): string {
+  // First decode any HTML entities
+  const decodedText = decodeHtml(text);
+  
   return (
-    text
+    decodedText
       // Remove HTML tags
       .replace(/<[^>]*>/g, ' ')
       // Remove import statements
@@ -111,26 +135,35 @@ function addDocumentsToIndex(docs: SearchableDocument[]) {
 export async function initializeSearch() {
   if (isServer) return;
 
-  // Clear the set of added documents when initializing
-  addedDocuments.clear();
-
-  searchIndex = new MiniSearch({
-    fields: ['title', 'excerpt', 'content'],
-    storeFields: ['title', 'excerpt', 'content', 'url'],
-    tokenize: (text) => text.split(/\s+/).map((t) => t.toLowerCase()),
-    processTerm: (term) => term.toLowerCase(),
-    searchOptions: {
-      boost: { title: 2, excerpt: 1.5, content: 1 },
-      fuzzy: 0.2,
-      prefix: true,
-    },
-  });
-
   try {
     console.log('Loading search manifest...');
     const manifestResponse = await fetchWithRetry('/search/manifest.json');
-    searchManifest = await manifestResponse.json();
-    console.log('Search manifest loaded:', searchManifest);
+    const manifest = await manifestResponse.json();
+    searchManifest = manifest;
+    console.log('Search manifest loaded:', manifest);
+
+    // Check if version has changed
+    if (manifest.version !== cachedVersion()) {
+      console.log('Search index version changed, clearing cache...');
+      await localforage.clear();
+      setChunks({});
+      setCachedVersion(manifest.version);
+    }
+
+    // Clear the set of added documents when initializing
+    addedDocuments.clear();
+
+    searchIndex = new MiniSearch({
+      fields: ['title', 'excerpt', 'content'],
+      storeFields: ['title', 'excerpt', 'content', 'url'],
+      tokenize: (text) => text.split(/\s+/).map((t) => t.toLowerCase()),
+      processTerm: (term) => term.toLowerCase(),
+      searchOptions: {
+        boost: { title: 2, excerpt: 1.5, content: 1 },
+        fuzzy: 0.2,
+        prefix: true,
+      },
+    });
 
     console.log('Loading initial chunk...');
     const initialResponse = await fetchWithRetry('/search/initial.json.gz');
@@ -253,30 +286,26 @@ export function search(query: string): SearchResult[] {
   });
 
   return results.map((result) => {
-    const cleanedTitle = cleanText(result.title);
-    const cleanedExcerpt = cleanText(result.excerpt);
-    const cleanedContent = cleanText(result.content);
-
     return {
       id: result.id,
-      title: cleanedTitle,
-      excerpt: cleanedExcerpt,
-      content: cleanedContent,
+      title: result.title,
+      excerpt: result.excerpt,
+      content: result.content,
       url: result.url,
       score: result.score,
       terms: result.terms,
       matches: {
         title: {
-          text: cleanedTitle,
-          positions: findMatchPositions(cleanedTitle, result.terms),
+          text: result.title,
+          positions: findMatchPositions(result.title, result.terms),
         },
         excerpt: {
-          text: cleanedExcerpt,
-          positions: findMatchPositions(cleanedExcerpt, result.terms),
+          text: result.excerpt,
+          positions: findMatchPositions(result.excerpt, result.terms),
         },
         content: {
-          text: cleanedContent,
-          positions: findMatchPositions(cleanedContent, result.terms),
+          text: result.content,
+          positions: findMatchPositions(result.content, result.terms),
         },
       },
     };

@@ -5,10 +5,11 @@ import fs from 'fs/promises';
 import path from 'path';
 import zlib from 'zlib';
 import { promisify } from 'util';
+import { v4 as uuidv4 } from 'uuid';
 
 const gzip = promisify(zlib.gzip);
-const CHUNK_SIZE = 2; // Number of documents per chunk
-const VERSION = '1.0.0';
+const CHUNK_SIZE = 3; // Number of documents per chunk
+const VERSION = uuidv4(); // Use UUID as version
 
 export function pageIndexIntegration(): AstroIntegration {
   return {
@@ -20,8 +21,11 @@ export function pageIndexIntegration(): AstroIntegration {
           const distPath = dir.pathname;
           const pages = await fs.readdir(distPath, { recursive: true });
 
+          // Keep track of processed URLs to avoid duplicates
+          const processedUrls = new Set<string>();
+
           // Filter and process HTML files
-          const pageDocs = await Promise.all(
+          const pageDocs = (await Promise.all(
             pages
               .filter((filePath) => {
                 // Only process HTML files
@@ -61,6 +65,12 @@ export function pageIndexIntegration(): AstroIntegration {
                     // Remove trailing slash except for root
                     .replace(/(.+)\/$/, '$1');
 
+                // Skip if we've already processed this URL
+                if (processedUrls.has(url)) {
+                  return null;
+                }
+                processedUrls.add(url);
+
                 // Extract title from HTML
                 const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/);
                 const title = titleMatch ? titleMatch[1] : 'Untitled Page';
@@ -84,7 +94,7 @@ export function pageIndexIntegration(): AstroIntegration {
                   url: url || '/', // Use '/' for root path
                 };
               })
-          );
+          )).filter((doc): doc is SearchableDocument => doc !== null);
 
           // Create search directory in public
           const searchDir = path.join(process.cwd(), 'public', 'search');
@@ -136,6 +146,8 @@ export function pageIndexIntegration(): AstroIntegration {
           );
 
           console.log(`Generated search index with ${chunks.length} chunks`);
+          console.log(`Total unique documents: ${pageDocs.length}`);
+          console.log(`Processed URLs: ${Array.from(processedUrls).join(', ')}`);
         } catch (error) {
           console.error('Error generating search index:', error);
         }
