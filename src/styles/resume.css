@@ -19,6 +19,7 @@
   @apply flex flex-col p-8 mx-auto align-middle bg-white rounded-lg dark:bg-gray-800 md:w-4/5;
   border: 8px solid var(--resume-border-light);
   @apply dark:border-gray-700;
+  @apply space-y-10 print:space-y-5;
   @apply print:w-full print:p-4 print:m-0 print:border-0 print:rounded-none print:bg-white;
   transition: background-color 100ms ease-out, border-color 100ms ease-out;
 }
@@ -50,10 +51,6 @@
   transition: background-color 100ms ease-out, color 100ms ease-out;
 }
 
-.resume-header {
-  @apply mb-8 print:mb-4;
-}
-
 .resume-name {
   @apply text-[2.5rem] font-black uppercase tracking-wider text-center text-black dark:text-white;
   @apply print:text-lg print:tracking-widest print:text-black;
@@ -81,7 +78,7 @@
 }
 
 .resume-section {
-  @apply mb-6 print:mb-3;
+  @apply space-y-8 print:space-y-4;
 }
 
 .resume-section-title {
@@ -91,10 +88,6 @@
   @apply dark:border-white print:border-black;
   @apply pb-2 mb-4 print:pb-1 print:mb-2;
   transition: border-color 100ms ease-out, color 100ms ease-out;
-}
-
-.resume-item {
-  @apply mb-5 print:mb-2;
 }
 
 .resume-item-header {
@@ -152,6 +145,28 @@
 
   /* Ensure proper page margins */
   @page {
-    margin: 0.5in;
+    margin: 0.25in;  /* Reduced margins */
+    size: letter;    /* Explicitly set page size */
+  }
+
+  /* Prevent page breaks */
+  .resume-section,
+  .resume-item {
+    break-inside: avoid;  /* Prevent sections from splitting across pages */
+  }
+
+  /* Compact layout for single page */
+  .resume-container {
+    font-size: 10pt !important;  /* Smaller base font size */
+    line-height: 1.2 !important; /* Tighter line spacing */
+  }
+
+  /* Ensure everything fits on one page */
+  body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
   }
 }
