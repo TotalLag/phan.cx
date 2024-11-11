@@ -1,5 +1,4 @@
 ---
-import Layout from '../../layouts/Layout.astro';
 import ResumeLayout from '../../layouts/ResumeLayout.astro';
 import type { ResumeData, StrategicResumeData } from '../../types/resume';
 import strategicJson from '../../content/resume/strategic.json';
@@ -12,14 +11,21 @@ const resume: ResumeData = {
   }
 } satisfies StrategicResumeData;
 
-const title = `${resume.info.name} - Strategic Resume`;
-const description = `Strategic resume for ${resume.info.name}`;
+const structuredData = {
+  "@type": "WebPage",
+  "name": `Strategic Resume - ${resume.info.name}`,
+  "description": `Professional strategic resume for ${resume.info.name}, highlighting key qualifications and professional achievements`,
+  "mainEntity": {
+    "@type": "Person",
+    "name": resume.info.name,
+    "jobTitle": resume.experience[0]?.title || "Professional",
+    "skills": resume.qualifications.map(q => q.item)
+  }
+};
 ---
 
-<Layout {title} {description}>
-  <meta name="robots" content="noindex, nofollow, noarchive" slot="head" />
-  <meta name="author" content={resume.info.name} slot="head" />
-  <meta name="date" content={resume.metadata.lastUpdated} slot="head" />
-  
-  <ResumeLayout resume={resume} type="strategic" />
-</Layout>
+<ResumeLayout 
+  resume={resume} 
+  type="strategic" 
+  structuredData={structuredData}
+/>

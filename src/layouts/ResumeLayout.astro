@@ -1,13 +1,15 @@
 ---
 import type { ResumeData } from '../types/resume';
+import Layout from './Layout.astro';
 import '../styles/resume.css';
 
 interface Props {
   resume: ResumeData;
   type: 'strategic' | 'technical';
+  structuredData?: any;
 }
 
-const { resume, type } = Astro.props;
+const { resume, type, structuredData = {} } = Astro.props;
 const { info, summary, qualifications, experience, education } = resume;
 
 const formatSummary = (summary: string[]) => {
@@ -17,99 +19,181 @@ const formatSummary = (summary: string[]) => {
 const obfuscateEmail = (email: string) => {
   return email.replace('@', ' [at] ').replace(/\./g, ' [dot] ');
 };
+
+// Resume Structured Data
+const resumeSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": info.name,
+  "email": info.email,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": info.address
+  },
+  "jobTitle": experience[0]?.title || "Professional",
+  "alumniOf": education?.map(edu => ({
+    "@type": "EducationalOrganization",
+    "name": edu.name,
+    "location": edu.location
+  })),
+  "worksFor": experience?.map(job => ({
+    "@type": "Organization",
+    "name": job.company,
+    "location": job.location
+  })),
+  "skills": [
+    ...qualifications.map(qual => qual.item),
+    ...experience.flatMap(job => job.work.map(work => work.item))
+  ]
+};
 ---
 
-<div class="resume-nav">
-  <div class="resume-nav-tabs">
-    <a 
-      href="/resume" 
-      class:list={[
-        "resume-nav-tab",
-        type !== 'technical' ? 'resume-nav-tab-active' : 'resume-nav-tab-inactive'
-      ]}
-    >
-      Strategic
-    </a>
-    <a 
-      href="/resume/technical" 
-      class:list={[
-        "resume-nav-tab",
-        type === 'technical' ? 'resume-nav-tab-active' : 'resume-nav-tab-inactive'
-      ]}
-    >
-      Tactical
-    </a>
-  </div>
-</div>
-
-<div class="resume-container">
-  <div class="resume-header">
-    <h1 class="resume-name">{info.name}</h1>
-    <div class="resume-contact">
-      {info.address} | <span class="select-all">{obfuscateEmail(info.email)}</span>
+<Layout 
+  title={`${type === 'technical' ? 'Technical' : 'Strategic'} Resume - ${info.name}`}
+  description={`Professional resume for ${info.name}, highlighting ${type} expertise and professional achievements`}
+  keywords={[
+    'resume', 
+    'professional profile', 
+    type, 
+    ...qualifications.map(q => q.item),
+    ...experience.map(e => e.title)
+  ].join(', ')}
+  structuredData={{...resumeSchema, ...structuredData}}
+>
+  <div class="resume-nav">
+    <div class="resume-nav-tabs">
+      <a 
+        href="/resume" 
+        class:list={[
+          "resume-nav-tab",
+          type !== 'technical' ? 'resume-nav-tab-active' : 'resume-nav-tab-inactive'
+        ]}
+      >
+        Strategic
+      </a>
+      <a 
+        href="/resume/technical" 
+        class:list={[
+          "resume-nav-tab",
+          type === 'technical' ? 'resume-nav-tab-active' : 'resume-nav-tab-inactive'
+        ]}
+      >
+        Tactical
+      </a>
     </div>
-    <div class="resume-summary">
-      {formatSummary(summary)}
-    </div>
   </div>
 
-  <section class="resume-section">
-    <h2 class="resume-section-title">Summary of Qualifications</h2>
-    <ul class="resume-list">
-      {qualifications.map(qual => <li>{qual.item}</li>)}
-    </ul>
-  </section>
-
-  <section class="resume-section">
-    <h2 class="resume-section-title">Work Experience</h2>
-    {experience.map(job => (
-      <div class="resume-item">
-        <div class="resume-item-header">
-          <h3 class="resume-item-title">{job.title} | {job.company} | <span class="font-light">{job.location}</span></h3>
-          <span class="resume-item-date">{job.dateFrom} &mdash; {job.dateTo}</span>
-        </div>
-        <ul class="resume-list">
-          {job.work.map(item => <li>{item.item}</li>)}
-        </ul>
+  <div 
+    class="resume-container" 
+    itemscope 
+    itemtype="https://schema.org/Person"
+  >
+    <div class="resume-header">
+      <h1 
+        class="resume-name" 
+        itemprop="name"
+      >
+        {info.name}
+      </h1>
+      <div 
+        class="resume-contact" 
+        itemprop="contactPoint"
+      >
+        <span itemprop="address">{info.address}</span> | 
+        <span 
+          class="select-all" 
+          itemprop="email"
+        >
+          {obfuscateEmail(info.email)}
+        </span>
       </div>
-    ))}
-  </section>
+      <div 
+        class="resume-summary" 
+        itemprop="description"
+      >
+        {formatSummary(summary)}
+      </div>
+    </div>
 
-  {education && (
     <section class="resume-section">
-      <h2 class="resume-section-title">Education</h2>
-      {education.map((school) => (
-        <div class="resume-item">
+      <h2 class="resume-section-title">Summary of Qualifications</h2>
+      <ul 
+        class="resume-list" 
+        itemprop="skills"
+      >
+        {qualifications.map(qual => <li>{qual.item}</li>)}
+      </ul>
+    </section>
+
+    <section class="resume-section">
+      <h2 class="resume-section-title">Work Experience</h2>
+      {experience.map(job => (
+        <div 
+          class="resume-item" 
+          itemprop="worksFor" 
+          itemscope 
+          itemtype="https://schema.org/Organization"
+        >
           <div class="resume-item-header">
-            <h3 class="resume-item-title">{school.degree} | {school.name} <span class="font-light">| {school.location}</span></h3>
-            <span class="resume-item-date">{school.dateFrom} &mdash; {school.dateTo}</span>
+            <h3 class="resume-item-title">
+              <span itemprop="jobTitle">{job.title}</span> | 
+              <span itemprop="name">{job.company}</span> | 
+              <span class="font-light" itemprop="location">{job.location}</span>
+            </h3>
+            <span class="resume-item-date">{job.dateFrom} &mdash; {job.dateTo}</span>
           </div>
+          <ul class="resume-list">
+            {job.work.map(item => <li>{item.item}</li>)}
+          </ul>
         </div>
       ))}
     </section>
-  )}
-</div>
 
-<style>
-  @media print {
-    :global(header),
-    :global(footer),
-    :global(.site-sidebar),
-    :global(.site-sidebar-mobile) {
-      display: none !important;
-    }
+    {education && (
+      <section class="resume-section">
+        <h2 class="resume-section-title">Education</h2>
+        {education.map((school) => (
+          <div 
+            class="resume-item" 
+            itemprop="alumniOf" 
+            itemscope 
+            itemtype="https://schema.org/EducationalOrganization"
+          >
+            <div class="resume-item-header">
+              <h3 class="resume-item-title">
+                <span itemprop="name">{school.name}</span> | 
+                <span itemprop="description">{school.degree}</span> 
+                <span class="font-light" itemprop="location">| {school.location}</span>
+              </h3>
+              <span class="resume-item-date">{school.dateFrom} &mdash; {school.dateTo}</span>
+            </div>
+          </div>
+        ))}
+      </section>
+    )}
+  </div>
 
-    :global(body) {
-      margin: 0 !important;
-      padding: 0 !important;
-      background: white !important;
-    }
+  <style>
+    @media print {
+      :global(header),
+      :global(footer),
+      :global(.site-sidebar),
+      :global(.site-sidebar-mobile) {
+        display: none !important;
+      }
 
-    :global(main) {
-      padding: 0 !important;
-      margin: 0 !important;
-      width: 100% !important;
-      max-width: none !important;
+      :global(body) {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+      }
+
+      :global(main) {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+      }
     }
-  }
-</style>
+  </style>
+</Layout>

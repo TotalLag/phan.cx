@@ -9,17 +9,41 @@ interface Props {
   title: string;
   description?: string;
   keywords?: string;
+  image?: string;
+  structuredData?: any;
 }
 
 const { 
   title, 
   description = "Personal website featuring portfolio, blog, and search functionality", 
-  keywords 
+  keywords = "portfolio, blog, technology, software engineering, web development",
+  image = "/me.jpg",
+  structuredData = {}
 } = Astro.props;
 
 const siteUrl = 'https://phan.cx';
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const formattedTitle = `${title} - phan.cx`;
+const socialImage = new URL(image, siteUrl);
+
+// Default Person Schema
+const defaultPersonSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Chris Phan",
+  "jobTitle": "Integration Specialist",
+  "url": "https://phan.cx",
+  "sameAs": [
+    "https://www.linkedin.com/in/christopherphan/",
+    "https://github.com/TotalLag/"
+  ]
+};
+
+// Merge default schema with custom structured data
+const mergedStructuredData = {
+  ...defaultPersonSchema,
+  ...structuredData
+};
 ---
 
 <!doctype html>
@@ -27,24 +51,57 @@ const formattedTitle = `${title} - phan.cx`;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+    <!-- Primary Meta Tags -->
+    <title>{formattedTitle}</title>
+    <meta name="title" content={formattedTitle} />
     <meta name="description" content={description} />
     {keywords && <meta name="keywords" content={keywords} />}
+    
+    <!-- Authorship and Ownership -->
     <meta name="author" content="chris@phan.cx" />
+    <meta name="copyright" content="© 2024 Chris Phan" />
+    
+    <!-- Robots and Crawling -->
     <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
+    
+    <!-- Language and Localization -->
     <meta name="language" content="English" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="generator" content={Astro.generator} />
-
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-
+    <meta name="geo.region" content="US" />
+    
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
-
-    <title>{formattedTitle}</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={formattedTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:site_name" content="Chris Phan's Portfolio" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="phan.cx" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={formattedTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={socialImage} />
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    
+    <!-- Theme and Rendering -->
+    <meta name="color-scheme" content="light dark" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Structured Data -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(mergedStructuredData)}></script>
+    
     <ViewTransitions />
     <ThemeScript client:load />
     <slot name="head" />

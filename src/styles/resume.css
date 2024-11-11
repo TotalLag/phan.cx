@@ -1,6 +1,6 @@
 :root {
-  /* Resume Colors */
-  --resume-text-nav: #9ca3af;  /* text-gray-400 */
+  /* Resume Colors with Improved Accessibility */
+  --resume-text-nav: #6b7280;  /* Increased contrast for readability */
   --resume-text-nav-selected: #1f2937;  /* text-gray-800 */
   --resume-border-nav-selected: #374151;  /* border-gray-700 */
   --resume-border-light: #e5e7eb;  /* border-gray-200 */
@@ -9,7 +9,7 @@
 }
 
 :root.dark {
-  --resume-text-nav: #d1d5db;  /* gray-300 */
+  --resume-text-nav: #9ca3af;  /* Adjusted for dark mode readability */
   --resume-text-nav-selected: #f9fafb;  /* gray-50 */
   --resume-border-nav-selected: #374151;  /* gray-700 */
   --resume-bg-inactive: #111827;  /* gray-900 */
@@ -73,7 +73,6 @@
   border-bottom: 1px solid black;
   @apply dark:border-white print:border-black;
   @apply py-4 print:py-1 print:text-xs print:text-black;
-  /* letter-spacing: 0.02em; */
   transition: border-color 100ms ease-out, color 100ms ease-out;
 }
 
@@ -96,13 +95,13 @@
 
 .resume-item-title {
   @apply text-base font-bold tracking-wide text-black dark:text-white;
-  @apply print:text-xs print:font-bold print:text-black;  /* Back to original size */
+  @apply print:text-xs print:font-bold print:text-black;
   transition: color 100ms ease-out;
 }
 
 .resume-item-date {
   @apply text-sm font-medium text-gray-600 dark:text-gray-300;
-  @apply print:text-[0.625rem] print:font-medium print:text-gray-600;  /* Back to original size */
+  @apply print:text-[0.625rem] print:font-medium print:text-gray-600;
   transition: color 100ms ease-out;
 }
 
@@ -113,12 +112,12 @@
 
 .resume-list li {
   @apply text-base font-medium leading-relaxed text-black dark:text-white;
-  @apply print:text-[0.75rem] print:leading-snug print:text-black;  /* Increased body text */
+  @apply print:text-[0.75rem] print:leading-snug print:text-black;
   padding-left: 0.25rem;
   transition: color 100ms ease-out;
 }
 
-/* Print optimizations */
+/* Print Optimizations */
 @media print {
   :root {
     color-scheme: light;

@@ -2,24 +2,93 @@
 import type { CollectionEntry } from "astro:content";
 import Layout from './Layout.astro';
 
-type Props = CollectionEntry<"blog">["data"];
+type Props = CollectionEntry<"blog">["data"] & {
+  readingTime?: number;
+  keywords?: string[];
+};
 
-const { title, topic, excerpt, date, updated } = Astro.props;
+const { 
+  title, 
+  topic, 
+  excerpt, 
+  date, 
+  updated, 
+  readingTime = 5,
+  keywords = []
+} = Astro.props;
+
 const slug = Astro.url.pathname.split('/').pop();
+const canonicalUrl = `https://phan.cx/blog/${slug}`;
+
+// Blog Post Structured Data
+const blogPostSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": title,
+  "description": excerpt,
+  "datePublished": date.toISOString(),
+  ...(updated ? { "dateModified": updated.toISOString() } : {}),
+  "author": {
+    "@type": "Person",
+    "name": "Chris Phan"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Chris Phan's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://phan.cx/favicon-32x32.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": canonicalUrl
+  },
+  "keywords": keywords.join(", "),
+  "timeRequired": `PT${readingTime}M`
+};
 ---
 
-<Layout title={title}>
-  <article class="flex flex-col w-full max-w-4xl mx-auto mt-6 print:p-10">
+<Layout 
+  title={title} 
+  description={excerpt}
+  keywords={keywords.join(", ")}
+  structuredData={blogPostSchema}
+>
+  <article 
+    class="flex flex-col w-full max-w-4xl mx-auto mt-6 print:p-10" 
+    itemscope 
+    itemtype="https://schema.org/BlogPosting"
+  >
     <div class="mx-3 my-3 text-sm sm:mx-5" transition:animate="slide">
-      {topic && <a href="" class="font-bold tracking-widest transition-colors text-accent hover:text-accent-hover" transition:name={`topic-${slug}`}>{topic}</a>}
+      {topic && (
+        <a 
+          href={`/blog/topics/${topic.toLowerCase().replace(/\s+/g, '-')}`} 
+          class="font-bold tracking-widest transition-colors text-accent hover:text-accent-hover" 
+          transition:name={`topic-${slug}`}
+          itemprop="about"
+        >
+          {topic}
+        </a>
+      )}
     </div>
     
     <div class="px-3 text-4xl font-bold leading-tight sm:px-5 text-primary" transition:animate="slide">
-      <h1 transition:name={`title-${slug}`}>{title}</h1>
+      <h1 
+        transition:name={`title-${slug}`} 
+        itemprop="headline"
+      >
+        {title}
+      </h1>
     </div>
 
     <div class="px-3 pt-4 pb-6 text-lg sm:px-5 text-secondary" transition:animate="slide">
-      <p transition:name={`excerpt-${slug}`}>{excerpt}</p>
+      <p 
+        transition:name={`excerpt-${slug}`} 
+        itemprop="description"
+      >
+        {excerpt}
+      </p>
     </div>
 
     <div transition:name={`hero-${slug}`}>
@@ -28,21 +97,34 @@ const slug = Astro.url.pathname.split('/').pop();
 
     <div class="px-3 pt-4 italic font-light sm:px-5 text-muted" transition:animate="slide">
       <span class="flex flex-col text-sm">
-        <time transition:name={`date-${slug}`}>
+        <time 
+          transition:name={`date-${slug}`} 
+          itemprop="datePublished" 
+          datetime={date.toISOString()}
+        >
           Posted on {date.toLocaleString('default', { dateStyle: 'long' })}
         </time>
         {updated && (
-          <>
+          <time 
+            itemprop="dateModified" 
+            datetime={updated.toISOString()}
+          >
             Updated: {updated.toLocaleString('default', {
               dateStyle: 'long',
               timeStyle: 'short',
             })}
-          </>
+          </time>
         )}
+        <meta itemprop="author" content="Chris Phan" />
+        <meta itemprop="timeRequired" content={`PT${readingTime}M`} />
       </span>
     </div>
 
-    <div class="w-full px-3 py-8 mx-auto overflow-hidden sm:px-5 prose-custom" transition:animate="fade">
+    <div 
+      class="w-full px-3 py-8 mx-auto overflow-hidden sm:px-5 prose-custom" 
+      transition:animate="fade"
+      itemprop="articleBody"
+    >
       <slot />
     </div>
   </article>

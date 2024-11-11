@@ -1,0 +1,69 @@
+# Comprehensive Robots.txt for phan.cx
+# Last updated: 2024-01-15
+# Purpose: Control search engine crawling and indexing
+
+# Global Crawler Rules
+User-agent: *
+Allow: /
+Allow: /blog/
+Allow: /projects/
+Allow: /resume/
+Allow: /about/
+
+# Security and Performance Restrictions
+Disallow: /private/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /search/
+Disallow: /tmp/
+Disallow: /cache/
+Disallow: /logs/
+
+# Prevent Indexing of Dynamic Content
+Disallow: /*?*
+Disallow: /*.json$
+Disallow: /*.xml$
+
+# Prevent Indexing of Sensitive Routes
+Noindex: /private/
+Noindex: /admin/
+Noindex: /api/
+
+# Crawl Performance Management
+Crawl-delay: 10
+
+# Sitemap Location
+Sitemap: https://phan.cx/sitemap.xml
+
+# Search Engine Specific Rules
+User-agent: Googlebot
+Allow: /blog/
+Allow: /projects/
+Allow: /resume/
+Allow: /about/
+
+User-agent: Bingbot
+Allow: /blog/
+Allow: /projects/
+Allow: /resume/
+Allow: /about/
+
+User-agent: DuckDuckBot
+Allow: /blog/
+Allow: /projects/
+Allow: /resume/
+Allow: /about/
+
+# Block Resource-Intensive Crawlers
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+# Additional Security Measures
+Disallow: /wp-admin/
+Disallow: /wp-login.php

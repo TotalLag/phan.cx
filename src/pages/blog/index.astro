@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import { Image } from 'astro:assets';
+import MDXImage from '../../components/ui/MDXImage.astro';
 
 const posts = await getCollection('blog');
 const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -17,11 +17,9 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
           <article class="overflow-hidden transition-shadow duration-300 bg-surface-secondary rounded-xl hover:shadow-lg">
             {post.data.cover && (
               <div class="relative aspect-video" transition:name={`hero-${post.slug}`}>
-                <Image
+                <MDXImage
                   src={post.data.cover}
                   alt={post.data.title}
-                  width={800}
-                  height={400}
                   class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                 />
               </div>

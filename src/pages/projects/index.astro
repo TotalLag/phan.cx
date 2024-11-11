@@ -6,11 +6,40 @@ import projectsJson from '../../content/projects/projects.json';
 
 const { projects } = projectsJson as ProjectData;
 const description = "Explore my portfolio of software development projects, featuring various technologies and solutions I've built.";
+const keywords = [
+  'software projects', 
+  'portfolio', 
+  'web development', 
+  ...new Set(projects.flatMap(p => p.tech))
+].join(', ');
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Chris Phan's Projects",
+  "description": description,
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": projects.map((project, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Project",
+        "name": project.name,
+        "description": `${project.what} - ${project.why}`,
+        "url": project.link,
+        "keywords": project.tech.join(", ")
+      }
+    }))
+  }
+};
 ---
 
 <Layout 
   title="Projects"
   description={description}
+  keywords={keywords}
+  structuredData={structuredData}
 >
   <div class="px-4 center-layout py-container-py md:px-0">
     <div class="w-full overflow-x-auto">
@@ -26,17 +55,35 @@ const description = "Explore my portfolio of software development projects, feat
         </thead>
         <tbody class="divide-y divide-border bg-surface-primary">
           {projects.map((project, i) => (
-            <tr class={i % 2 === 0 ? 'bg-surface-primary' : 'bg-surface-secondary'}>
+            <tr 
+              class={i % 2 === 0 ? 'bg-surface-primary' : 'bg-surface-secondary'}
+              itemscope 
+              itemtype="https://schema.org/CreativeWork"
+            >
               <td class="px-[var(--gutter)] py-4 whitespace-nowrap">
-                <a href={project.link} class="text-accent hover:text-accent-hover">
+                <a 
+                  href={project.link} 
+                  class="text-accent hover:text-accent-hover"
+                  itemprop="name"
+                >
                   {project.name}
                 </a>
               </td>
               <td class="px-[var(--gutter)] py-4">
-                <p class="text-sm text-text-primary">{project.what}</p>
+                <p 
+                  class="text-sm text-text-primary"
+                  itemprop="description"
+                >
+                  {project.what}
+                </p>
               </td>
               <td class="px-[var(--gutter)] py-4">
-                <p class="text-sm text-text-primary">{project.why}</p>
+                <p 
+                  class="text-sm text-text-primary"
+                  itemprop="about"
+                >
+                  {project.why}
+                </p>
               </td>
               <td class="px-[var(--gutter)] py-4">
                 <div class="flex flex-wrap justify-end gap-1">
@@ -44,6 +91,7 @@ const description = "Explore my portfolio of software development projects, feat
                     <span 
                       style={`background-color: ${getSkillColor(tech, 'var(--accent)')}`} 
                       class="inline-block h-fit w-auto px-2 py-0.5 text-xs rounded-full text-black"
+                      itemprop="keywords"
                     >
                       {tech}
                     </span>
@@ -58,15 +106,23 @@ const description = "Explore my portfolio of software development projects, feat
       {/* Mobile Card View */}
       <div class="md:hidden">
         {projects.map((project, i) => (
-          <div class={`
-            flex flex-col 
-            p-4 
-            ${i % 2 === 0 ? 'bg-surface-primary' : 'bg-surface-secondary'}
-            border-b border-border last:border-b-0
-          `}>
+          <div 
+            class={`
+              flex flex-col 
+              p-4 
+              ${i % 2 === 0 ? 'bg-surface-primary' : 'bg-surface-secondary'}
+              border-b border-border last:border-b-0
+            `}
+            itemscope 
+            itemtype="https://schema.org/CreativeWork"
+          >
             <div class="grid grid-cols-2 gap-4 mb-3">
               <div>
-                <a href={project.link} class="block mb-2 text-lg font-semibold text-accent hover:text-accent-hover">
+                <a 
+                  href={project.link} 
+                  class="block mb-2 text-lg font-semibold text-accent hover:text-accent-hover"
+                  itemprop="name"
+                >
                   {project.name}
                 </a>
               </div>
@@ -75,6 +131,7 @@ const description = "Explore my portfolio of software development projects, feat
                   <span 
                     style={`background-color: ${getSkillColor(tech, 'var(--accent)')}`} 
                     class="inline-block h-fit w-auto px-2 py-0.5 text-xs rounded-full text-black"
+                    itemprop="keywords"
                   >
                     {tech}
                   </span>
@@ -82,10 +139,16 @@ const description = "Explore my portfolio of software development projects, feat
               </div>
             </div>
             <div>
-              <p class="mb-2 text-sm text-text-primary">
+              <p 
+                class="mb-2 text-sm text-text-primary"
+                itemprop="description"
+              >
                 <span class="font-medium underline">What</span>: {project.what}
               </p>
-              <p class="text-sm text-text-primary">
+              <p 
+                class="text-sm text-text-primary"
+                itemprop="about"
+              >
                 <span class="font-medium underline">Why</span>: {project.why}
               </p>
             </div>
@@ -96,7 +159,7 @@ const description = "Explore my portfolio of software development projects, feat
   </div>
 </Layout>
 
-<script define:vars={{projects}}>
+<script is:inline define:vars={{projects}}>
   // Client-side script to ensure color generation uses the actual accent color
   document.addEventListener('DOMContentLoaded', () => {
     const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
