@@ -1,7 +1,7 @@
 {
-  "totalLines": 28103,
-  "formattedLines": "28.1k",
-  "fileCount": 93,
+  "totalLines": 28035,
+  "formattedLines": "28.0k",
+  "fileCount": 92,
   "byExtension": {
     ".md": {
       "files": 2,
@@ -12,8 +12,8 @@
       "lines": 10127
     },
     ".ts": {
-      "files": 21,
-      "lines": 1827
+      "files": 20,
+      "lines": 1779
     },
     ".astro": {
       "files": 16,
@@ -21,7 +21,7 @@
     },
     ".tsx": {
       "files": 9,
-      "lines": 878
+      "lines": 858
     },
     ".mdx": {
       "files": 6,
@@ -32,5 +32,5 @@
       "lines": 907
     }
   },
-  "lastUpdated": "2024-11-11T01:00:16.110Z"
+  "lastUpdated": "2024-11-11T04:07:43.571Z"
 }

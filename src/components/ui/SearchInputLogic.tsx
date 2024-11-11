@@ -19,35 +19,33 @@ const SearchInputLogic: Component<Props> = (props) => {
   const [isOpen, setIsOpen] = createSignal(false);
   let searchRef: HTMLDivElement | undefined;
 
+  // Create stable function references
   const handleClickOutside = (event: MouseEvent) => {
     if (searchRef && !searchRef.contains(event.target as Node)) {
       setIsOpen(false);
     }
   };
 
+  const handleNavigationReset = () => {
+    store.setIsNavigating(false);
+  };
+
   onMount(() => {
     if (typeof window !== 'undefined') {
       window.addEventListener('mousedown', handleClickOutside);
-      // Reset navigation state on mount
-      store.setIsNavigating(false);
-
-      // Handle Astro view transitions
-      document.addEventListener('astro:after-swap', () => {
-        store.setIsNavigating(false);
-      });
-
-      // Fallback for regular navigation
-      window.addEventListener('load', () => store.setIsNavigating(false));
+      window.addEventListener('load', handleNavigationReset);
+      document.addEventListener('astro:after-swap', handleNavigationReset);
+      
+      // Initial navigation state
+      handleNavigationReset();
     }
   });
 
   onCleanup(() => {
     if (typeof window !== 'undefined') {
       window.removeEventListener('mousedown', handleClickOutside);
-      window.removeEventListener('load', () => store.setIsNavigating(false));
-      document.removeEventListener('astro:after-swap', () =>
-        store.setIsNavigating(false)
-      );
+      window.removeEventListener('load', handleNavigationReset);
+      document.removeEventListener('astro:after-swap', handleNavigationReset);
     }
   });
 

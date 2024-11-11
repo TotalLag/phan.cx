@@ -6,30 +6,18 @@ import type {
   TokenPosition,
   SearchManifest,
 } from '../types/search';
-import { makePersisted } from '@solid-primitives/storage';
-import { createSignal } from 'solid-js';
 import { isServer } from 'solid-js/web';
 import localforage from 'localforage';
 
 let searchIndex: MiniSearch<SearchableDocument>;
 let searchManifest: SearchManifest | null = null;
 
-// Create persisted storage for chunks and version
-const [chunks, setChunks] = makePersisted(
-  createSignal<Record<string, SearchableDocument[]>>({}),
-  {
-    name: 'search-chunks',
-    storage: !isServer ? localforage : undefined,
-  }
-);
-
-const [cachedVersion, setCachedVersion] = makePersisted(
-  createSignal<string>(''),
-  {
-    name: 'search-version',
-    storage: !isServer ? localforage : undefined,
-  }
-);
+// Single localforage instance with a clear namespace
+const storage = localforage.createInstance({
+  name: 'search-storage',
+  storeName: 'search-chunks',
+  description: 'Search chunks storage'
+});
 
 // Function to decode HTML entities that works in both browser and Node.js
 function decodeHtml(text: string): string {
@@ -68,20 +56,40 @@ export function cleanText(text: string): string {
   );
 }
 
-function tokenizeWithPositions(text: string): TokenPosition[] {
-  const tokens: TokenPosition[] = [];
-  const regex = /\S+/g;
-  let match;
+function processChunkForStorage(docs: SearchableDocument[]): SearchableDocument[] {
+  return docs.map(doc => ({
+    id: doc.id || doc.url,
+    title: cleanText(doc.title),
+    excerpt: cleanText(doc.excerpt || doc.content.slice(0, 150) + '...'),
+    content: cleanText(doc.content)
+      .split(/\s+/)
+      .filter((word, idx, arr) => 
+        arr.indexOf(word) === idx && word.length > 2
+      )
+      .join(' '),
+    url: doc.url
+  }));
+}
 
-  while ((match = regex.exec(text)) !== null) {
-    tokens.push({
-      token: match[0].toLowerCase(),
-      start: match.index,
-      end: match.index + match[0].length,
-    });
+async function storeChunk(chunkId: string, docs: SearchableDocument[]) {
+  try {
+    await storage.setItem(`chunk-${chunkId}`, docs);
+  } catch (storageError) {
+    try {
+      await removeOldestChunk();
+      await storage.setItem(`chunk-${chunkId}`, docs);
+    } catch (retryError) {
+      console.warn('Storage failed, falling back to memory-only');
+    }
   }
+}
 
-  return tokens;
+async function removeOldestChunk() {
+  const keys = await storage.keys();
+  const chunkKeys = keys.filter(key => key.startsWith('chunk-'));
+  if (chunkKeys.length > 0) {
+    await storage.removeItem(chunkKeys[0]);
+  }
 }
 
 async function fetchWithRetry(url: string, retries = 3): Promise<Response> {
@@ -97,7 +105,6 @@ async function fetchWithRetry(url: string, retries = 3): Promise<Response> {
     } catch (error) {
       lastError = error as Error;
       console.warn(`Attempt ${i + 1} failed for ${url}:`, error);
-      // Wait before retrying, with exponential backoff
       if (i < retries - 1) {
         await new Promise((resolve) =>
           setTimeout(resolve, Math.pow(2, i) * 1000)
@@ -114,12 +121,7 @@ const addedDocuments = new Set<string>();
 
 function addDocumentsToIndex(docs: SearchableDocument[]) {
   const newDocs = docs.filter((doc) => {
-    // Skip documents with no ID or already added
     if (!doc.id || addedDocuments.has(doc.id)) {
-      console.warn(
-        `Skipping document with ${!doc.id ? 'missing' : 'duplicate'} ID:`,
-        doc.id
-      );
       return false;
     }
     addedDocuments.add(doc.id);
@@ -132,6 +134,45 @@ function addDocumentsToIndex(docs: SearchableDocument[]) {
   }
 }
 
+async function loadChunksInBackground() {
+  if (!searchManifest || isServer) return;
+
+  for (const chunk of searchManifest.chunks) {
+    try {
+      // Skip chunk-0 if it was already loaded as initial
+      if (chunk.id === 'chunk-0' && addedDocuments.size > 0) {
+        continue;
+      }
+
+      // Check if we already have this chunk in storage
+      const storedChunk = await storage.getItem(chunk.id);
+      if (storedChunk) {
+        console.log(`Using stored chunk ${chunk.id}`);
+        addDocumentsToIndex(storedChunk as SearchableDocument[]);
+        continue;
+      }
+
+      console.log(`Loading chunk ${chunk.id} from network...`);
+      const chunkResponse = await fetchWithRetry(`/search/${chunk.id}.json.gz`);
+      const chunkData = await chunkResponse.json();
+      
+      // Process chunk before storage
+      const processedChunk = processChunkForStorage(chunkData);
+      
+      // Try to store, fallback to memory if storage fails
+      try {
+        await storeChunk(chunk.id.replace('chunk-', ''), processedChunk);
+      } catch (error) {
+        console.warn(`Storage failed for ${chunk.id}, keeping in memory`);
+      }
+      
+      addDocumentsToIndex(processedChunk);
+    } catch (error) {
+      console.error(`Failed to load chunk ${chunk.id}:`, error);
+    }
+  }
+}
+
 export async function initializeSearch() {
   if (isServer) return;
 
@@ -140,41 +181,63 @@ export async function initializeSearch() {
     const manifestResponse = await fetchWithRetry('/search/manifest.json');
     const manifest = await manifestResponse.json();
     searchManifest = manifest;
-    console.log('Search manifest loaded:', manifest);
 
-    // Check if version has changed
-    if (manifest.version !== cachedVersion()) {
-      console.log('Search index version changed, clearing cache...');
-      await localforage.clear();
-      setChunks({});
-      setCachedVersion(manifest.version);
+    // Enhanced version checking with detailed logging
+    const cachedVersion = await storage.getItem<string>('version');
+    console.group('Search Index Version Check');
+    console.log('Manifest Version:', manifest.version);
+    console.log('Cached Version:', cachedVersion);
+
+    if (manifest.version !== cachedVersion) {
+      console.log('🔄 Search index version changed, clearing cache...');
+      
+      // Log all existing keys before clearing
+      const existingKeys = await storage.keys();
+      console.log('Existing Storage Keys:', existingKeys);
+
+      await storage.clear();
+      await storage.setItem('version', manifest.version);
+      
+      console.log('✅ Cache cleared and new version set');
+    } else {
+      console.log('✓ Version unchanged, using existing cache');
     }
+    console.groupEnd();
 
+    // Rest of the existing initialization code...
     // Clear the set of added documents when initializing
     addedDocuments.clear();
 
     searchIndex = new MiniSearch({
       fields: ['title', 'excerpt', 'content'],
       storeFields: ['title', 'excerpt', 'content', 'url'],
-      tokenize: (text) => text.split(/\s+/).map((t) => t.toLowerCase()),
+      tokenize: (text) => text.split(/\s+/),
       processTerm: (term) => term.toLowerCase(),
       searchOptions: {
         boost: { title: 2, excerpt: 1.5, content: 1 },
         fuzzy: 0.2,
-        prefix: true,
-      },
+        prefix: true
+      }
     });
 
+    // Load chunk-0 as initial data
     console.log('Loading initial chunk...');
-    const initialResponse = await fetchWithRetry('/search/initial.json.gz');
+    const initialResponse = await fetchWithRetry('/search/chunk-0.json.gz');
     const initialDocs = await initialResponse.json();
-    console.log('Initial chunk loaded, documents:', initialDocs.length);
+    const processedDocs = processChunkForStorage(initialDocs);
+    addDocumentsToIndex(processedDocs);
 
-    const cleanedDocs = initialDocs.map(cleanDocument);
-    addDocumentsToIndex(cleanedDocs);
+    // Try to store initial chunk
+    try {
+      await storeChunk('0', processedDocs);
+    } catch (error) {
+      console.warn('Failed to store initial chunk:', error);
+    }
 
-    // Start loading other chunks in the background
-    loadChunksInBackground();
+    // Start background loading
+    requestIdleCallback(() => {
+      loadChunksInBackground().catch(console.error);
+    });
 
     return true;
   } catch (error) {
@@ -183,84 +246,20 @@ export async function initializeSearch() {
   }
 }
 
-function cleanDocument(doc: SearchableDocument): SearchableDocument {
-  return {
-    ...doc,
-    id: doc.id || doc.url, // Use URL as fallback ID if ID is missing
-    title: cleanText(doc.title),
-    excerpt: cleanText(doc.excerpt),
-    content: cleanText(doc.content),
-  };
-}
+function tokenizeWithPositions(text: string): TokenPosition[] {
+  const tokens: TokenPosition[] = [];
+  const regex = /\S+/g;
+  let match;
 
-async function loadChunksInBackground() {
-  if (!searchManifest || isServer) return;
-
-  const cachedChunks = chunks();
-
-  for (const chunk of searchManifest.chunks) {
-    try {
-      console.log(`Processing chunk ${chunk.id}...`);
-
-      if (
-        cachedChunks[chunk.id] &&
-        isChunkValid(chunk.id, cachedChunks[chunk.id])
-      ) {
-        console.log(`Using cached chunk ${chunk.id}`);
-        const cleanedDocs = cachedChunks[chunk.id].map(cleanDocument);
-        addDocumentsToIndex(cleanedDocs);
-      } else {
-        console.log(`Loading chunk ${chunk.id} from network...`);
-        const chunkResponse = await fetchWithRetry(
-          `/search/${chunk.id}.json.gz`
-        );
-        const chunkData = await chunkResponse.json();
-        console.log(`Chunk ${chunk.id} loaded, documents:`, chunkData.length);
-
-        const cleanedDocs = chunkData.map(cleanDocument);
-        addDocumentsToIndex(cleanedDocs);
-
-        setChunks({
-          ...cachedChunks,
-          [chunk.id]: chunkData,
-        });
-      }
-    } catch (error) {
-      console.error(`Failed to load chunk ${chunk.id}:`, error);
-      // Continue with other chunks even if one fails
-    }
-  }
-}
-
-function isChunkValid(chunkId: string, chunk: SearchableDocument[]): boolean {
-  if (!searchManifest) return false;
-
-  const manifestChunk = searchManifest.chunks.find((c) => c.id === chunkId);
-  if (!manifestChunk) {
-    console.warn(`Chunk ${chunkId} not found in manifest`);
-    return false;
+  while ((match = regex.exec(text)) !== null) {
+    tokens.push({
+      token: match[0].toLowerCase(),
+      start: match.index,
+      end: match.index + match[0].length,
+    });
   }
 
-  if (chunk.length !== manifestChunk.size) {
-    console.warn(
-      `Chunk ${chunkId} size mismatch: ${chunk.length} vs ${manifestChunk.size}`
-    );
-    return false;
-  }
-
-  return true;
-}
-
-export function blogToSearchableDocuments(
-  posts: CollectionEntry<'blog'>[]
-): SearchableDocument[] {
-  return posts.map((post) => ({
-    id: post.id,
-    title: cleanText(post.data.title),
-    excerpt: cleanText(post.data.excerpt || ''),
-    content: cleanText(post.body),
-    url: `/blog/${post.slug}`,
-  }));
+  return tokens;
 }
 
 function findMatchPositions(text: string, terms: string[]): TokenPosition[] {
@@ -306,7 +305,7 @@ export function search(query: string): SearchResult[] {
         content: {
           text: result.content,
           positions: findMatchPositions(result.content, result.terms),
-        },
+        }
       },
     };
   });
@@ -334,4 +333,16 @@ export function getSnippet(
     afterMatch +
     suffix
   );
+}
+
+export function blogToSearchableDocuments(
+  posts: CollectionEntry<'blog'>[]
+): SearchableDocument[] {
+  return posts.map((post) => ({
+    id: post.id,
+    title: cleanText(post.data.title),
+    excerpt: cleanText(post.data.excerpt || post.body.slice(0, 150) + '...'),
+    content: cleanText(post.body),
+    url: `/blog/${post.slug}`,
+  }));
 }

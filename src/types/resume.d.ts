@@ -1,66 +1,45 @@
-export type ResumeType = 'strategic' | 'technical';
-
-export interface Metadata {
-  [key: string]: unknown;
+// Core resume data interfaces
+export interface BaseResumeData {
+  info: {
+    name: string;
+    address: string;
+    phone?: string;
+    email: string;
+  };
+  type: 'technical' | 'strategic';
+  metadata: {
+    lastUpdated: string;
+  };
+  qualifications: Array<{
+    item: string;
+  }>;
+  experience: Array<{
+    title: string;
+    company: string;
+    location: string;
+    dateFrom: string;
+    dateTo: string;
+    work: Array<{
+      item: string;
+    }>;
+  }>;
+  education?: Array<{
+    degree: string;
+    name: string;
+    location: string;
+    dateFrom: string;
+    dateTo: string;
+  }>;
 }
 
-export interface BaseItem {
-  item: string;
-  metadata?: Metadata;
+export interface TechnicalResumeData extends BaseResumeData {
+  type: 'technical';
+  summary: string[];
 }
 
-export interface DateRange {
-  dateFrom: string;
-  dateTo: string | 'Present';
+export interface StrategicResumeData extends BaseResumeData {
+  type: 'strategic';
+  summary: string[];
 }
 
-export interface Location {
-  location: string;
-  remote?: boolean;
-}
-
-export interface ResumeItem extends BaseItem {
-  highlights?: string[];
-}
-
-export interface ResumeJob extends DateRange, Location {
-  title: string;
-  company: string;
-  work: ResumeItem[];
-  technologies?: string[];
-  metadata?: Metadata;
-}
-
-export interface ResumeEducation extends DateRange, Location {
-  degree: string;
-  name: string;
-  major?: string;
-  gpa?: number;
-  metadata?: Metadata;
-}
-
-export interface ResumeInfo {
-  name: string;
-  address: string;
-  phone: string;
-  email: string;
-  website?: string;
-  linkedin?: string;
-  github?: string;
-  metadata?: Metadata;
-}
-
-export interface ResumeData {
-  info: ResumeInfo;
-  summary: BaseItem[];
-  qualifications: ResumeItem[];
-  experience: ResumeJob[];
-  education?: ResumeEducation[];
-  type?: ResumeType;
-  metadata?: Metadata;
-}
-
-export interface ResumeProps {
-  resume: ResumeData;
-  type: ResumeType;
-}
+export type ResumeData = TechnicalResumeData | StrategicResumeData;

@@ -8,30 +8,14 @@ import {
   Show,
 } from 'solid-js';
 import { search, initializeSearch } from '../utils/search';
-import type { SearchResult } from '../types/search';
-import { makePersisted } from '@solid-primitives/storage';
+import type { SearchResult, SearchContextType } from '../types/search';
 import { isServer } from 'solid-js/web';
-import localforage from 'localforage';
-
-export type SearchContextType = {
-  query: () => string;
-  setQuery: (query: string) => void;
-  results: () => SearchResult[];
-  isLoading: () => boolean;
-  isNavigating: () => boolean;
-  setIsNavigating: (value: boolean) => void;
-  isInitialized: () => boolean;
-};
 
 const SearchContext = createContext<SearchContextType>();
 
 export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
-  // Persist the search query with localforage
-  const [query, setQuery] = makePersisted(createSignal(''), {
-    name: 'search-query',
-    storage: !isServer ? localforage : undefined,
-  });
-
+  // Use regular signals for all state
+  const [query, setQuery] = createSignal('');
   const [results, setResults] = createSignal<SearchResult[]>([]);
   const [isLoading, setIsLoading] = createSignal(false);
   const [isNavigating, setIsNavigating] = createSignal(false);
@@ -55,13 +39,11 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
   // Handle search
   createEffect(() => {
     const searchQuery = query().trim();
-    console.log('Search query:', searchQuery, 'Initialized:', isInitialized());
 
     if (searchQuery.length >= 3 && isInitialized()) {
       setIsLoading(true);
       try {
         const searchResults = search(searchQuery);
-        console.log('Search results:', searchResults.length);
         setResults(searchResults);
       } catch (error) {
         console.error('Search error:', error);

@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 const gzip = promisify(zlib.gzip);
 const CHUNK_SIZE = 3; // Number of documents per chunk
-const VERSION = uuidv4(); // Use UUID as version
 
 export function pageIndexIntegration(): AstroIntegration {
   return {
@@ -17,6 +16,10 @@ export function pageIndexIntegration(): AstroIntegration {
     hooks: {
       'astro:build:done': async ({ dir }) => {
         try {
+          // Generate new UUID for this build
+          const buildVersion = uuidv4();
+          console.log('Generating search index with version:', buildVersion);
+
           // Read the dist directory
           const distPath = dir.pathname;
           const pages = await fs.readdir(distPath, { recursive: true });
@@ -106,15 +109,14 @@ export function pageIndexIntegration(): AstroIntegration {
             chunks.push(pageDocs.slice(i, i + CHUNK_SIZE));
           }
 
-          // Create manifest
+          // Create manifest with build version
           const manifest: SearchManifest = {
-            version: VERSION,
+            version: buildVersion,
             totalDocuments: pageDocs.length,
-            chunks: chunks.map((_, index) => ({
+            chunks: chunks.map((chunk, index) => ({
               id: `chunk-${index}`,
-              size: chunks[index].length,
-            })),
-            initial: chunks[0]?.[0] ? [chunks[0][0].id] : [],
+              size: chunk.length,
+            }))
           };
 
           // Write manifest
@@ -123,17 +125,7 @@ export function pageIndexIntegration(): AstroIntegration {
             JSON.stringify(manifest, null, 2)
           );
 
-          // Write and compress initial chunk
-          if (chunks[0]) {
-            const initialData = JSON.stringify(chunks[0]);
-            const compressedInitial = await gzip(initialData);
-            await fs.writeFile(
-              path.join(searchDir, 'initial.json.gz'),
-              compressedInitial
-            );
-          }
-
-          // Write and compress remaining chunks
+          // Write and compress chunks
           await Promise.all(
             chunks.map(async (chunk, index) => {
               const chunkData = JSON.stringify(chunk);
