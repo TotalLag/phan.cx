@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { getSkillColor } from '../../utils/skill-colors';
 import type { ProjectData } from '../../types/projects';
 import projectsJson from '../../content/projects/projects.json';
 
@@ -11,9 +12,10 @@ const description = "Explore my portfolio of software development projects, feat
   title="Projects"
   description={description}
 >
-  <div class="center-layout py-container-py">
-    <div class="overflow-hidden rounded-lg shadow-sm">
-      <table class="w-full">
+  <div class="px-4 center-layout py-container-py md:px-0">
+    <div class="w-full overflow-x-auto">
+      {/* Desktop Table View */}
+      <table class="hidden w-full rounded-lg shadow-sm md:table">
         <thead>
           <tr class="bg-surface-tertiary">
             <th class="px-[var(--gutter)] py-3 text-left text-sm font-medium text-text-secondary">Project</th>
@@ -39,7 +41,10 @@ const description = "Explore my portfolio of software development projects, feat
               <td class="px-[var(--gutter)] py-4">
                 <div class="flex flex-wrap justify-end gap-1">
                   {project.tech.map((tech) => (
-                    <span class="px-2 py-0.5 text-xs rounded-full bg-surface-secondary text-text-muted">
+                    <span 
+                      style={`background-color: ${getSkillColor(tech, 'var(--accent)')}`} 
+                      class="inline-block h-fit w-auto px-2 py-0.5 text-xs rounded-full text-black"
+                    >
                       {tech}
                     </span>
                   ))}
@@ -49,6 +54,58 @@ const description = "Explore my portfolio of software development projects, feat
           ))}
         </tbody>
       </table>
+
+      {/* Mobile Card View */}
+      <div class="md:hidden">
+        {projects.map((project, i) => (
+          <div class={`
+            flex flex-col 
+            p-4 
+            ${i % 2 === 0 ? 'bg-surface-primary' : 'bg-surface-secondary'}
+            border-b border-border last:border-b-0
+          `}>
+            <div class="grid grid-cols-2 gap-4 mb-3">
+              <div>
+                <a href={project.link} class="block mb-2 text-lg font-semibold text-accent hover:text-accent-hover">
+                  {project.name}
+                </a>
+              </div>
+              <div class="flex flex-wrap justify-end gap-1">
+                {project.tech.map((tech) => (
+                  <span 
+                    style={`background-color: ${getSkillColor(tech, 'var(--accent)')}`} 
+                    class="inline-block h-fit w-auto px-2 py-0.5 text-xs rounded-full text-black"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p class="mb-2 text-sm text-text-primary">
+                <span class="font-medium underline">What</span>: {project.what}
+              </p>
+              <p class="text-sm text-text-primary">
+                <span class="font-medium underline">Why</span>: {project.why}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </Layout>
+
+<script define:vars={{projects}}>
+  // Client-side script to ensure color generation uses the actual accent color
+  document.addEventListener('DOMContentLoaded', () => {
+    const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+    const skillTags = document.querySelectorAll('.skill-tag');
+    
+    skillTags.forEach((tag) => {
+      const tech = tag.textContent;
+      const color = getSkillColor(tech, accentColor);
+      tag.style.backgroundColor = color;
+    });
+  });
+</script>
