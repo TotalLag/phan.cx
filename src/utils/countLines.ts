@@ -2,6 +2,10 @@ import fs from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createLogger } from './logger';
+
+// Create a module-specific logger
+const linesLogger = createLogger('CodeStats');
 
 // File extensions to count
 const CODE_EXTENSIONS = new Set([
@@ -86,7 +90,7 @@ async function getCachedStats(): Promise<CodeStats | null> {
     const data = await fs.readFile(CACHE_FILE, 'utf-8');
     return JSON.parse(data);
   } catch (error) {
-    console.error('Error reading cache:', error);
+    linesLogger.error('Error reading cache:', error);
     return null;
   }
 }
@@ -102,7 +106,7 @@ async function processFile(
     const lines = content.split('\n').length;
     return { lines, ext };
   } catch (error) {
-    console.error(`Error processing file ${filePath}:`, error);
+    linesLogger.error(`Error processing file ${filePath}:`, error);
     return null;
   }
 }
@@ -135,7 +139,7 @@ async function scanDirectory(
         }
       }
     } catch (error) {
-      console.error(`Error scanning directory ${currentDir}:`, error);
+      linesLogger.error(`Error scanning directory ${currentDir}:`, error);
     }
   }
 
@@ -173,30 +177,30 @@ async function generateStats(): Promise<CodeStats> {
 
 export async function getCodeStats(): Promise<CodeStats> {
   try {
-    console.log('Checking code stats...');
+    linesLogger.debug('Checking code stats...');
 
     // Try to get cached stats first
     const cachedStats = await getCachedStats();
     if (cachedStats) {
-      console.log('✅ Using cached code stats');
+      linesLogger.info('✅ Using cached code stats');
       return cachedStats;
     }
 
-    console.log('Generating fresh code stats...');
+    linesLogger.debug('Generating fresh code stats...');
     const stats = await generateStats();
 
     // Cache the results
     await fs.writeFile(CACHE_FILE, JSON.stringify(stats, null, 2), 'utf-8');
 
-    console.log('✅ Successfully generated code stats');
+    linesLogger.info('✅ Successfully generated code stats');
     return stats;
   } catch (error) {
-    console.error('Error handling code stats:', error);
+    linesLogger.error('Error handling code stats:', error);
 
     // If we have cached stats and encounter an error, use the cached stats
     const cachedStats = await getCachedStats();
     if (cachedStats) {
-      console.log('✅ Using cached code stats due to error');
+      linesLogger.info('✅ Using cached code stats due to error');
       return cachedStats;
     }
 
@@ -215,7 +219,7 @@ export async function getCodeStats(): Promise<CodeStats> {
       'utf-8'
     );
 
-    console.log('✅ Using fallback code stats');
+    linesLogger.info('✅ Using fallback code stats');
     return fallbackData;
   }
 }

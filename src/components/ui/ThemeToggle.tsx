@@ -2,13 +2,21 @@ import type { Component } from 'solid-js';
 import { Switch, Match, createSignal, onMount } from 'solid-js';
 import CircleButton from './CircleButton';
 import { toggleTheme, theme } from '../../stores/theme';
+import { createLogger } from '../../utils/logger';
+
+const themeToggleLogger = createLogger('ThemeToggle');
 
 const ThemeToggle: Component = () => {
   const [isReady, setReady] = createSignal(false);
 
+  themeToggleLogger.debug('Initializing ThemeToggle component');
+
   onMount(() => {
     // Wait for next tick to ensure theme is initialized
-    setTimeout(() => setReady(true), 0);
+    setTimeout(() => {
+      setReady(true);
+      themeToggleLogger.debug(`Theme initialized: ${theme()}`);
+    }, 0);
   });
 
   return (
@@ -16,7 +24,10 @@ const ThemeToggle: Component = () => {
       label={
         theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
       }
-      onClick={toggleTheme}
+      onClick={() => {
+        themeToggleLogger.info(`Toggling theme from ${theme()} to ${theme() === 'dark' ? 'light' : 'dark'}`);
+        toggleTheme();
+      }}
     >
       <Switch>
         <Match when={!isReady()}>

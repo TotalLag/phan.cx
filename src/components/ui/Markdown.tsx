@@ -2,6 +2,9 @@ import type { Component } from 'solid-js';
 import { createResource } from 'solid-js';
 import * as marked from 'marked';
 import createDOMPurify from 'dompurify';
+import { createLogger } from '../../utils/logger';
+
+const markdownLogger = createLogger('Markdown');
 
 interface Props {
   content: string;
@@ -9,6 +12,8 @@ interface Props {
 }
 
 const Markdown: Component<Props> = (props) => {
+  markdownLogger.debug(`Rendering markdown with length: ${props.content.length}`);
+
   // Configure marked for GitHub-flavored markdown
   marked.setOptions({
     gfm: true, // GitHub Flavored Markdown
@@ -18,11 +23,18 @@ const Markdown: Component<Props> = (props) => {
   const [html] = createResource(
     () => props.content,
     async (content) => {
+      markdownLogger.debug('Processing markdown content');
+      
       // Remove HTML comments
       const cleanContent = content.replace(/<!--[\s\S]*?-->/g, '');
+      
       // Parse markdown and sanitize the output
       const parsedHtml = await marked.parse(cleanContent);
-      return createDOMPurify.sanitize(parsedHtml);
+      const sanitizedHtml = createDOMPurify.sanitize(parsedHtml);
+      
+      markdownLogger.info(`Markdown processed: ${sanitizedHtml.length} characters`);
+      
+      return sanitizedHtml;
     }
   );
 

@@ -1,4 +1,8 @@
 import type { ImageMetadata } from 'astro';
+import { createLogger } from './logger';
+
+// Create a module-specific logger
+const imageLogger = createLogger('ImageUtility');
 
 // Get all images from assets directory and subdirectories
 const images = import.meta.glob<{ default: ImageMetadata }>(
@@ -36,7 +40,7 @@ export async function getImageData(
       return src;
     }
   } catch (error) {
-    console.error('Error loading image:', error);
+    imageLogger.error('Error loading image:', error);
   }
 
   return placeholderImage;
@@ -45,10 +49,15 @@ export async function getImageData(
 // Function to handle image load errors including 403
 export function handleImageError(event: Event) {
   const img = event.target as HTMLImageElement;
-  console.error(`Failed to load image: ${img.src}`);
+  
+  if (img instanceof HTMLImageElement) {
+    imageLogger.error(`Failed to load image: ${img.src}`);
 
-  // Replace with placeholder image on error
-  img.src = placeholderImage.src;
-  img.width = placeholderImage.width;
-  img.height = placeholderImage.height;
+    // Replace with placeholder image on error
+    img.src = placeholderImage.src;
+    img.width = placeholderImage.width;
+    img.height = placeholderImage.height;
+  } else {
+    imageLogger.warn('Image error event target is not an HTMLImageElement');
+  }
 }

@@ -1,6 +1,9 @@
 ---
 import NotificationsButton from './NotificationsButton';
 import { getGitHubReleases } from '../../utils/github';
+import { createLogger } from '../../utils/logger';
+
+const notificationsLogger = createLogger('Notifications');
 
 interface Props {
   class?: string;
@@ -9,7 +12,9 @@ interface Props {
 const { class: className } = Astro.props;
 
 // Get releases at build time
+notificationsLogger.debug('Fetching GitHub releases');
 const releases = await getGitHubReleases();
+notificationsLogger.info(`Loaded ${releases.length} GitHub releases`);
 ---
 
 <div class:list={["relative", className]}>

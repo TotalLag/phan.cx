@@ -1,5 +1,6 @@
 import type { AstroIntegration } from 'astro';
 import { cleanText } from '../utils/search';
+import { createLogger } from '../utils/logger';
 import type { SearchableDocument, SearchManifest } from '../types/search';
 import fs from 'fs/promises';
 import path from 'path';
@@ -10,6 +11,9 @@ import { v4 as uuidv4 } from 'uuid';
 const gzip = promisify(zlib.gzip);
 const CHUNK_SIZE = 3; // Number of documents per chunk
 
+// Create a module-specific logger
+const pageIndexLogger = createLogger('PageIndexIntegration');
+
 export function pageIndexIntegration(): AstroIntegration {
   return {
     name: 'page-index',
@@ -18,7 +22,7 @@ export function pageIndexIntegration(): AstroIntegration {
         try {
           // Generate new UUID for this build
           const buildVersion = uuidv4();
-          console.log('Generating search index with version:', buildVersion);
+          pageIndexLogger.debug('Generating search index with version:', buildVersion);
 
           // Read the dist directory
           const distPath = dir.pathname;
@@ -137,11 +141,11 @@ export function pageIndexIntegration(): AstroIntegration {
             })
           );
 
-          console.log(`Generated search index with ${chunks.length} chunks`);
-          console.log(`Total unique documents: ${pageDocs.length}`);
-          console.log(`Processed URLs: ${Array.from(processedUrls).join(', ')}`);
+          pageIndexLogger.info(`Generated search index with ${chunks.length} chunks`);
+          pageIndexLogger.info(`Total unique documents: ${pageDocs.length}`);
+          pageIndexLogger.debug(`Processed URLs: ${Array.from(processedUrls).join(', ')}`);
         } catch (error) {
-          console.error('Error generating search index:', error);
+          pageIndexLogger.error('Error generating search index:', error);
         }
       },
     },

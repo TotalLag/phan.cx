@@ -3,6 +3,11 @@ import CircleButton from './ui/CircleButton';
 import SearchInput from './ui/SearchInput.astro';
 import ThemeToggle from './ui/ThemeToggle';
 import Notifications from './ui/Notifications.astro';
+import { createLogger } from '../utils/logger';
+
+const headerLogger = createLogger('Header');
+
+headerLogger.debug('Initializing Header component');
 ---
 
 <header class="site-header" transition:persist>
@@ -14,6 +19,9 @@ import Notifications from './ui/Notifications.astro';
           as="label" 
           for="nav-toggle"
           client:load
+          onclick={() => {
+            headerLogger.info('Mobile navigation menu toggled');
+          }}
         >
           <svg 
             class="w-5 h-5 transition-colors duration-200 text-icon hover:text-icon-hover" 

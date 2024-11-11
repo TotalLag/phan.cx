@@ -1,5 +1,8 @@
 import type { Component, JSX } from 'solid-js';
 import { splitProps, Match, Switch } from 'solid-js';
+import { createLogger } from '../../utils/logger';
+
+const circleButtonLogger = createLogger('CircleButton');
 
 type BaseProps = {
   label: string;
@@ -22,6 +25,8 @@ type LabelProps = BaseProps &
 type Props = ButtonProps | LabelProps;
 
 const CircleButton: Component<Props> = (props) => {
+  circleButtonLogger.debug(`Rendering CircleButton with label: ${props.label}`);
+
   const [local, rest] = splitProps(props, ['label', 'class', 'children', 'as']);
 
   const baseClasses = [
@@ -53,6 +58,9 @@ const CircleButton: Component<Props> = (props) => {
           {...(rest as JSX.LabelHTMLAttributes<HTMLLabelElement>)}
           class={classes}
           aria-label={local.label}
+          onClick={() => {
+            circleButtonLogger.info(`Label button clicked: ${local.label}`);
+          }}
         >
           <span class="flex-layout">{local.children}</span>
         </label>
@@ -66,6 +74,9 @@ const CircleButton: Component<Props> = (props) => {
             (rest as JSX.ButtonHTMLAttributes<HTMLButtonElement>).type ||
             'button'
           }
+          onClick={() => {
+            circleButtonLogger.info(`Button clicked: ${local.label}`);
+          }}
         >
           <span class="flex-layout">{local.children}</span>
         </button>

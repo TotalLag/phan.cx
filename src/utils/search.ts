@@ -8,6 +8,10 @@ import type {
 } from '../types/search';
 import { isServer } from 'solid-js/web';
 import localforage from 'localforage';
+import { createLogger } from './logger';
+
+// Create a module-specific logger
+const searchLogger = createLogger('SearchUtility');
 
 let searchIndex: MiniSearch<SearchableDocument>;
 let searchManifest: SearchManifest | null = null;
@@ -22,13 +26,13 @@ const storage = localforage.createInstance({
 // Function to safely handle unknown errors
 function handleError(error: unknown, context: string): void {
   if (error instanceof Error) {
-    console.error(`${context}:`, {
+    searchLogger.error(`${context}:`, {
       message: error.message,
       name: error.name,
       stack: error.stack
     });
   } else {
-    console.error(`${context}: Unknown error`, error);
+    searchLogger.error(`${context}: Unknown error`, error);
   }
 }
 
@@ -72,7 +76,7 @@ export function cleanText(text: string): string {
 // Enhanced decompression function
 async function decompressResponse(response: Response): Promise<any> {
   try {
-    console.log('Attempting to decompress response');
+    searchLogger.debug('Attempting to decompress response');
     
     // Try native streaming decompression
     if ('DecompressionStream' in window) {
@@ -80,7 +84,7 @@ async function decompressResponse(response: Response): Promise<any> {
         new DecompressionStream('gzip')
       );
       const decompressedText = await new Response(decompressedStream).text();
-      console.log('Native decompression successful');
+      searchLogger.debug('Native decompression successful');
       return JSON.parse(decompressedText);
     }
     
@@ -88,7 +92,7 @@ async function decompressResponse(response: Response): Promise<any> {
     const arrayBuffer = await response.arrayBuffer();
     const uint8Array = new Uint8Array(arrayBuffer);
     
-    console.log('Attempting manual decompression');
+    searchLogger.debug('Attempting manual decompression');
     
     // Temporary fallback if no decompression library
     const rawText = new TextDecoder().decode(uint8Array);
@@ -105,7 +109,7 @@ async function fetchWithRetry(url: string, decompress = false, retries = 3): Pro
 
   for (let i = 0; i < retries; i++) {
     try {
-      console.log(`Fetching URL: ${url}, Attempt: ${i + 1}`);
+      searchLogger.debug(`Fetching URL: ${url}, Attempt: ${i + 1}`);
       
       const response = await fetch(url);
       
@@ -120,7 +124,7 @@ async function fetchWithRetry(url: string, decompress = false, retries = 3): Pro
       return await response.json();
     } catch (error) {
       lastError = error;
-      console.warn(`Attempt ${i + 1} failed for ${url}:`, error);
+      searchLogger.warn(`Attempt ${i + 1} failed for ${url}:`, error);
       
       if (i < retries - 1) {
         await new Promise((resolve) =>
@@ -130,7 +134,7 @@ async function fetchWithRetry(url: string, decompress = false, retries = 3): Pro
     }
   }
 
-  console.error('All fetch attempts failed');
+  searchLogger.error('All fetch attempts failed');
   handleError(lastError, 'Fetch with retry failed');
   throw lastError;
 }
@@ -185,7 +189,7 @@ function addDocumentsToIndex(docs: SearchableDocument[]) {
 
   if (newDocs.length > 0) {
     searchIndex.addAll(newDocs);
-    console.log(`Added ${newDocs.length} new documents to search index`);
+    searchLogger.debug(`Added ${newDocs.length} new documents to search index`);
   }
 }
 
@@ -202,12 +206,12 @@ async function loadChunksInBackground() {
       // Check if we already have this chunk in storage
       const storedChunk = await storage.getItem(chunk.id);
       if (storedChunk) {
-        console.log(`Using stored chunk ${chunk.id}`);
+        searchLogger.debug(`Using stored chunk ${chunk.id}`);
         addDocumentsToIndex(storedChunk as SearchableDocument[]);
         continue;
       }
 
-      console.log(`Loading chunk ${chunk.id} from network...`);
+      searchLogger.debug(`Loading chunk ${chunk.id} from network...`);
       const chunkData = await fetchWithRetry(`/search/${chunk.id}.json.gz`, true);
       
       // Process chunk before storage
@@ -231,29 +235,27 @@ export async function initializeSearch() {
   if (isServer) return;
 
   try {
-    console.log('Initializing search...');
+    searchLogger.debug('Initializing search...');
     
     // Fetch manifest with decompression
     const manifest = await fetchWithRetry('/search/manifest.json');
     searchManifest = manifest;
 
-    console.log('Manifest loaded:', JSON.stringify(manifest, null, 2));
+    searchLogger.debug('Manifest loaded:', JSON.stringify(manifest, null, 2));
 
     // Version checking
     const cachedVersion = await storage.getItem<string>('version');
-    console.group('Search Index Version Check');
-    console.log('Manifest Version:', manifest.version);
-    console.log('Cached Version:', cachedVersion);
+    searchLogger.debug('Manifest Version:', manifest.version);
+    searchLogger.debug('Cached Version:', cachedVersion);
 
     if (manifest.version !== cachedVersion) {
-      console.log('🔄 Search index version changed, clearing cache...');
+      searchLogger.debug('🔄 Search index version changed, clearing cache...');
       await storage.clear();
       await storage.setItem('version', manifest.version);
-      console.log('✅ Cache cleared and new version set');
+      searchLogger.debug('✅ Cache cleared and new version set');
     } else {
-      console.log('✓ Version unchanged, using existing cache');
+      searchLogger.debug('✓ Version unchanged, using existing cache');
     }
-    console.groupEnd();
 
     // Clear the set of added documents when initializing
     addedDocuments.clear();
@@ -271,10 +273,10 @@ export async function initializeSearch() {
     });
 
     // Load initial chunk with explicit decompression
-    console.log('Loading initial search chunk...');
+    searchLogger.debug('Loading initial search chunk...');
     const initialDocs = await fetchWithRetry('/search/chunk-0.json.gz', true);
     
-    console.log('Initial chunk loaded. Documents:', initialDocs.length);
+    searchLogger.debug('Initial chunk loaded. Documents:', initialDocs.length);
     
     const processedDocs = processChunkForStorage(initialDocs);
     addDocumentsToIndex(processedDocs);

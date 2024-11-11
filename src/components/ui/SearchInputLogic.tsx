@@ -9,6 +9,9 @@ import {
 import { useSearch } from '../../stores/searchStore';
 import { getSnippet } from '../../utils/search';
 import type { SearchResult } from '../../types/search';
+import { createLogger } from '../../utils/logger';
+
+const searchInputLogger = createLogger('SearchInputLogic');
 
 interface Props {
   placeholder?: string;
@@ -19,19 +22,24 @@ const SearchInputLogic: Component<Props> = (props) => {
   const [isOpen, setIsOpen] = createSignal(false);
   let searchRef: HTMLDivElement | undefined;
 
+  searchInputLogger.debug('Initializing SearchInputLogic component');
+
   // Create stable function references
   const handleClickOutside = (event: MouseEvent) => {
     if (searchRef && !searchRef.contains(event.target as Node)) {
+      searchInputLogger.debug('Clicked outside search input, closing results');
       setIsOpen(false);
     }
   };
 
   const handleNavigationReset = () => {
+    searchInputLogger.debug('Resetting navigation state');
     store.setIsNavigating(false);
   };
 
   onMount(() => {
     if (typeof window !== 'undefined') {
+      searchInputLogger.debug('Adding event listeners for search input');
       window.addEventListener('mousedown', handleClickOutside);
       window.addEventListener('load', handleNavigationReset);
       document.addEventListener('astro:after-swap', handleNavigationReset);
@@ -43,6 +51,7 @@ const SearchInputLogic: Component<Props> = (props) => {
 
   onCleanup(() => {
     if (typeof window !== 'undefined') {
+      searchInputLogger.debug('Removing event listeners for search input');
       window.removeEventListener('mousedown', handleClickOutside);
       window.removeEventListener('load', handleNavigationReset);
       document.removeEventListener('astro:after-swap', handleNavigationReset);
@@ -50,11 +59,14 @@ const SearchInputLogic: Component<Props> = (props) => {
   });
 
   const handleInput = (e: InputEvent & { currentTarget: HTMLInputElement }) => {
-    store.setQuery(e.currentTarget.value);
+    const query = e.currentTarget.value;
+    searchInputLogger.debug(`Search input changed: ${query}`);
+    store.setQuery(query);
     setIsOpen(true);
   };
 
   const handleResultClick = () => {
+    searchInputLogger.info('Search result clicked, navigating');
     store.setIsNavigating(true);
     setIsOpen(false);
   };

@@ -2,6 +2,9 @@
 import ResumeLayout from '../../layouts/ResumeLayout.astro';
 import type { ResumeData, StrategicResumeData } from '../../types/resume';
 import strategicJson from '../../content/resume/strategic.json';
+import { createLogger } from '../../utils/logger';
+
+const resumeLogger = createLogger('StrategicResumePage');
 
 const resume: ResumeData = {
   ...strategicJson,
@@ -10,6 +13,8 @@ const resume: ResumeData = {
     lastUpdated: new Date().toISOString()
   }
 } satisfies StrategicResumeData;
+
+resumeLogger.debug(`Loaded strategic resume for ${resume.info.name}`);
 
 const structuredData = {
   "@type": "WebPage",
@@ -22,6 +27,8 @@ const structuredData = {
     "skills": resume.qualifications.map(q => q.item)
   }
 };
+
+resumeLogger.info(`Generated structured data for ${resume.info.name}'s strategic resume`);
 ---
 
 <ResumeLayout 

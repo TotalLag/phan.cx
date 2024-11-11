@@ -11,6 +11,7 @@ A modern, performant personal website and blog built with Astro, SolidJS, and Ty
 - **Content**: MDX for blog posts
 - **Search**: Client-side search implementation
 - **Type Safety**: TypeScript throughout
+- **Logging**: Environment-aware, module-specific logging system
 
 ### Key Patterns
 
@@ -20,13 +21,19 @@ A modern, performant personal website and blog built with Astro, SolidJS, and Ty
 - Animation patterns using CSS transitions
 - Reusable UI components in `src/components/ui/`
 
-Example from CircleButton.tsx:
+#### Logging System
+- Environment-aware logging utility
+- Development-only debug logs
+- Module-specific loggers
+- Zero performance overhead in production
+
+Example of Logging:
 ```typescript
-type BaseProps = {
-  label: string;           // Required
-  class?: string;         // Optional
-  children: JSX.Element;  // Required
-};
+import { createLogger } from './utils/logger';
+
+const searchLogger = createLogger('SearchUtility');
+searchLogger.debug('Initializing search...');
+searchLogger.info('Search index loaded');
 ```
 
 #### State Management
@@ -66,6 +73,27 @@ npm run dev
 npm run build
 ```
 
+### Logging System
+
+#### Features
+- 🌐 Environment-specific logging
+- 🔍 Development-only debug logs
+- 📊 Multiple log levels
+- 🏷️ Module-specific logging
+- 🚀 Zero performance overhead in production
+
+#### Log Levels
+- `DEBUG`: Most verbose, only in development
+- `INFO`: General information
+- `WARN`: Potential issues
+- `ERROR`: Critical errors
+
+#### Best Practices
+- Use `debug()` for development tracing
+- Use `info()` for general information
+- Use `warn()` for potential issues
+- Use `error()` for critical errors
+
 ### Project Structure
 
 ```
@@ -83,6 +111,7 @@ npm run build
 │   ├── styles/        # CSS styles
 │   ├── types/         # TypeScript types
 │   └── utils/         # Utility functions
+│       └── logger.ts  # Centralized logging utility
 └── scripts/           # Build scripts
 ```
 
@@ -111,6 +140,7 @@ npm run build
 - Optimized assets
 - Lazy-loaded components
 - Cached external data
+- Minimal logging overhead
 
 ## 🧞 Commands
 
@@ -129,6 +159,7 @@ Key configuration files:
 - `tailwind.config.cjs` - Tailwind CSS configuration
 - `tsconfig.json` - TypeScript configuration
 - `package.json` - Project dependencies and scripts
+- `src/utils/logger.ts` - Logging utility configuration
 
 ## 📚 Contributing
 
@@ -136,9 +167,15 @@ Key configuration files:
 2. Create a feature branch
 3. Make your changes
 4. Run tests and linting
-5. Submit a pull request
+5. Follow logging best practices
+6. Submit a pull request
 
 ## 🐛 Common Issues
+
+### Logging and Debugging
+- Use module-specific loggers
+- Check browser console for development logs
+- Verify log levels are appropriate
 
 ### Search Not Working
 - Check browser console for errors
@@ -156,3 +193,4 @@ Key configuration files:
 - [SolidJS Documentation](https://www.solidjs.com/docs)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Logging Utility Overview](/src/utils/LOGGING_MIGRATION_OVERVIEW.md)

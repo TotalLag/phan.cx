@@ -3,12 +3,17 @@ import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import MDXImage from '../components/ui/MDXImage.astro';
 import type { CollectionEntry } from 'astro:content';
+import { createLogger } from '../utils/logger';
+
+const homeLogger = createLogger('HomePage');
 
 // Get blog posts
 const posts = await getCollection('blog');
 const sortedPosts = posts.sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => 
   b.data.date.getTime() - a.data.date.getTime()
 );
+
+homeLogger.debug(`Fetched and sorted ${posts.length} blog posts`);
 
 // Get Instagram posts
 const instagramPosts: CollectionEntry<'instagram'>[] = await getCollection('instagram');
@@ -18,7 +23,10 @@ const sortedInstagramPosts = instagramPosts.sort(
   }
 );
 
+homeLogger.debug(`Fetched and sorted ${instagramPosts.length} Instagram posts`);
+
 const description = "Welcome to my personal website showcasing my portfolio, blog posts, and Instagram feed. Explore my latest projects, technical writings, and photography.";
+homeLogger.info('Generated home page description');
 ---
 
 <Layout 

@@ -4,12 +4,17 @@ import CoffeeCounter from './CoffeeCounter';
 import MDXImage from '../components/ui/MDXImage.astro';
 import profileImage from '../../public/me.jpg';
 import codeStats from '../data/code-stats.json';
+import { createLogger } from '../utils/logger';
+
+const sidebarLogger = createLogger('Sidebar');
 
 const stats = {
   cups: "69",
   lines: codeStats.formattedLines,
   cats: "2"
 };
+
+sidebarLogger.debug(`Initialized sidebar stats: ${JSON.stringify(stats)}`);
 
 // Get current path for active link highlighting
 const { pathname } = Astro.url;

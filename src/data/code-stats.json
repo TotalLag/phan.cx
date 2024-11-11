@@ -1,27 +1,27 @@
 {
-  "totalLines": 28532,
-  "formattedLines": "28.5k",
-  "fileCount": 93,
+  "totalLines": 29828,
+  "formattedLines": "29.8k",
+  "fileCount": 96,
   "byExtension": {
     ".md": {
-      "files": 2,
-      "lines": 12802
+      "files": 3,
+      "lines": 12924
     },
     ".json": {
-      "files": 28,
-      "lines": 10185
+      "files": 29,
+      "lines": 10964
     },
     ".ts": {
-      "files": 21,
-      "lines": 1851
+      "files": 22,
+      "lines": 2090
     },
     ".astro": {
       "files": 16,
-      "lines": 1240
+      "lines": 1312
     },
     ".tsx": {
       "files": 9,
-      "lines": 858
+      "lines": 942
     },
     ".mdx": {
       "files": 6,
@@ -32,5 +32,5 @@
       "lines": 921
     }
   },
-  "lastUpdated": "2024-11-11T07:28:50.102Z"
+  "lastUpdated": "2024-11-11T22:14:18.909Z"
 }

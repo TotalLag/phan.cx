@@ -1,6 +1,10 @@
 import { writeFile, readFile } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
+import { createLogger } from './logger';
+
+// Create a module-specific logger
+const githubLogger = createLogger('GitHubReleases');
 
 interface GitHubRelease {
   id: number;
@@ -45,7 +49,7 @@ async function getCachedReleases(): Promise<Release[] | null> {
     const data = await readFile(CACHE_FILE, 'utf-8');
     return JSON.parse(data);
   } catch (error) {
-    console.error('Error reading cache:', error);
+    githubLogger.error('Error reading cache:', error);
     return null;
   }
 }
@@ -103,40 +107,40 @@ async function transformAndCacheReleases(
 
 export async function getGitHubReleases(): Promise<Release[]> {
   try {
-    console.log('Checking GitHub releases...');
+    githubLogger.debug('Checking GitHub releases...');
 
     // Try to get cached releases first
     const cachedReleases = await getCachedReleases();
     if (cachedReleases) {
-      console.log('✅ Using cached releases data');
+      githubLogger.info('✅ Using cached releases data');
       return cachedReleases;
     }
 
-    console.log('Fetching fresh releases data from GitHub...');
+    githubLogger.debug('Fetching fresh releases data from GitHub...');
 
     try {
       const releases = await fetchGitHubReleases();
       const transformedReleases = await transformAndCacheReleases(releases);
-      console.log('✅ Successfully updated releases data');
+      githubLogger.info('✅ Successfully updated releases data');
       return transformedReleases;
     } catch (error) {
       if (error instanceof Error && error.message.includes('403')) {
-        console.warn('⚠️ GitHub API rate limit exceeded');
+        githubLogger.warn('⚠️ GitHub API rate limit exceeded');
         // If we have cached data and hit rate limit, use the cached data
         if (cachedReleases) {
-          console.log('✅ Using cached releases data due to rate limit');
+          githubLogger.info('✅ Using cached releases data due to rate limit');
           return cachedReleases;
         }
       }
       throw error;
     }
   } catch (error) {
-    console.error('Error handling releases:', error);
+    githubLogger.error('Error handling releases:', error);
 
     // If we have cached data and encounter an error, use the cached data
     const cachedReleases = await getCachedReleases();
     if (cachedReleases) {
-      console.log('✅ Using cached releases data due to error');
+      githubLogger.info('✅ Using cached releases data due to error');
       return cachedReleases;
     }
 
@@ -153,7 +157,7 @@ export async function getGitHubReleases(): Promise<Release[]> {
 
     await writeFile(CACHE_FILE, JSON.stringify(fallbackData, null, 2), 'utf-8');
 
-    console.log('✅ Using fallback release data');
+    githubLogger.info('✅ Using fallback release data');
     return fallbackData;
   }
 }

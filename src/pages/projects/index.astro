@@ -3,8 +3,13 @@ import Layout from '../../layouts/Layout.astro';
 import { getSkillColor } from '../../utils/skill-colors';
 import type { ProjectData } from '../../types/projects';
 import projectsJson from '../../content/projects/projects.json';
+import { createLogger } from '../../utils/logger';
+
+const projectsLogger = createLogger('ProjectsIndex');
 
 const { projects } = projectsJson as ProjectData;
+projectsLogger.debug(`Loaded ${projects.length} projects`);
+
 const description = "Explore my portfolio of software development projects, featuring various technologies and solutions I've built.";
 const keywords = [
   'software projects', 
@@ -33,6 +38,8 @@ const structuredData = {
     }))
   }
 };
+
+projectsLogger.info('Generated structured data for projects');
 ---
 
 <Layout 

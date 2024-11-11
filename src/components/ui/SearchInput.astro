@@ -1,5 +1,8 @@
 ---
 import SearchWrapper from './SearchWrapper';
+import { createLogger } from '../../utils/logger';
+
+const searchInputLogger = createLogger('SearchInput');
 
 interface Props {
   placeholder?: string;
@@ -7,6 +10,8 @@ interface Props {
 }
 
 const { placeholder = "Search", class: className } = Astro.props;
+
+searchInputLogger.debug(`Initializing search input with placeholder: ${placeholder}`);
 ---
 
 <div class={`relative ${className}`}>

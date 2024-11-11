@@ -14,6 +14,9 @@ import {
 import type { Release } from '../../utils/github';
 import CircleButton from './CircleButton';
 import Markdown from './Markdown';
+import { createLogger } from '../../utils/logger';
+
+const notificationsLogger = createLogger('NotificationsButton');
 
 interface Props {
   releases: Release[];
@@ -27,10 +30,14 @@ export default function NotificationsButton(props: Props) {
   let buttonRef: HTMLButtonElement | undefined;
   let portalRef: HTMLDivElement | undefined;
 
+  notificationsLogger.debug(`Initializing Notifications Button with ${props.releases.length} releases`);
+
   // Track unread state
   createEffect(() => {
     if (props.releases?.length) {
-      setShowPing(hasUnreadReleases(props.releases));
+      const hasUnread = hasUnreadReleases(props.releases);
+      setShowPing(hasUnread);
+      notificationsLogger.debug(`Unread releases: ${hasUnread}`);
     }
   });
 
@@ -54,6 +61,7 @@ export default function NotificationsButton(props: Props) {
   };
 
   const close = () => {
+    notificationsLogger.debug('Closing notifications');
     setIsVisible(false);
     setTimeout(() => setIsOpen(false), 200);
   };
@@ -65,6 +73,7 @@ export default function NotificationsButton(props: Props) {
     if (!isOpen()) {
       const newPosition = calculatePosition();
       if (newPosition) {
+        notificationsLogger.info('Opening notifications');
         setPosition(newPosition);
         setIsOpen(true);
         markReleasesAsRead(props.releases);
@@ -89,6 +98,7 @@ export default function NotificationsButton(props: Props) {
         !portalRef.contains(target);
 
       if (isOutside) {
+        notificationsLogger.debug('Clicked outside notifications');
         close();
       }
     };
@@ -97,6 +107,7 @@ export default function NotificationsButton(props: Props) {
       if (!mounted) return;
       if (event.key === 'Escape') {
         if (isOpen()) {
+          notificationsLogger.debug('Escape key pressed, closing notifications');
           close();
         }
       }
@@ -104,6 +115,7 @@ export default function NotificationsButton(props: Props) {
 
     const handleResize = () => {
       if (!mounted || !isOpen()) return;
+      notificationsLogger.debug('Window resized, updating notifications position');
       updatePosition();
     };
 
@@ -114,6 +126,7 @@ export default function NotificationsButton(props: Props) {
 
     // Cleanup function
     onCleanup(() => {
+      notificationsLogger.debug('Cleaning up notifications button event listeners');
       mounted = false;
       document.removeEventListener('click', handleClickOutside, true);
       document.removeEventListener('keydown', handleKeyDown);
@@ -124,18 +137,8 @@ export default function NotificationsButton(props: Props) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
     return `${months[date.getMonth()]} ${date.getDate()}`;
   };

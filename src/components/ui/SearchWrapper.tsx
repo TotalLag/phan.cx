@@ -1,6 +1,9 @@
 import { type Component, createSignal, onMount, Show } from 'solid-js';
 import { SearchProvider } from '../../stores/searchStore';
 import SearchInputLogic from './SearchInputLogic';
+import { createLogger } from '../../utils/logger';
+
+const searchWrapperLogger = createLogger('SearchWrapper');
 
 interface Props {
   placeholder?: string;
@@ -9,9 +12,14 @@ interface Props {
 const SearchWrapper: Component<Props> = (props) => {
   const [isReady, setReady] = createSignal(false);
 
+  searchWrapperLogger.debug('Initializing SearchWrapper component');
+
   onMount(() => {
     // Wait for next tick to ensure DOM is ready
-    setTimeout(() => setReady(true), 0);
+    setTimeout(() => {
+      setReady(true);
+      searchWrapperLogger.debug('SearchWrapper component ready');
+    }, 0);
   });
 
   return (

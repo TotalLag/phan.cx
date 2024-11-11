@@ -2,6 +2,9 @@
 import ResumeLayout from '../../layouts/ResumeLayout.astro';
 import type { ResumeData, TechnicalResumeData } from '../../types/resume';
 import technicalJson from '../../content/resume/technical.json';
+import { createLogger } from '../../utils/logger';
+
+const resumeLogger = createLogger('TechnicalResumePage');
 
 const resume: ResumeData = {
   ...technicalJson,
@@ -10,6 +13,8 @@ const resume: ResumeData = {
     lastUpdated: new Date().toISOString()
   }
 } satisfies TechnicalResumeData;
+
+resumeLogger.debug(`Loaded technical resume for ${resume.info.name}`);
 
 const structuredData = {
   "@type": "WebPage",
@@ -22,6 +27,8 @@ const structuredData = {
     "skills": resume.qualifications.map(q => q.item)
   }
 };
+
+resumeLogger.info(`Generated structured data for ${resume.info.name}'s technical resume`);
 ---
 
 <ResumeLayout 

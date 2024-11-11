@@ -8,8 +8,12 @@ import {
   Show,
 } from 'solid-js';
 import { search, initializeSearch } from '../utils/search';
+import { createLogger } from '../utils/logger';
 import type { SearchResult, SearchContextType } from '../types/search';
 import { isServer } from 'solid-js/web';
+
+// Create a module-specific logger
+const searchStoreLogger = createLogger('SearchStore');
 
 const SearchContext = createContext<SearchContextType>();
 
@@ -24,13 +28,13 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
   // Initialize search
   createEffect(async () => {
     if (!isInitialized() && !isServer) {
-      console.log('Initializing search...');
+      searchStoreLogger.debug('Initializing search...');
       try {
         await initializeSearch();
         setIsInitialized(true);
-        console.log('Search initialized successfully');
+        searchStoreLogger.info('Search initialized successfully');
       } catch (error) {
-        console.error('Failed to initialize search:', error);
+        searchStoreLogger.error('Failed to initialize search:', error);
         // Don't set initialized on error to allow retrying
       }
     }
@@ -43,10 +47,13 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
     if (searchQuery.length >= 3 && isInitialized()) {
       setIsLoading(true);
       try {
+        searchStoreLogger.debug(`Performing search for query: ${searchQuery}`);
         const searchResults = search(searchQuery);
+        
+        searchStoreLogger.info(`Search completed. Results: ${searchResults.length}`);
         setResults(searchResults);
       } catch (error) {
-        console.error('Search error:', error);
+        searchStoreLogger.error('Search error:', error);
         setResults([]);
       } finally {
         setIsLoading(false);
@@ -76,6 +83,7 @@ export const SearchProvider: Component<{ children: JSX.Element }> = (props) => {
 export function useSearch() {
   const context = useContext(SearchContext);
   if (!context) {
+    searchStoreLogger.error('useSearch must be used within a SearchProvider');
     throw new Error('useSearch must be used within a SearchProvider');
   }
   return context;

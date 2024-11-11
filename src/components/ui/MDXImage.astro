@@ -1,6 +1,9 @@
 ---
 import { Image } from 'astro:assets';
 import { getImageData } from '../../utils/images';
+import { createLogger } from '../../utils/logger';
+
+const mdxImageLogger = createLogger('MDXImage');
 
 interface Props {
   src: ImageMetadata | string;
@@ -10,7 +13,10 @@ interface Props {
 }
 
 const { src, alt, overlay, class: className, ...props } = Astro.props;
+
+mdxImageLogger.debug(`Loading image: ${src}`);
 const imageSource = await getImageData(src);
+mdxImageLogger.info(`Image loaded successfully: ${src}`);
 ---
 
 <div class="relative h-full overflow-hidden">

@@ -2,9 +2,15 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import MDXImage from '../../components/ui/MDXImage.astro';
+import { createLogger } from '../../utils/logger';
+
+const blogLogger = createLogger('BlogIndex');
 
 const posts = await getCollection('blog');
 const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+blogLogger.debug(`Fetched ${posts.length} blog posts`);
+blogLogger.info(`Sorted ${sortedPosts.length} blog posts by date`);
 ---
 
 <Layout title="Blog">

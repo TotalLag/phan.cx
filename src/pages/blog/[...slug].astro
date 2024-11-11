@@ -2,11 +2,15 @@
 import { getCollection } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 import MDXImage from '../../components/ui/MDXImage.astro';
+import { createLogger } from '../../utils/logger';
+
+const blogPostLogger = createLogger('BlogPostDetail');
 
 export const prerender = true;
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
+  
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: post,
@@ -15,6 +19,8 @@ export async function getStaticPaths() {
 
 const post = Astro.props;
 const { Content } = await post.render();
+
+blogPostLogger.info(`Rendering blog post: ${post.slug}`);
 
 // Define components to be used in MDX
 const components = {
