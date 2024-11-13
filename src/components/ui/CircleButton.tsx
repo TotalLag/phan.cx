@@ -9,6 +9,7 @@ type BaseProps = {
   class?: string;
   children: JSX.Element;
   as?: 'button' | 'label';
+  onClick?: (event?: MouseEvent) => void;
 };
 
 type ButtonProps = BaseProps &
@@ -27,7 +28,7 @@ type Props = ButtonProps | LabelProps;
 const CircleButton: Component<Props> = (props) => {
   circleButtonLogger.debug(`Rendering CircleButton with label: ${props.label}`);
 
-  const [local, rest] = splitProps(props, ['label', 'class', 'children', 'as']);
+  const [local, rest] = splitProps(props, ['label', 'class', 'children', 'as', 'onClick']);
 
   const baseClasses = [
     'relative',
@@ -51,6 +52,13 @@ const CircleButton: Component<Props> = (props) => {
 
   const classes = [...baseClasses, local.class].filter(Boolean).join(' ');
 
+  const handleClick = (event?: MouseEvent) => {
+    circleButtonLogger.info(`Button clicked: ${local.label}`);
+    if (local.onClick) {
+      local.onClick(event);
+    }
+  };
+
   return (
     <Switch>
       <Match when={local.as === 'label'}>
@@ -58,9 +66,7 @@ const CircleButton: Component<Props> = (props) => {
           {...(rest as JSX.LabelHTMLAttributes<HTMLLabelElement>)}
           class={classes}
           aria-label={local.label}
-          onClick={() => {
-            circleButtonLogger.info(`Label button clicked: ${local.label}`);
-          }}
+          onClick={(e) => handleClick(e)}
         >
           <span class="flex-layout">{local.children}</span>
         </label>
@@ -74,9 +80,7 @@ const CircleButton: Component<Props> = (props) => {
             (rest as JSX.ButtonHTMLAttributes<HTMLButtonElement>).type ||
             'button'
           }
-          onClick={() => {
-            circleButtonLogger.info(`Button clicked: ${local.label}`);
-          }}
+          onClick={(e) => handleClick(e)}
         >
           <span class="flex-layout">{local.children}</span>
         </button>

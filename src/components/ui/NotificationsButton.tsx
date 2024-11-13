@@ -66,9 +66,9 @@ export default function NotificationsButton(props: Props) {
     setTimeout(() => setIsOpen(false), 200);
   };
 
-  const handleOpen = (event: MouseEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const handleOpen = (event?: MouseEvent | Event) => {
+    event?.preventDefault();
+    event?.stopPropagation();
 
     if (!isOpen()) {
       const newPosition = calculatePosition();
