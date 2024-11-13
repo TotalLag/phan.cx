@@ -5,36 +5,12 @@ import type {
   SearchResult,
   TokenPosition,
   SearchManifest,
-} from '../types/search';
+} from '../types/search.d.ts';
 import { isServer } from 'solid-js/web';
 import localforage from 'localforage';
 import { createLogger } from './logger';
 
-// Create a module-specific logger
 const searchLogger = createLogger('SearchUtility');
-
-let searchIndex: MiniSearch<SearchableDocument>;
-let searchManifest: SearchManifest | null = null;
-
-// Single localforage instance with a clear namespace
-const storage = localforage.createInstance({
-  name: 'search-storage',
-  storeName: 'search-chunks',
-  description: 'Search chunks storage'
-});
-
-// Function to safely handle unknown errors
-function handleError(error: unknown, context: string): void {
-  if (error instanceof Error) {
-    searchLogger.error(`${context}:`, {
-      message: error.message,
-      name: error.name,
-      stack: error.stack
-    });
-  } else {
-    searchLogger.error(`${context}: Unknown error`, error);
-  }
-}
 
 // Function to decode HTML entities that works in both browser and Node.js
 function decodeHtml(text: string): string {
@@ -73,71 +49,15 @@ export function cleanText(text: string): string {
   );
 }
 
-// Enhanced decompression function
-async function decompressResponse(response: Response): Promise<any> {
-  try {
-    searchLogger.debug('Attempting to decompress response');
-    
-    // Try native streaming decompression
-    if ('DecompressionStream' in window) {
-      const decompressedStream = response.body?.pipeThrough(
-        new DecompressionStream('gzip')
-      );
-      const decompressedText = await new Response(decompressedStream).text();
-      searchLogger.debug('Native decompression successful');
-      return JSON.parse(decompressedText);
-    }
-    
-    // Fallback: manual decompression
-    const arrayBuffer = await response.arrayBuffer();
-    const uint8Array = new Uint8Array(arrayBuffer);
-    
-    searchLogger.debug('Attempting manual decompression');
-    
-    // Temporary fallback if no decompression library
-    const rawText = new TextDecoder().decode(uint8Array);
-    return JSON.parse(rawText);
-  } catch (error) {
-    handleError(error, 'Decompression failed');
-    throw error;
-  }
-}
+// Single localforage instance with a clear namespace
+const storage = localforage.createInstance({
+  name: 'search-storage',
+  storeName: 'search-chunks',
+  description: 'Search chunks storage'
+});
 
-// Modify fetchWithRetry to use the new decompression method
-async function fetchWithRetry(url: string, decompress = false, retries = 3): Promise<any> {
-  let lastError: unknown = null;
-
-  for (let i = 0; i < retries; i++) {
-    try {
-      searchLogger.debug(`Fetching URL: ${url}, Attempt: ${i + 1}`);
-      
-      const response = await fetch(url);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      if (decompress) {
-        return await decompressResponse(response);
-      }
-
-      return await response.json();
-    } catch (error) {
-      lastError = error;
-      searchLogger.warn(`Attempt ${i + 1} failed for ${url}:`, error);
-      
-      if (i < retries - 1) {
-        await new Promise((resolve) =>
-          setTimeout(resolve, Math.pow(2, i) * 1000)
-        );
-      }
-    }
-  }
-
-  searchLogger.error('All fetch attempts failed');
-  handleError(lastError, 'Fetch with retry failed');
-  throw lastError;
-}
+let searchIndex: MiniSearch<SearchableDocument>;
+let searchManifest: SearchManifest | null = null;
 
 function processChunkForStorage(docs: SearchableDocument[]): SearchableDocument[] {
   return docs.map(doc => ({
@@ -154,6 +74,19 @@ function processChunkForStorage(docs: SearchableDocument[]): SearchableDocument[
   }));
 }
 
+async function removeOldestChunk() {
+  try {
+    const keys = await storage.keys();
+    const chunkKeys = keys.filter(key => key.startsWith('chunk-'));
+    if (chunkKeys.length > 0) {
+      await storage.removeItem(chunkKeys[0]);
+      searchLogger.debug(`Removed oldest chunk: ${chunkKeys[0]}`);
+    }
+  } catch (error) {
+    searchLogger.warn('Failed to remove oldest chunk:', error);
+  }
+}
+
 async function storeChunk(chunkId: string, docs: SearchableDocument[]) {
   try {
     await storage.setItem(`chunk-${chunkId}`, docs);
@@ -162,16 +95,8 @@ async function storeChunk(chunkId: string, docs: SearchableDocument[]) {
       await removeOldestChunk();
       await storage.setItem(`chunk-${chunkId}`, docs);
     } catch (retryError) {
-      handleError(retryError, 'Storage failed, falling back to memory-only');
+      searchLogger.warn('Storage failed, falling back to memory-only', retryError);
     }
-  }
-}
-
-async function removeOldestChunk() {
-  const keys = await storage.keys();
-  const chunkKeys = keys.filter(key => key.startsWith('chunk-'));
-  if (chunkKeys.length > 0) {
-    await storage.removeItem(chunkKeys[0]);
   }
 }
 
@@ -212,7 +137,8 @@ async function loadChunksInBackground() {
       }
 
       searchLogger.debug(`Loading chunk ${chunk.id} from network...`);
-      const chunkData = await fetchWithRetry(`/search/${chunk.id}.json.gz`, true);
+      const chunkResponse = await fetch(`/search/${chunk.id}.json.gz`);
+      const chunkData = await chunkResponse.json();
       
       // Process chunk before storage
       const processedChunk = processChunkForStorage(chunkData);
@@ -221,37 +147,40 @@ async function loadChunksInBackground() {
       try {
         await storeChunk(chunk.id.replace('chunk-', ''), processedChunk);
       } catch (error) {
-        handleError(error, `Storage failed for ${chunk.id}, keeping in memory`);
+        searchLogger.warn(`Storage failed for ${chunk.id}, keeping in memory`);
       }
       
       addDocumentsToIndex(processedChunk);
     } catch (error) {
-      handleError(error, `Failed to load chunk ${chunk.id}`);
+      searchLogger.error(`Failed to load chunk ${chunk.id}:`, error);
     }
   }
 }
 
 export async function initializeSearch() {
-  if (isServer) return;
+  if (isServer) return false;
 
   try {
-    searchLogger.debug('Initializing search...');
-    
-    // Fetch manifest with decompression
-    const manifest = await fetchWithRetry('/search/manifest.json');
+    searchLogger.debug('Loading search manifest...');
+    const manifestResponse = await fetch('/search/manifest.json');
+    const manifest = await manifestResponse.json();
     searchManifest = manifest;
 
-    searchLogger.debug('Manifest loaded:', JSON.stringify(manifest, null, 2));
-
-    // Version checking
+    // Enhanced version checking with detailed logging
     const cachedVersion = await storage.getItem<string>('version');
     searchLogger.debug('Manifest Version:', manifest.version);
     searchLogger.debug('Cached Version:', cachedVersion);
 
     if (manifest.version !== cachedVersion) {
       searchLogger.debug('🔄 Search index version changed, clearing cache...');
+      
+      // Log all existing keys before clearing
+      const existingKeys = await storage.keys();
+      searchLogger.debug('Existing Storage Keys:', existingKeys);
+
       await storage.clear();
       await storage.setItem('version', manifest.version);
+      
       searchLogger.debug('✅ Cache cleared and new version set');
     } else {
       searchLogger.debug('✓ Version unchanged, using existing cache');
@@ -272,12 +201,10 @@ export async function initializeSearch() {
       }
     });
 
-    // Load initial chunk with explicit decompression
-    searchLogger.debug('Loading initial search chunk...');
-    const initialDocs = await fetchWithRetry('/search/chunk-0.json.gz', true);
-    
-    searchLogger.debug('Initial chunk loaded. Documents:', initialDocs.length);
-    
+    // Load chunk-0 as initial data
+    searchLogger.debug('Loading initial chunk...');
+    const initialResponse = await fetch('/search/chunk-0.json.gz');
+    const initialDocs = await initialResponse.json();
     const processedDocs = processChunkForStorage(initialDocs);
     addDocumentsToIndex(processedDocs);
 
@@ -285,19 +212,19 @@ export async function initializeSearch() {
     try {
       await storeChunk('0', processedDocs);
     } catch (error) {
-      handleError(error, 'Failed to store initial chunk');
+      searchLogger.warn('Failed to store initial chunk:', error);
     }
 
-    // Background chunk loading
+    // Start background loading
     requestIdleCallback(() => {
       loadChunksInBackground().catch(error => {
-        handleError(error, 'Background chunk loading failed');
+        searchLogger.error('Background chunk loading failed:', error);
       });
     });
 
     return true;
   } catch (error) {
-    handleError(error, 'Comprehensive Search Initialization Error');
+    searchLogger.error('Failed to initialize search:', error);
     throw error;
   }
 }
