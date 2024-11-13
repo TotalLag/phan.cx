@@ -9,8 +9,44 @@ import type {
 import { isServer } from 'solid-js/web';
 import localforage from 'localforage';
 import { createLogger } from './logger';
+import pako from 'pako';
 
 const searchLogger = createLogger('SearchUtility');
+
+// Utility function to decompress gzipped data using pako
+async function decompressGzip(arrayBuffer: ArrayBuffer): Promise<string> {
+  try {
+    const uint8Array = new Uint8Array(arrayBuffer);
+    const decompressed = pako.inflate(uint8Array, { to: 'string' });
+    
+    // Ensure we always return a string
+    return typeof decompressed === 'string' 
+      ? decompressed 
+      : new TextDecoder().decode(decompressed);
+  } catch (error) {
+    searchLogger.error('Gzip decompression failed:', error);
+    throw error;
+  }
+}
+
+async function fetchAndDecompressJson(url: string): Promise<any> {
+  try {
+    const response = await fetch(url);
+    
+    // If it's a gzipped file
+    if (response.headers.get('Content-Encoding') === 'gzip' || url.endsWith('.json.gz')) {
+      const arrayBuffer = await response.arrayBuffer();
+      const decompressedText = await decompressGzip(arrayBuffer);
+      return JSON.parse(decompressedText);
+    }
+    
+    // If it's a regular JSON file
+    return await response.json();
+  } catch (error) {
+    searchLogger.error(`Failed to fetch and parse ${url}:`, error);
+    throw error;
+  }
+}
 
 // Function to decode HTML entities that works in both browser and Node.js
 function decodeHtml(text: string): string {
@@ -137,8 +173,7 @@ async function loadChunksInBackground() {
       }
 
       searchLogger.debug(`Loading chunk ${chunk.id} from network...`);
-      const chunkResponse = await fetch(`/search/${chunk.id}.json.gz`);
-      const chunkData = await chunkResponse.json();
+      const chunkData = await fetchAndDecompressJson(`/search/${chunk.id}.json.gz`);
       
       // Process chunk before storage
       const processedChunk = processChunkForStorage(chunkData);
@@ -162,8 +197,7 @@ export async function initializeSearch() {
 
   try {
     searchLogger.debug('Loading search manifest...');
-    const manifestResponse = await fetch('/search/manifest.json');
-    const manifest = await manifestResponse.json();
+    const manifest = await fetchAndDecompressJson('/search/manifest.json');
     searchManifest = manifest;
 
     // Enhanced version checking with detailed logging
@@ -203,8 +237,7 @@ export async function initializeSearch() {
 
     // Load chunk-0 as initial data
     searchLogger.debug('Loading initial chunk...');
-    const initialResponse = await fetch('/search/chunk-0.json.gz');
-    const initialDocs = await initialResponse.json();
+    const initialDocs = await fetchAndDecompressJson('/search/chunk-0.json.gz');
     const processedDocs = processChunkForStorage(initialDocs);
     addDocumentsToIndex(processedDocs);
 
