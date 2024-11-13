@@ -6,6 +6,7 @@ dist/
 # dependencies
 node_modules/
 public/search/*
+!public/search/.gitkeep
 
 # logs
 npm-debug.log*
