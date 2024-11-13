@@ -3,7 +3,6 @@ import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import solid from '@astrojs/solid-js';
 import sitemap from '@astrojs/sitemap';
-import netlify from '@astrojs/netlify';
 import githubReleases from './src/integrations/github-releases';
 import codeStats from './src/integrations/code-stats';
 import { pageIndexIntegration } from './src/integrations/page-index';
@@ -34,9 +33,6 @@ export default defineConfig({
     codeStats(),
     pageIndexIntegration(),
   ],
-
-  // Add Netlify adapter
-  adapter: netlify(),
 
   // Other existing configurations remain the same
   markdown: {

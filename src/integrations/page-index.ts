@@ -45,7 +45,7 @@ export function pageIndexIntegration(): AstroIntegration {
 
                 // Convert path to URL format for consistent checking
                 const urlPath =
-                  '/' + filePath.replace(/\.html$/, '').replace(/index$/, '');
+                  path.join('/', filePath.replace(/\.html$/, '').replace(/index$/, ''));
 
                 // Exclude specific paths
                 const excludedPaths = [
@@ -65,12 +65,13 @@ export function pageIndexIntegration(): AstroIntegration {
 
                 // Get URL from file path
                 const url =
-                  '/' +
-                  (filePath as string)
-                    .replace(/\.html$/, '')
-                    .replace(/index$/, '')
-                    // Remove trailing slash except for root
-                    .replace(/(.+)\/$/, '$1');
+                  path.join('/',
+                    (filePath as string)
+                      .replace(/\.html$/, '')
+                      .replace(/index$/, '')
+                      // Remove trailing slash except for root
+                      .replace(/(.+)\/$/, '$1')
+                  );
 
                 // Skip if we've already processed this URL
                 if (processedUrls.has(url)) {
@@ -103,8 +104,12 @@ export function pageIndexIntegration(): AstroIntegration {
               })
           )).filter((doc): doc is SearchableDocument => doc !== null);
 
-          // Create search directory in public
-          const searchDir = path.join(process.cwd(), 'public', 'search');
+          // Determine search directory based on environment
+          const searchDir = process.env.NODE_ENV === 'production'
+            ? path.join(dir.pathname, 'search')
+            : path.join(process.cwd(), 'public', 'search');
+
+          // Create search directory
           await fs.mkdir(searchDir, { recursive: true });
 
           // Split documents into chunks
