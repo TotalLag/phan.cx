@@ -10,7 +10,7 @@ import { pageIndexIntegration } from './src/integrations/page-index';
 
 export default defineConfig({
   site: 'https://phan.cx',
-  output: 'hybrid',
+  output: 'static',
   // Existing integrations and other configurations
   integrations: [
     solid(),
