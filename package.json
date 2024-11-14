@@ -28,6 +28,7 @@
     "@types/jsdom": "^21.1.7",
     "@types/uuid": "^10.0.0",
     "astro": "^4.16.7",
+    "astro-critical-css": "^0.0.4",
     "dompurify": "^3.1.7",
     "insta-fetcher": "^1.3.35",
     "localforage": "^1.10.0",

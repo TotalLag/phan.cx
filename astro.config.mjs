@@ -11,28 +11,20 @@ export default defineConfig({
   site: 'https://phan.cx',
   output: 'static',
   // Existing integrations and other configurations
-  integrations: [
-    solid(),
-    tailwind({
-      config: { path: './tailwind.config.cjs' },
-    }),
-    mdx({
-      extendMarkdownConfig: true,
-    }),
-    sitemap({
-      changefreq: 'weekly',
-      priority: 0.7,
-      lastmod: new Date(),
-      filter: (page) => 
-        !page.includes('/private/') && 
-        !page.includes('/admin/') && 
-        !page.includes('/api/') &&
-        page.startsWith('https://phan.cx')
-    }),
-    githubReleases(),
-    codeStats(),
-    pageIndexIntegration(),
-  ],
+  integrations: [solid(), tailwind({
+    config: { path: './tailwind.config.cjs' },
+  }), mdx({
+    extendMarkdownConfig: true,
+  }), sitemap({
+    changefreq: 'weekly',
+    priority: 0.7,
+    lastmod: new Date(),
+    filter: (page) => 
+      !page.includes('/private/') && 
+      !page.includes('/admin/') && 
+      !page.includes('/api/') &&
+      page.startsWith('https://phan.cx')
+  }), githubReleases(), codeStats(), pageIndexIntegration()],
 
   // Other existing configurations remain the same
   markdown: {
