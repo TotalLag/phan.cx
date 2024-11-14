@@ -93,7 +93,7 @@ const navLinkClass = "flex items-center py-2 text-sm px-container-px hover:bg-su
       <a 
         href="/resume" 
         class={navLinkClass}
-        aria-current={pathname === "/resume" ? "page" : undefined}
+        aria-current={pathname.includes("/resume") ? "page" : undefined}
       >
         <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a1.5 1.5 0 00-1.5-1.5H15" />

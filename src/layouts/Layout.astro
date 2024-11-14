@@ -106,13 +106,13 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
     <!-- Structured Data -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify(mergedStructuredData)}></script>
     
-    <ViewTransitions />
+    <ViewTransitions fallback="swap" />
     <ThemeScript client:load />
     <slot name="head" />
   </head>
   <body class="min-h-screen bg-surface-primary">
     <!-- Mobile Menu Container -->
-    <div class="lg:hidden" transition:persist transition:persist-props>
+    <div class="lg:hidden" transition:name="mobile-menu">
       <input 
         type="checkbox" 
         id="nav-toggle" 
@@ -141,11 +141,7 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
     </div>
 
     <!-- Desktop Sidebar -->
-    <div 
-      class="site-sidebar"
-      transition:persist
-      transition:persist-props
-    >
+    <div class="site-sidebar" transition:name="desktop-sidebar">
       <Sidebar />
     </div>
 
@@ -164,8 +160,7 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
       <!-- Footer -->
       <footer 
         class="site-footer"
-        transition:persist
-        transition:persist-props
+        transition:name="footer"
       >
         <div class="flex items-center justify-between h-full flex-layout px-container-px">
           <div class="flex items-center text-xs md:text-sm text-icon-muted">
