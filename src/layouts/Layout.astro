@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Sidebar from '../components/Sidebar.astro';
 import { ViewTransitions } from 'astro:transitions';
 import ThemeScript from '../components/ThemeScript';
-import CriticalCSS from './CriticalCSS.astro';
+import releases from '../data/releases.json';
 
 interface Props {
   title: string;
@@ -45,6 +45,9 @@ const mergedStructuredData = {
   ...defaultPersonSchema,
   ...structuredData
 };
+
+// Get the latest version from releases
+const latestVersion = releases[0]?.tag || 'v0.0.0';
 ---
 
 <!doctype html>
@@ -52,8 +55,6 @@ const mergedStructuredData = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-    <CriticalCSS />
     
     <!-- Primary Meta Tags -->
     <title>{formattedTitle}</title>
@@ -166,10 +167,13 @@ const mergedStructuredData = {
         transition:persist
         transition:persist-props
       >
-        <div class="h-full flex-layout px-container-px">
-          <div class="text-sm text-icon-muted">
+        <div class="flex items-center justify-between h-full flex-layout px-container-px">
+          <div class="flex items-center text-xs md:text-sm text-icon-muted">
             Built with <span class="text-red-500" aria-hidden="true">❤️</span>
             <span class="sr-only">love</span> and Astro + SolidJS + Tailwind CSS
+          </div>
+          <div class="text-[0.6rem] opacity-50">
+            {latestVersion}
           </div>
         </div>
       </footer>
