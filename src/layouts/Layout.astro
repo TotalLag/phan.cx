@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Sidebar from '../components/Sidebar.astro';
 import { ViewTransitions } from 'astro:transitions';
 import ThemeScript from '../components/ThemeScript';
+import CriticalCSS from './CriticalCSS.astro';
 
 interface Props {
   title: string;
@@ -51,6 +52,8 @@ const mergedStructuredData = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+    <CriticalCSS />
     
     <!-- Primary Meta Tags -->
     <title>{formattedTitle}</title>
