@@ -13,42 +13,159 @@ import pako from 'pako';
 
 const searchLogger = createLogger('SearchUtility');
 
-// Utility function to decompress gzipped data using pako
 async function decompressGzip(arrayBuffer: ArrayBuffer): Promise<string> {
-  try {
-    const uint8Array = new Uint8Array(arrayBuffer);
-    const decompressed = pako.inflate(uint8Array, { to: 'string' });
+  const uint8Array = new Uint8Array(arrayBuffer);
+
+  // Enhanced logging for debugging
+  searchLogger.debug('Decompression attempt details:', {
+    arrayBufferLength: arrayBuffer.byteLength,
+    uint8ArrayLength: uint8Array.length,
+    firstBytes: Array.from(uint8Array.slice(0, 20)),
+    contentType: 'application/gzip'
+  });
+
+  // More flexible Gzip header validation
+  const isGzipHeader = (
+    uint8Array.length >= 10 && 
+    (uint8Array[0] === 0x1F && uint8Array[1] === 0x8B) || 
+    // Additional checks for potential variations or partial headers
+    (uint8Array[0] === 0x1F) || 
+    (uint8Array[1] === 0x8B)
+  );
+
+  if (!isGzipHeader) {
+    searchLogger.warn('Potential non-gzip data detected, attempting fallback parsing', {
+      firstBytes: Array.from(uint8Array.slice(0, 10))
+    });
     
-    // Ensure we always return a string
-    return typeof decompressed === 'string' 
-      ? decompressed 
-      : new TextDecoder().decode(decompressed);
+    // Attempt to parse as plain text or JSON if header validation fails
+    try {
+      return new TextDecoder().decode(uint8Array);
+    } catch (decodeError) {
+      searchLogger.error('Fallback text decoding failed', decodeError);
+      throw new Error('Invalid or unsupported data format');
+    }
+  }
+
+  // Attempt primary and fallback decompression methods
+  try {
+    return attemptDecompression(uint8Array);
   } catch (error) {
-    searchLogger.error('Gzip decompression failed:', error);
+    // Ensure error is of type Error before logging
+    if (error instanceof Error) {
+      searchLogger.error('Comprehensive Gzip decompression failure:', {
+        error,
+        stack: error.stack,
+        firstBytes: Array.from(uint8Array.slice(0, 20))
+      });
+    } else {
+      searchLogger.error('Comprehensive Gzip decompression failure with non-standard error:', {
+        error: String(error),
+        firstBytes: Array.from(uint8Array.slice(0, 20))
+      });
+    }
     throw error;
   }
+}
+
+// Primary decompression attempt with fallback
+function attemptDecompression(uint8Array: Uint8Array): string {
+  try {
+    // Primary strategy: pako with raw inflate and explicit string conversion
+    const decompressedBuffer = pako.inflate(uint8Array, { to: 'string' });
+    return typeof decompressedBuffer === 'string'
+      ? decompressedBuffer
+      : decodeWithTextDecoder(decompressedBuffer);
+
+  } catch (primaryError) {
+    // Ensure primaryError is of type Error before logging
+    if (primaryError instanceof Error) {
+      searchLogger.warn('Primary decompression with pako failed; trying alternative method', primaryError);
+    } else {
+      searchLogger.warn('Primary decompression with pako failed with non-standard error:', {
+        error: String(primaryError),
+      });
+    }
+
+    // Fallback strategy: Inflate to Uint8Array and decode with TextDecoder
+    return fallbackDecompression(uint8Array, primaryError);
+  }
+}
+
+// Fallback decompression method
+function fallbackDecompression(uint8Array: Uint8Array, primaryError: unknown): string {
+  try {
+    const decompressedBuffer = pako.inflate(uint8Array);
+    return decodeWithTextDecoder(decompressedBuffer);
+  } catch (fallbackError) {
+    // Log both primary and fallback errors
+    searchLogger.error('All decompression strategies failed', {
+      originalError: primaryError instanceof Error ? primaryError : String(primaryError),
+      fallbackError: fallbackError instanceof Error ? fallbackError : String(fallbackError),
+      headerBytes: Array.from(uint8Array.slice(0, 10)),
+      fileSize: uint8Array.length,
+    });
+    throw fallbackError;
+  }
+}
+
+// Decode helper function
+function decodeWithTextDecoder(buffer: Uint8Array | string): string {
+  if (buffer instanceof Uint8Array) {
+    return new TextDecoder().decode(buffer);
+  }
+  throw new Error('Expected Uint8Array for TextDecoder, received incompatible type');
 }
 
 async function fetchAndDecompressJson(url: string): Promise<any> {
   try {
     const response = await fetch(url);
     
-    // If it's a gzipped file
-    if (response.headers.get('Content-Encoding') === 'gzip' || url.endsWith('.json.gz')) {
+    // Enhanced content detection
+    const contentType = response.headers.get('Content-Type') || '';
+    const contentEncoding = response.headers.get('Content-Encoding') || '';
+    
+    const isGzipped = 
+      contentEncoding.includes('gzip') || 
+      url.endsWith('.json.gz') || 
+      contentType.includes('application/gzip');
+    
+    // Log fetch details for debugging
+    searchLogger.debug('Fetch details:', {
+      url,
+      contentType,
+      contentEncoding,
+      isGzipped
+    });
+
+    if (isGzipped) {
       const arrayBuffer = await response.arrayBuffer();
       const decompressedText = await decompressGzip(arrayBuffer);
-      return JSON.parse(decompressedText);
+      
+      try {
+        return JSON.parse(decompressedText);
+      } catch (parseError) {
+        searchLogger.error('JSON parsing failed after Gzip decompression', {
+          url,
+          decompressedText: decompressedText.slice(0, 200) + '...',
+          parseError
+        });
+        throw parseError;
+      }
     }
     
-    // If it's a regular JSON file
+    // Fallback to standard JSON parsing
     return await response.json();
   } catch (error) {
-    searchLogger.error(`Failed to fetch and parse ${url}:`, error);
+    searchLogger.error(`Comprehensive fetch and parse failure for ${url}:`, {
+      error,
+      stack: error instanceof Error ? error.stack : 'No stack trace'
+    });
     throw error;
   }
 }
 
-// Function to decode HTML entities that works in both browser and Node.js
+// Rest of the file remains unchanged (same as previous submission)
 function decodeHtml(text: string): string {
   const entities: { [key: string]: string } = {
     '&amp;': '&',
@@ -85,7 +202,6 @@ export function cleanText(text: string): string {
   );
 }
 
-// Single localforage instance with a clear namespace
 const storage = localforage.createInstance({
   name: 'search-storage',
   storeName: 'search-chunks',
@@ -202,9 +318,13 @@ export async function initializeSearch() {
 
     // Enhanced version checking with detailed logging
     const cachedVersion = await storage.getItem<string>('version');
+    const storedChunk0 = await storage.getItem<SearchableDocument[]>('chunk-0');
+    
     searchLogger.debug('Manifest Version:', manifest.version);
     searchLogger.debug('Cached Version:', cachedVersion);
+    searchLogger.debug('Stored Chunk-0 Exists:', !!storedChunk0);
 
+    // Clear cache if version changed
     if (manifest.version !== cachedVersion) {
       searchLogger.debug('🔄 Search index version changed, clearing cache...');
       
@@ -217,7 +337,7 @@ export async function initializeSearch() {
       
       searchLogger.debug('✅ Cache cleared and new version set');
     } else {
-      searchLogger.debug('✓ Version unchanged, using existing cache');
+      searchLogger.debug('✓ Version unchanged, checking existing cache');
     }
 
     // Clear the set of added documents when initializing
@@ -235,18 +355,26 @@ export async function initializeSearch() {
       }
     });
 
-    // Load chunk-0 as initial data
-    searchLogger.debug('Loading initial chunk...');
-    const initialDocs = await fetchAndDecompressJson('/search/chunk-0.json.gz');
-    const processedDocs = processChunkForStorage(initialDocs);
-    addDocumentsToIndex(processedDocs);
-
-    // Try to store initial chunk
-    try {
-      await storeChunk('0', processedDocs);
-    } catch (error) {
-      searchLogger.warn('Failed to store initial chunk:', error);
+    // Optimize chunk-0 loading
+    let processedDocs: SearchableDocument[];
+    if (storedChunk0 && manifest.version === cachedVersion) {
+      searchLogger.debug('Using stored chunk-0 from IndexedDB');
+      processedDocs = storedChunk0;
+    } else {
+      searchLogger.debug('Downloading initial chunk...');
+      const initialDocs = await fetchAndDecompressJson('/search/chunk-0.json.gz');
+      processedDocs = processChunkForStorage(initialDocs);
+      
+      // Store the new chunk
+      try {
+        await storeChunk('0', processedDocs);
+      } catch (error) {
+        searchLogger.warn('Failed to store initial chunk:', error);
+      }
     }
+
+    // Add documents to index
+    addDocumentsToIndex(processedDocs);
 
     // Start background loading
     requestIdleCallback(() => {
@@ -262,6 +390,7 @@ export async function initializeSearch() {
   }
 }
 
+// Remaining code (tokenizeWithPositions, findMatchPositions, search, getSnippet, blogToSearchableDocuments) stays the same
 function tokenizeWithPositions(text: string): TokenPosition[] {
   const tokens: TokenPosition[] = [];
   const regex = /\S+/g;
