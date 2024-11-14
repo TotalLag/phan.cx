@@ -111,47 +111,18 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
     <slot name="head" />
   </head>
   <body class="min-h-screen bg-surface-primary">
-    <!-- Mobile Menu Container -->
-    <div class="lg:hidden" transition:name="mobile-menu">
-      <input 
-        type="checkbox" 
-        id="nav-toggle" 
-        class="hidden peer" 
-        aria-hidden="true"
-      >
-      
-      <!-- Mobile Sidebar -->
-      <div class="site-sidebar-mobile">
-        <div class="h-full pt-20 overflow-y-auto">
-          <Sidebar />
-        </div>
-      </div>
-
-      <!-- Backdrop -->
-      <label
-        for="nav-toggle"
-        class:list={[
-          'fixed inset-0 bg-overlay-dark z-overlay',
-          'invisible opacity-0',
-          'peer-checked:visible peer-checked:opacity-100',
-          'transition-all duration-modal ease-soft'
-        ]}
-        aria-hidden="true"
-      />
-    </div>
-
     <!-- Desktop Sidebar -->
-    <div class="site-sidebar" transition:name="desktop-sidebar">
+    <div class="hidden site-sidebar lg:block" transition:name="desktop-sidebar">
       <Sidebar />
     </div>
 
     <!-- Main Content Area -->
-    <div class="flex flex-col min-h-screen lg:pl-sidebar bg-surface-primary">
+    <div class="flex flex-col min-h-screen lg:pl-sidebar">
       <!-- Header -->
       <Header />
 
       <!-- Main Content -->
-      <main class="main-content">
+      <main class="flex-1 main-content">
         <div class="w-full max-w-none">
           <slot />
         </div>
@@ -164,7 +135,7 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
       >
         <div class="flex items-center justify-between h-full flex-layout px-container-px">
           <div class="flex items-center text-xs md:text-sm text-icon-muted">
-            Built with <span class="text-red-500" aria-hidden="true">❤️</span>
+            Built with <span class="text-red-500" aria-hidden="true"> ❤️ </span>
             <span class="sr-only">love</span> and Astro + SolidJS + Tailwind CSS
           </div>
           <div class="text-[0.6rem] opacity-50">
@@ -172,6 +143,40 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
           </div>
         </div>
       </footer>
+    </div>
+
+    <!-- Mobile Menu Container -->
+    <div class="lg:hidden" transition:name="mobile-menu">
+      <input 
+        type="checkbox" 
+        id="nav-toggle" 
+        class="hidden peer" 
+        aria-hidden="true"
+      >
+
+      <!-- Backdrop -->
+      <label 
+        for="nav-toggle"
+        class:list={[
+          'fixed inset-0 bg-overlay-dark z-overlay', 
+          'invisible opacity-0',
+          'peer-checked:visible peer-checked:opacity-100',
+          'transition-all duration-modal ease-soft'
+        ]}
+        aria-hidden="true"
+      />
+
+      <!-- Mobile Sidebar -->
+      <aside class:list={[
+        'fixed inset-y-0 left-0 w-sidebar bg-surface-primary shadow-modal z-modal',
+        'transform -translate-x-full',
+        'peer-checked:translate-x-0',
+        'transition-transform duration-modal ease-soft'
+      ]}>
+        <div class="h-full pt-20 overflow-y-auto">
+          <Sidebar />
+        </div>
+      </aside>
     </div>
   </body>
 </html>

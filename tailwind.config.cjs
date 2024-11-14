@@ -82,13 +82,16 @@ module.exports = {
           '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
       },
       zIndex: {
+        base: '0',
+        content: '1',
         dropdown: '1000',
         sticky: '1020',
-        banner: '1030',
-        overlay: '1040',
-        modal: '1050',
-        popover: '1060',
-        toast: '1070',
+        sidebar: '1030',
+        banner: '1040',
+        overlay: '1050',
+        modal: '1060',
+        popover: '1070',
+        toast: '1080',
       },
       transitionDuration: {
         fast: '150ms',
@@ -121,7 +124,6 @@ module.exports = {
             '--tw-prose-td-borders': 'var(--border)',
           },
         },
-        // Add custom modifier for no max-width
         unrestricted: {
           css: {
             maxWidth: 'none',

@@ -1,7 +1,7 @@
 @layer components {
   /* Base component styles */
   .search-input {
-    @apply h-12 w-full rounded-input border border-border bg-surface-secondary text-sm;
+    @apply w-full h-12 text-sm border rounded-input border-border bg-surface-secondary;
     @apply pl-10 pr-4;
     @apply placeholder:text-icon-muted;
     @apply hover:border-border-hover;
@@ -11,8 +11,8 @@
   }
 
   .site-header {
-    @apply sticky top-0 z-sticky border-b border-border bg-surface-primary;
-    @apply flex items-center;
+    @apply sticky top-0 border-b border-border bg-surface-primary;
+    @apply flex items-center z-sticky;
     height: 5rem;
     view-transition-name: header;
     transition:
@@ -28,39 +28,43 @@
   }
 
   .site-sidebar {
-    @apply fixed inset-y-0 left-0 hidden w-sidebar border-r border-border bg-surface-primary lg:block;
+    @apply fixed inset-y-0 left-0 border-r w-sidebar border-border bg-surface-primary z-content;
     view-transition-name: sidebar;
   }
 
   .site-sidebar-mobile {
-    @apply fixed inset-y-0 left-0 z-modal w-sidebar bg-surface-primary;
-    @apply -translate-x-full transform;
-    @apply peer-checked:translate-x-0 peer-checked:shadow-modal;
+    @apply fixed inset-y-0 left-0 w-sidebar bg-surface-primary shadow-modal z-popover;
+    @apply transform -translate-x-full;
+    @apply peer-checked:translate-x-0;
     @apply transition-transform duration-modal ease-soft;
     view-transition-name: sidebar-mobile;
   }
 
   .site-footer {
-    @apply fixed inset-x-0 bottom-0 h-16 border-t border-border bg-surface-primary;
+    @apply fixed inset-x-0 bottom-0 h-16 border-t border-border bg-surface-primary z-dropdown;
     view-transition-name: footer;
   }
 
   .main-content {
-    @apply px-container-px py-section pb-32;
+    @apply pb-32 px-container-px py-section;
     min-height: calc(
       100vh - theme('spacing.14') - theme('spacing.16')
     ); /* 100vh - header - footer */
   }
 
+  .resume-container {
+    @apply relative;
+  }
+
   /* Protip component */
   .protip-container {
-    @apply relative my-6 rounded-r border-l-4 p-6 shadow-sm;
+    @apply relative p-6 my-6 border-l-4 rounded-r shadow-sm;
     border-color: var(--accent);
     background-color: var(--surface-tertiary);
   }
 
   .protip-icon {
-    @apply absolute -left-3 -top-3 flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold;
+    @apply absolute flex items-center justify-center w-6 h-6 text-xs font-bold rounded-full -left-3 -top-3;
     background-color: var(--accent);
     color: white;
   }
@@ -72,5 +76,24 @@
 
   .protip-content {
     @apply prose prose-base prose-unrestricted;
+  }
+}
+
+/* Transition group z-index management */
+@layer base {
+  ::view-transition-group(mobile-menu) {
+    @apply z-modal;
+  }
+
+  ::view-transition-group(header) {
+    @apply z-sticky;
+  }
+
+  ::view-transition-group(sidebar) {
+    @apply z-content;
+  }
+
+  ::view-transition-group(footer) {
+    @apply z-dropdown;
   }
 }

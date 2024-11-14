@@ -25,15 +25,20 @@
 /* View transition styles */
 @layer base {
   ::view-transition-group(header) {
-    z-index: theme('zIndex.sticky');
+    @apply z-sticky;
   }
 
   ::view-transition-group(sidebar) {
-    z-index: theme('zIndex.dropdown');
+    @apply z-sidebar;
   }
 
   ::view-transition-group(footer) {
-    z-index: theme('zIndex.banner');
+    @apply z-base;
+  }
+
+  ::view-transition-group(resume-content),
+  ::view-transition-group(resume-details) {
+    @apply z-base; /* Keep resume content at the back during transitions */
   }
 
   /* Add transitions for theme changes */

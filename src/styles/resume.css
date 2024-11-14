@@ -16,7 +16,7 @@
 }
 
 .resume-container {
-  @apply flex flex-col p-8 mx-auto align-middle bg-white rounded-lg dark:bg-gray-800 md:w-4/5;
+  @apply relative flex flex-col p-8 mx-auto align-middle bg-white rounded-lg dark:bg-gray-800 md:w-4/5; /* Removed z-base */
   border: 8px solid var(--resume-border-light);
   @apply dark:border-gray-700;
   @apply space-y-10 print:space-y-5;
@@ -24,6 +24,7 @@
   transition: background-color 100ms ease-out, border-color 100ms ease-out;
 }
 
+/* Rest of the file remains unchanged */
 .resume-nav {
   @apply flex justify-center mt-4 print:hidden;
 }
