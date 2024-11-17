@@ -3,7 +3,6 @@ import '../styles/base.css';
 import Header from '../components/Header.astro';
 import Sidebar from '../components/Sidebar.astro';
 import { ViewTransitions } from 'astro:transitions';
-import ThemeScript from '../components/ThemeScript';
 import releases from '../data/releases.json';
 
 interface Props {
@@ -106,9 +105,37 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
     <!-- Structured Data -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify(mergedStructuredData)}></script>
     
+    <!-- Inline Theme Initialization Script -->
+    <script is:inline>
+      (() => {
+        const THEME_KEY = 'theme';
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        const getTheme = () => {
+          const saved = localStorage.getItem(THEME_KEY);
+          return saved || (prefersDark.matches ? 'dark' : 'light');
+        };
+
+        const applyTheme = (theme) => {
+          document.documentElement.classList.remove('light', 'dark');
+          document.documentElement.classList.add(theme);
+          document.documentElement.style.colorScheme = theme;
+        };
+
+        // Initial theme application
+        applyTheme(getTheme());
+
+        // Astro view transition handler
+        document.addEventListener('astro:before-swap', (event) => {
+          const theme = getTheme();
+          event.newDocument.documentElement.classList.remove('light', 'dark');
+          event.newDocument.documentElement.classList.add(theme);
+          event.newDocument.documentElement.style.colorScheme = theme;
+        });
+      })();
+    </script>
+    
     <ViewTransitions fallback="swap" />
-    <ThemeScript client:load />
-    <slot name="head" />
   </head>
   <body class="min-h-screen bg-surface-primary">
     <!-- Desktop Sidebar -->
@@ -145,8 +172,8 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
       </footer>
     </div>
 
-    <!-- Mobile Menu Container -->
-    <div class="lg:hidden" transition:name="mobile-menu">
+    <!-- Mobile Menu Portal -->
+    <div class="fixed inset-0 isolate z-toast lg:hidden" transition:name="mobile-menu">
       <input 
         type="checkbox" 
         id="nav-toggle" 
@@ -168,7 +195,7 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
 
       <!-- Mobile Sidebar -->
       <aside class:list={[
-        'fixed inset-y-0 left-0 w-sidebar bg-surface-primary shadow-modal z-modal',
+        'fixed inset-y-0 left-0 w-sidebar bg-surface-primary shadow-modal z-toast',
         'transform -translate-x-full',
         'peer-checked:translate-x-0',
         'transition-transform duration-modal ease-soft'

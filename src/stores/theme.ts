@@ -1,10 +1,10 @@
-import { createSignal } from 'solid-js';
+import { createSignal, createEffect } from 'solid-js';
 import { createLogger } from '../utils/logger';
 
 // Create a module-specific logger
 const themeLogger = createLogger('ThemeStore');
 
-type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark';
 const STORAGE_KEY = 'theme';
 
 // Get initial theme from localStorage or system preference
@@ -24,18 +24,10 @@ function getInitialTheme(): Theme {
   return initialTheme;
 }
 
+// Create theme signal
 const [theme, setTheme] = createSignal<Theme>(getInitialTheme());
 
-function toggleTheme(): void {
-  const newTheme: Theme = theme() === 'dark' ? 'light' : 'dark';
-  
-  themeLogger.info(`Toggling theme from ${theme()} to ${newTheme}`);
-  
-  setTheme(newTheme);
-  localStorage.setItem(STORAGE_KEY, newTheme);
-  updateDocumentClass(newTheme);
-}
-
+// Update document class when theme changes
 function updateDocumentClass(newTheme: Theme): void {
   if (typeof document === 'undefined') return;
 
@@ -46,26 +38,76 @@ function updateDocumentClass(newTheme: Theme): void {
   themeLogger.debug(`Updated document class to: ${newTheme}`);
 }
 
-function initializeTheme(): void {
-  const currentTheme = theme();
+// Toggle theme function
+function toggleTheme(): void {
+  const newTheme: Theme = theme() === 'dark' ? 'light' : 'dark';
+  
+  themeLogger.info(`Toggling theme from ${theme()} to ${newTheme}`);
+  
+  // Update theme signal
+  setTheme(newTheme);
+  
+  // Persist theme preference
+  localStorage.setItem(STORAGE_KEY, newTheme);
+  
+  // Update document class
+  updateDocumentClass(newTheme);
+}
+
+// Initialize theme and handle system preference changes
+function initializeTheme(): () => void {
+  const currentTheme = getInitialTheme();
+  
+  // Set initial theme
+  setTheme(currentTheme);
   updateDocumentClass(currentTheme);
   
   themeLogger.info(`Initializing theme: ${currentTheme}`);
 
+  // Handle Astro view transitions
+  const handleBeforePreparation = (event: any) => {
+    const currentTheme = theme();
+    themeLogger.debug(`Saving current theme before navigation: ${currentTheme}`);
+    localStorage.setItem(STORAGE_KEY, currentTheme);
+  };
+
+  const handleBeforeSwap = (event: any) => {
+    const savedTheme = localStorage.getItem(STORAGE_KEY) as Theme;
+    themeLogger.debug(`Applying saved theme during navigation: ${savedTheme}`);
+    
+    if (savedTheme) {
+      event.newDocument.documentElement.classList.remove('light', 'dark');
+      event.newDocument.documentElement.classList.add(savedTheme);
+    }
+  };
+
+  // Add event listeners for Astro view transitions
+  document.addEventListener('astro:before-preparation', handleBeforePreparation);
+  document.addEventListener('astro:before-swap', handleBeforeSwap);
+
   // Handle system theme changes
-  window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .addEventListener('change', (e) => {
-      const userTheme = localStorage.getItem(STORAGE_KEY);
-      if (!userTheme) {
-        const newTheme: Theme = e.matches ? 'dark' : 'light';
-        
-        themeLogger.debug(`System theme changed. New theme: ${newTheme}`);
-        
-        setTheme(newTheme);
-        updateDocumentClass(newTheme);
-      }
-    });
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const handleThemeChange = (e: MediaQueryListEvent) => {
+    // Only change if no theme is explicitly set
+    const savedTheme = localStorage.getItem(STORAGE_KEY);
+    if (!savedTheme) {
+      const newTheme: Theme = e.matches ? 'dark' : 'light';
+      
+      themeLogger.debug(`System theme changed. New theme: ${newTheme}`);
+      
+      setTheme(newTheme);
+      updateDocumentClass(newTheme);
+    }
+  };
+
+  mediaQuery.addEventListener('change', handleThemeChange);
+
+  // Return cleanup function
+  return () => {
+    document.removeEventListener('astro:before-preparation', handleBeforePreparation);
+    document.removeEventListener('astro:before-swap', handleBeforeSwap);
+    mediaQuery.removeEventListener('change', handleThemeChange);
+  };
 }
 
-export { theme, toggleTheme, initializeTheme, type Theme };
+export { theme, setTheme, toggleTheme, initializeTheme, updateDocumentClass };

@@ -1,4 +1,10 @@
 @layer base {
+  /* Set initial color-scheme to support both modes */
+  :root {
+    color-scheme: light dark;
+  }
+
+  /* Default light theme variables */
   :root {
     /* Color tokens */
     --surface-primary: #ffffff;
@@ -42,6 +48,7 @@
     --flow-space: 1em;
   }
 
+  /* Dark theme variables */
   :root.dark {
     --paper-bg: #27272a;
     --paper-text: #f9fafb;
@@ -68,6 +75,45 @@
     --icon-muted: #71717a;
     --icon-hover: #d4d4d8;
     --icon-disabled: #52525b;
+  }
+
+  /* System dark theme preference */
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) {
+      --paper-bg: #27272a;
+      --paper-text: #f9fafb;
+      --paper-border: #3f3f46;
+      --paper-shadow: rgba(0, 0, 0, 0.25);
+      
+      --surface-primary: #18181b;
+      --surface-secondary: #27272a;
+      --surface-tertiary: #3f3f46;
+      --surface-hover: #3f3f46;
+      --surface-active: #52525b;
+      --surface-disabled: #27272a;
+
+      --border: #3f3f46;
+      --border-focus: #71717a;
+      --border-hover: #52525b;
+      --border-disabled: #3f3f46;
+
+      --text-primary: #f9fafb;
+      --text-secondary: #e5e7eb;
+      --text-muted: #9ca3af;
+
+      --icon: #a1a1aa;
+      --icon-muted: #71717a;
+      --icon-hover: #d4d4d8;
+      --icon-disabled: #52525b;
+    }
+  }
+
+  /* Ensure smooth transitions between themes */
+  :root {
+    transition: color-scheme 0s;
+  }
+  :root * {
+    transition: background-color 0s, border-color 0s, color 0s;
   }
 
   /* Scrollbar styles */
