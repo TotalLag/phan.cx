@@ -34,7 +34,7 @@ async function decompressGzip(arrayBuffer: ArrayBuffer): Promise<string> {
   );
 
   if (!isGzipHeader) {
-    searchLogger.warn('Potential non-gzip data detected, attempting fallback parsing', {
+    searchLogger.debug('Potential non-gzip data detected, attempting fallback parsing', {
       firstBytes: Array.from(uint8Array.slice(0, 10))
     });
     
@@ -80,9 +80,9 @@ function attemptDecompression(uint8Array: Uint8Array): string {
   } catch (primaryError) {
     // Ensure primaryError is of type Error before logging
     if (primaryError instanceof Error) {
-      searchLogger.warn('Primary decompression with pako failed; trying alternative method', primaryError);
+      searchLogger.debug('Primary decompression with pako failed; trying alternative method', primaryError);
     } else {
-      searchLogger.warn('Primary decompression with pako failed with non-standard error:', {
+      searchLogger.debug('Primary decompression with pako failed with non-standard error:', {
         error: String(primaryError),
       });
     }
@@ -235,7 +235,7 @@ async function removeOldestChunk() {
       searchLogger.debug(`Removed oldest chunk: ${chunkKeys[0]}`);
     }
   } catch (error) {
-    searchLogger.warn('Failed to remove oldest chunk:', error);
+    searchLogger.debug('Failed to remove oldest chunk:', error);
   }
 }
 
@@ -247,7 +247,7 @@ async function storeChunk(chunkId: string, docs: SearchableDocument[]) {
       await removeOldestChunk();
       await storage.setItem(`chunk-${chunkId}`, docs);
     } catch (retryError) {
-      searchLogger.warn('Storage failed, falling back to memory-only', retryError);
+      searchLogger.debug('Storage failed, falling back to memory-only', retryError);
     }
   }
 }
@@ -298,7 +298,7 @@ async function loadChunksInBackground() {
       try {
         await storeChunk(chunk.id.replace('chunk-', ''), processedChunk);
       } catch (error) {
-        searchLogger.warn(`Storage failed for ${chunk.id}, keeping in memory`);
+        searchLogger.debug(`Storage failed for ${chunk.id}, keeping in memory`);
       }
       
       addDocumentsToIndex(processedChunk);
@@ -369,7 +369,7 @@ export async function initializeSearch() {
       try {
         await storeChunk('0', processedDocs);
       } catch (error) {
-        searchLogger.warn('Failed to store initial chunk:', error);
+        searchLogger.debug('Failed to store initial chunk:', error);
       }
     }
 
