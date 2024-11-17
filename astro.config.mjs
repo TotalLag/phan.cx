@@ -10,6 +10,9 @@ import { pageIndexIntegration } from './src/integrations/page-index';
 export default defineConfig({
   site: 'https://phan.cx',
   output: 'static',
+  prefetch: {
+    prefetchAll: false
+  },
   // Existing integrations and other configurations
   integrations: [solid(), tailwind({
     config: { path: './tailwind.config.cjs' },
