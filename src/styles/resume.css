@@ -53,7 +53,7 @@
 }
 
 .resume-name {
-  @apply text-[2.5rem] font-black uppercase tracking-wider text-center text-black dark:text-white;
+  @apply text-[2rem] font-black uppercase tracking-wider text-center text-black dark:text-white;
   @apply print:text-lg print:tracking-widest print:text-black;
   border-bottom: 3px solid black;
   @apply dark:border-white print:border-black;

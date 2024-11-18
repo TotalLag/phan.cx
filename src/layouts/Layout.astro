@@ -53,7 +53,7 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
 <html lang="en" class="antialiased">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
     
     <!-- Primary Meta Tags -->
@@ -174,7 +174,7 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
     </div>
 
     <!-- Mobile Menu Portal -->
-    <div class="fixed inset-0 isolate z-toast lg:hidden" transition:name="mobile-menu">
+    <div class="fixed inset-0 pointer-events-none lg:hidden isolate" transition:name="mobile-menu">
       <input 
         type="checkbox" 
         id="nav-toggle" 
@@ -186,9 +186,9 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
       <label 
         for="nav-toggle"
         class:list={[
-          'fixed inset-0 bg-overlay-dark z-overlay', 
-          'invisible opacity-0',
-          'peer-checked:visible peer-checked:opacity-100',
+          'fixed inset-0 bg-overlay-dark z-overlay pointer-events-auto', 
+          'hidden opacity-0',
+          'peer-checked:block peer-checked:opacity-100',
           'transition-all duration-modal ease-soft'
         ]}
         aria-hidden="true"
@@ -196,7 +196,7 @@ const latestVersion = releases[0]?.tag || 'v0.0.0';
 
       <!-- Mobile Sidebar -->
       <aside class:list={[
-        'fixed inset-y-0 left-0 w-sidebar bg-surface-primary shadow-modal z-toast',
+        'fixed inset-y-0 left-0 w-sidebar bg-surface-primary shadow-modal z-modal pointer-events-auto',
         'transform -translate-x-full',
         'peer-checked:translate-x-0',
         'transition-transform duration-modal ease-soft'
