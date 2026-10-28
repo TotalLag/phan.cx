@@ -27,6 +27,33 @@
   ],
   "experience": [
     {
+      "title": "Technical Account Manager",
+      "company": "Amazon Web Services",
+      "location": "Austin, TX",
+      "dateFrom": "October 2022",
+      "dateTo": "October 2026",
+      "work": [
+        {
+          "item": "Served as the trusted technical advisor to enterprise retail customers, translating business goals into cloud roadmaps."
+        },
+        {
+          "item": "Planned and led cloud migration and modernization programs from assessment through zero-downtime cutover."
+        },
+        {
+          "item": "Aligned stakeholders across customer, partner and internal service teams to clear blockers and keep programs on schedule."
+        },
+        {
+          "item": "Brought newly acquired brands onto shared platforms, consolidating vendors and reducing infrastructure spend."
+        },
+        {
+          "item": "Drove adoption of AI developer tools through enablement and workshops, growing usage across engineering teams."
+        },
+        {
+          "item": "Led disaster-recovery planning and operational reviews to improve workload resilience."
+        }
+      ]
+    },
+    {
       "title": "Director of Competitive Intelligence",
       "company": "Tanium",
       "location": "Kirkland, WA",
@@ -41,9 +68,6 @@
         },
         {
           "item": "Led a small team that helped turn strategies and evidence of our superiority to competitors into materials that would be helpful for the customer facing teams selling our products."
-        },
-        {
-          "item": "By understanding the key market events, my team was able to craft responses that would resonate with internal/external customers."
         }
       ]
     },
@@ -55,16 +79,10 @@
       "dateTo": "September 2020",
       "work": [
         {
-          "item": "Presented and articulated Tanium product features and benefits to prospects, while identifying other opportunities within Tanium."
+          "item": "Held multiple SME roles, learning what to improve across products and how best practices vary by industry."
         },
         {
-          "item": "Recreate, track, and verify software defects in the field or under lab conditions reported by customers."
-        },
-        {
-          "item": "Held multiple SME roles which allowed not only an insight into what can be improved across products but also how best practices vary according to industry."
-        },
-        {
-          "item": "Created interim solutions around technologies until productization resulting in 100% renewal rate with personal accounts."
+          "item": "Created interim solutions until features were productized, keeping a 100% renewal rate on my accounts."
         }
       ]
     },
@@ -76,7 +94,7 @@
       "dateTo": "February 2018",
       "work": [
         {
-          "item": "Successfully assisted multi-million dollar deals by providing solution architecture and recommendations, creating demos and complex proof of concepts to prospects, driving Code42 product selection to continuously increase CrashPlan revenue."
+          "item": "Assisted multi-million dollar deals with solution architecture, demos and complex proofs of concept, driving Code42 product selection and CrashPlan revenue."
         },
         {
           "item": "Liaised between Code42 Product Management, Information Experience, Sales, Development, and strategic partners to continuously influence product design and messaging."
@@ -94,7 +112,7 @@
           "item": "Successfully de-escalate frustrated clients effectively increasing comfort, trust and program visibility."
         },
         {
-          "item": "Cultivated relationships and liaised across all department levels, earning recognition as the \"go-to\" SME."
+          "item": "Monitored cloud services and appliances with observability tools such as Zabbix."
         }
       ]
     },
@@ -124,7 +142,7 @@
           "item": "Provided on-site and remote hardware and software support and implemented leading edge end-user systems."
         },
         {
-          "item": "Provided basic planning and design of key enterprise systems, monitored performance and performed maintenance."
+          "item": "Provided basic planning and design of key enterprise systems and performed maintenance."
         }
       ]
     },
@@ -142,22 +160,6 @@
           "item": "Performed code reviews, software upgrades and implementations, and database admin tasks."
         }
       ]
-    }
-  ],
-  "education": [
-    {
-      "degree": "Bachelor of Arts, Computer Science",
-      "name": "Metropolitan State University",
-      "location": "MN",
-      "dateFrom": "",
-      "dateTo": ""
-    },
-    {
-      "degree": "Business Management Information Systems",
-      "name": "Carlson School of Management",
-      "location": "MN",
-      "dateFrom": "",
-      "dateTo": ""
     }
   ]
 }
