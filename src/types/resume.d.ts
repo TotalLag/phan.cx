@@ -23,13 +23,6 @@ export interface BaseResumeData {
       item: string;
     }>;
   }>;
-  education?: Array<{
-    degree: string;
-    name: string;
-    location: string;
-    dateFrom: string;
-    dateTo: string;
-  }>;
 }
 
 export interface TechnicalResumeData extends BaseResumeData {

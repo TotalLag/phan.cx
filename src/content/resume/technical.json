@@ -7,7 +7,7 @@
   "type": "technical",
   "summary": [
     "Technologist",
-    "Quality Advocate", 
+    "Quality Advocate",
     "Systems Engineer",
     "Developer Advocate"
   ],
@@ -26,6 +26,30 @@
     }
   ],
   "experience": [
+    {
+      "title": "Technical Account Manager",
+      "company": "Amazon Web Services",
+      "location": "Austin, TX",
+      "dateFrom": "October 2022",
+      "dateTo": "October 2026",
+      "work": [
+        {
+          "item": "Assessed and migrated commercial databases to managed AWS services, weighing managed, custom and self-managed options."
+        },
+        {
+          "item": "Planned large-scale data warehouse migrations, validating schema conversion and data integrity before cutover."
+        },
+        {
+          "item": "Designed content delivery and edge configurations, cutting production traffic between CDN providers with zero downtime."
+        },
+        {
+          "item": "Built and rolled out AI-assisted developer workflows with Amazon Q Developer and Kiro CLI."
+        },
+        {
+          "item": "Fed customer requirements back to AWS service teams, influencing features on the product roadmap."
+        }
+      ]
+    },
     {
       "title": "Director of Competitive Intelligence",
       "company": "Tanium",
@@ -58,13 +82,7 @@
           "item": "Pioneered adoption of black box appliances (physical/virtual), cgroups, Mac OS notarization, SAML, BitLocker, integrity monitoring, REST token lifecycle with customers, and created documentation on implementation."
         },
         {
-          "item": "Advocated for customers and interfaced them with user experience designers and other developers to ensure thoughtful and coherent user experiences."
-        },
-        {
           "item": "Submitted PR after testing platform in various browsers (TestCafe), devices, and OS (Packer) to ensure cross-compatibility and accessibility."
-        },
-        {
-          "item": "Proposed and implemented scalable code (Python) to solve issues identified with customers and their applications."
         }
       ]
     },
@@ -142,22 +160,6 @@
           "item": "Developed and shipped interactive web application for dormitory walk-through."
         }
       ]
-    }
-  ],
-  "education": [
-    {
-      "degree": "Bachelor of Arts, Computer Science",
-      "name": "Metropolitan State University",
-      "location": "MN",
-      "dateFrom": "",
-      "dateTo": ""
-    },
-    {
-      "degree": "Business Management Information Systems",
-      "name": "Carlson School of Management",
-      "location": "MN",
-      "dateFrom": "",
-      "dateTo": ""
     }
   ]
 }

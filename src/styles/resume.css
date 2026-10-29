@@ -19,12 +19,10 @@
   @apply relative flex flex-col p-8 mx-auto align-middle bg-white rounded-lg dark:bg-gray-800 md:w-4/5; /* Removed z-base */
   border: 8px solid var(--resume-border-light);
   @apply dark:border-gray-700;
-  @apply space-y-10 print:space-y-5;
-  @apply print:w-full print:p-4 print:m-0 print:border-0 print:rounded-none print:bg-white;
+  @apply space-y-10;
   transition: background-color 100ms ease-out, border-color 100ms ease-out;
 }
 
-/* Rest of the file remains unchanged */
 .resume-nav {
   @apply flex justify-center mt-4 print:hidden;
 }
@@ -54,79 +52,80 @@
 
 .resume-name {
   @apply text-[2rem] font-black uppercase tracking-wider text-center text-black dark:text-white;
-  @apply print:text-lg print:tracking-widest print:text-black;
   border-bottom: 3px solid black;
-  @apply dark:border-white print:border-black;
-  @apply pb-3 mb-3 print:pb-1 print:mb-1;
+  @apply dark:border-white;
+  @apply pb-3 mb-3;
   transition: border-color 100ms ease-out, color 100ms ease-out;
 }
 
 .resume-contact {
   @apply text-base text-center text-black dark:text-white;
   border-bottom: 3px solid black;
-  @apply dark:border-white print:border-black;
-  @apply py-2 mb-6 print:py-0.5 print:mb-1 print:text-xs print:text-black;
+  @apply dark:border-white;
+  @apply py-2 mb-6;
   transition: border-color 100ms ease-out, color 100ms ease-out;
 }
 
 .resume-summary {
   @apply text-center text-black uppercase dark:text-white;
   border-bottom: 1px solid black;
-  @apply dark:border-white print:border-black;
-  @apply py-4 print:py-1 print:text-xs print:text-black;
+  @apply dark:border-white;
+  @apply py-4;
   transition: border-color 100ms ease-out, color 100ms ease-out;
 }
 
 .resume-section {
-  @apply space-y-8 print:space-y-4;
+  @apply space-y-8;
 }
 
 .resume-section-title {
   @apply text-base font-bold tracking-wider text-black uppercase dark:text-white;
-  @apply print:text-xs print:font-extrabold print:text-black;
   border-bottom: 0.5px solid black;
-  @apply dark:border-white print:border-black;
-  @apply pb-2 mb-4 print:pb-1 print:mb-2;
+  @apply dark:border-white;
+  @apply pb-2 mb-4;
   transition: border-color 100ms ease-out, color 100ms ease-out;
 }
 
 .resume-item-header {
-  @apply flex items-baseline justify-between mb-2 print:mb-1;
+  @apply flex items-baseline justify-between mb-2;
 }
 
 .resume-item-title {
   @apply text-base font-bold tracking-wide text-black dark:text-white;
-  @apply print:text-xs print:font-bold print:text-black;
   transition: color 100ms ease-out;
 }
 
 .resume-item-date {
   @apply text-sm font-medium text-gray-600 dark:text-gray-300;
-  @apply print:text-[0.625rem] print:font-medium print:text-gray-600;
   transition: color 100ms ease-out;
 }
 
 .resume-list {
   @apply list-disc pl-8 space-y-1.5;
-  @apply print:pl-5 print:space-y-0.5;
 }
 
 .resume-list li {
   @apply text-base font-medium leading-relaxed text-black dark:text-white;
-  @apply print:text-[0.75rem] print:leading-snug print:text-black;
   padding-left: 0.25rem;
   transition: color 100ms ease-out;
 }
 
-/* Print Optimizations */
+/* Fixed Letter geometry; screen typography remains owned by the rules above. */
 @media print {
-  :root {
-    color-scheme: light;
-  }
+  @page { size: letter; margin: 21.6pt 30.5pt 14.4pt; }
+  :root { color-scheme: light; }
 
-  /* Force light theme colors */
   .resume-container {
-    background-color: white !important;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: white !important;
+    font-size: 9pt;
+    line-height: 1.375;
+    font-weight: 400;
+    letter-spacing: 0.025em;
   }
 
   .resume-name,
@@ -134,39 +133,72 @@
   .resume-summary,
   .resume-section-title,
   .resume-item-title,
+  .resume-item-date,
   .resume-list li {
     color: black !important;
     border-color: black !important;
   }
 
-  .resume-item-date {
-    color: #6b7280 !important;
+  .resume-name {
+    font-size: 27pt;
+    font-weight: 400;
+    line-height: 36pt;
+    letter-spacing: 0.05em;
+    border-bottom-width: 1.5pt;
+    padding-bottom: 1.4pt;
+    margin-bottom: 0;
   }
 
-  /* Ensure proper page margins */
-  @page {
-    margin: 0.25in;  /* Reduced margins */
-    size: letter;    /* Explicitly set page size */
+  .resume-contact {
+    font-size: 9pt;
+    font-weight: 400;
+    line-height: 12.375pt;
+    letter-spacing: 0.025em;
+    border-bottom-width: 1.5pt;
+    padding: 3.3pt 0 3.125pt;
+    margin-bottom: 0;
   }
 
-  /* Prevent page breaks */
-  .resume-section,
-  .resume-item {
-    break-inside: avoid;  /* Prevent sections from splitting across pages */
+  .resume-summary {
+    font-size: 9pt;
+    font-weight: 600;
+    line-height: 12.375pt;
+    letter-spacing: 0.025em;
+    border-bottom-width: 0.75pt;
+    padding: 12pt 0 11.625pt;
   }
 
-  /* Compact layout for single page */
-  .resume-container {
-    font-size: 10pt !important;  /* Smaller base font size */
-    line-height: 1.2 !important; /* Tighter line spacing */
+  .resume-section {
+    margin-top: 0;
+    padding: 4pt 0 13pt;
+    border-bottom: 0.75pt solid black;
+  }
+  .resume-section > :not([hidden]) ~ :not([hidden]) { margin-top: 0; margin-bottom: 0; }
+
+  .resume-section-title {
+    font-size: 9pt;
+    font-weight: 600;
+    line-height: 12.375pt;
+    letter-spacing: 0.1em;
+    padding-bottom: 3.375pt;
+    margin-bottom: 10pt;
+    border-bottom: 0.75pt solid #e5e7eb !important;
   }
 
-  /* Ensure everything fits on one page */
-  body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+  .resume-item { break-inside: avoid; }
+  .resume-section > .resume-item + .resume-item { margin-top: 9pt; }
+  .resume-item-header { margin-bottom: 0; gap: 6pt; }
+  .resume-item-title,
+  .resume-item-date { font-size: 9pt; line-height: 12.375pt; letter-spacing: 0.025em; }
+  .resume-item-title { font-weight: 600; }
+  .resume-item-date { font-weight: 400; white-space: nowrap; }
+  .resume-list { padding-left: 12pt; }
+  .resume-list > :not([hidden]) ~ :not([hidden]) { margin-top: 0; margin-bottom: 0; }
+  .resume-list li {
+    font-size: 9pt;
+    font-weight: 400;
+    line-height: 1.375;
+    letter-spacing: 0.025em;
+    padding-left: 0;
   }
 }

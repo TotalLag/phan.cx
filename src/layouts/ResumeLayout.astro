@@ -10,7 +10,7 @@ interface Props {
 }
 
 const { resume, type, structuredData = {} } = Astro.props;
-const { info, summary, qualifications, experience, education } = resume;
+const { info, summary, qualifications, experience } = resume;
 
 const formatSummary = (summary: string[]) => {
   return summary.join(' ◆ ');
@@ -31,11 +31,6 @@ const resumeSchema = {
     "streetAddress": info.address
   },
   "jobTitle": experience[0]?.title || "Professional",
-  "alumniOf": education?.map(edu => ({
-    "@type": "EducationalOrganization",
-    "name": edu.name,
-    "location": edu.location
-  })),
   "worksFor": experience?.map(job => ({
     "@type": "Organization",
     "name": job.company,
@@ -154,28 +149,6 @@ const resumeSchema = {
         ))}
       </section>
 
-      {education && (
-        <section class="resume-section">
-          <h2 class="resume-section-title">Education</h2>
-          {education.map((school) => (
-            <div 
-              class="resume-item" 
-              itemprop="alumniOf" 
-              itemscope 
-              itemtype="https://schema.org/EducationalOrganization"
-            >
-              <div class="resume-item-header">
-                <h3 class="resume-item-title">
-                  <span itemprop="name">{school.name}</span> | 
-                  <span itemprop="description">{school.degree}</span> 
-                  <span class="font-light" itemprop="location">| {school.location}</span>
-                </h3>
-                <span class="resume-item-date">{school.dateFrom} &mdash; {school.dateTo}</span>
-              </div>
-            </div>
-          ))}
-        </section>
-      )}
     </div>
   </div>
 

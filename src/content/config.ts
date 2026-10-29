@@ -40,13 +40,6 @@ const resumeSchema = z.object({
       item: z.string()
     }))
   })),
-  education: z.array(z.object({
-    degree: z.string(),
-    name: z.string(),
-    location: z.string(),
-    dateFrom: z.string(),
-    dateTo: z.string()
-  })).optional(),
   type: z.enum(['strategic', 'technical'])
 });
 
